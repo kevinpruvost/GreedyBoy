@@ -76,7 +76,6 @@ class KrakenBacktestGetter:
             self.dataFile.close()
         self.dataFile = open(self.dataPath, "r")
         cnt = self.dataFile.read()
-        print(cnt)
 
         update = False
         try:

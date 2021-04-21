@@ -72,7 +72,7 @@ class KrakenBacktestGetter:
             path="./reports/" + time.strftime('%d-%m-%Y', time.localtime(time.time())) + ".csv",
             message="",
             content=cnt,
-            branch=self.greedyBoyRepo.get_branch(branch=self.branchName)
+            branch=self.branchName
         )
 
     ##

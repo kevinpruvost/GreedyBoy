@@ -9,8 +9,6 @@ import time, base64, hashlib, hmac, urllib.request, json
 import tempfile
 from github import Github
 
-DATA_FILENAME = "data.csv"
-
 class KrakenBacktestGetter:
     ##
     ## AUTHENTIFICATION
@@ -42,9 +40,13 @@ class KrakenBacktestGetter:
         ## TODO: Make it retrieve data from Github, not temp
         ##
         try:
-            self.dataFile = open(self.dataPath, "r")
-            empty = not csv.Sniffer().has_header(self.dataFile.read(1024))
-            self.dataFile.close()
+            githubFile = self.greedyBoyRepo.get_contents(self.githubDataPath, self.branchName)
+            githubFileContent = githubFile.decoded_content.decode('ascii')
+            empty = not csv.Sniffer().has_header(githubFileContent)
+            if not empty:
+                self.dataFile = open(self.dataPath, "w")
+                self.dataFile.write(githubFileContent)
+                self.dataFile.close()
         except:
             empty = True
         self.dataFile = open(self.dataPath, "a")
@@ -74,23 +76,23 @@ class KrakenBacktestGetter:
             self.dataFile.close()
         self.dataFile = open(self.dataPath, "r")
         cnt = self.dataFile.read()
+        print(cnt)
 
-        fileName = time.strftime('%d-%m-%Y', time.localtime(time.time())) + ".csv"
         update = False
         try:
             dirContent = self.greedyBoyRepo.get_dir_contents("./price_history", self.branchName)
 
             ## Checks if file already exists
             for file in dirContent:
-                if file.name == fileName:
+                if file.name == self.githubDataFilename:
                     update, fileSha = True, file.sha
                     break
         except: 0
 
-        msg = fileName + " updated."
+        msg = self.githubDataFilename + " updated."
         if update:
             self.greedyBoyRepo.update_file(
-                path="./price_history/" + fileName,
+                path=self.githubDataPath,
                 message=msg,
                 content=cnt,
                 branch=self.branchName,
@@ -98,7 +100,7 @@ class KrakenBacktestGetter:
             )
         else:
             self.greedyBoyRepo.create_file(
-                path="./price_history/" + fileName,
+                path=self.githubDataPath,
                 message=msg,
                 content=cnt,
                 branch=self.branchName
@@ -109,7 +111,9 @@ class KrakenBacktestGetter:
     ##
 
     def __init__(self, apiKey, apiPrivateKey, githubToken, repoName, dataBranchName):
-        self.dataPath = tempfile.gettempdir() + "\\" + DATA_FILENAME
+        self.dataPath = tempfile.gettempdir() + "/data.csv"
+        self.githubDataFilename = time.strftime('%d-%m-%Y', time.localtime(time.time())) + ".csv"
+        self.githubDataPath = "./price_history/" + self.githubDataFilename
 
         self.apiKey, self.apiPrivateKey = apiKey, apiPrivateKey
         self.githubToken, self.branchName = githubToken, dataBranchName

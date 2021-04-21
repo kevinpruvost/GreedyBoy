@@ -87,10 +87,11 @@ class KrakenBacktestGetter:
                     break
         except: 0
 
+        msg = fileName + " updated."
         if update:
             self.greedyBoyRepo.update_file(
                 path="./price_history/" + fileName,
-                message="",
+                message=msg,
                 content=cnt,
                 branch=self.branchName,
                 sha=file.sha
@@ -98,7 +99,7 @@ class KrakenBacktestGetter:
         else:
             self.greedyBoyRepo.create_file(
                 path="./price_history/" + fileName,
-                message="",
+                message=msg,
                 content=cnt,
                 branch=self.branchName
             )

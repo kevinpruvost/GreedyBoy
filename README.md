@@ -3,7 +3,7 @@ Automated Trading Bot coded in Python, hosted on AWS Lambda.
 
 ## Requirements
 
-|Software        |Link                                                        |
+|Software        |How to get it                                               |
 |----------------|------------------------------------------------------------|
 |Python 3.7      |https://www.python.org/downloads/release/python-370/        |
 |numpy           |`pip install numpy`                                         |

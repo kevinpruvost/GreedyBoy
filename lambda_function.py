@@ -35,13 +35,13 @@ def main():
 
     while True:
         try:
-            print(time.strftime('Now   : %d/%m/%Y %H:%M:%S', time.localtime(time.time())))
-            print(time.strftime('Limit : %d/%m/%Y %H:%M:%S', time.localtime(tomorrowLimit.timestamp())))
+            print(time.strftime('Now: %H:%M:%S, ', time.localtime(time.time()))
+                  + time.strftime('Limit : %d/%m/%Y %H:%M:%S, Time remaining: ', time.localtime(tomorrowLimit.timestamp()))
+                  + str(timer - time.perf_counter()))
             if time.time() > tomorrowLimit.timestamp():
                 print("Day finished !")
                 break
             time.sleep(3)
-            print(str(time.perf_counter()) + " | " + str(timer))
             if time.perf_counter() > timer:
                 break
         except:

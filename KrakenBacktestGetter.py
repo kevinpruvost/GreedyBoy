@@ -5,7 +5,7 @@
 import websocket
 import _thread
 import csv
-import time, base64, hashlib, hmac, urllib.request, json
+import time, base64, hashlib, hmac, urllib, json
 import tempfile
 from github import Github
 

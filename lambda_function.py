@@ -4,7 +4,14 @@
 
 import KrakenApi
 from KrakenBacktestGetter import KrakenBacktestGetter
-import csv, time, datetime
+import csv, time, datetime, json
+
+def lambda_handler(event, context):
+    main()
+    return {
+        'statusCode': 200,
+        'body': json.dumps("Hello coomers !")
+    }
 
 def getConfig():
     with open("config.csv", newline="", encoding="utf-8") as f:

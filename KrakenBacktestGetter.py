@@ -76,18 +76,20 @@ class KrakenBacktestGetter:
         cnt = self.dataFile.read()
 
         fileName = time.strftime('%d-%m-%Y', time.localtime(time.time())) + ".csv"
-        dirContent = self.greedyBoyRepo.get_dir_contents("./reports", self.branchName)
-
-        ## Checks if file already exists
         update = False
-        for file in dirContent:
-            if file.name == fileName:
-                update, fileSha = True, file.sha
-                break
+        try:
+            dirContent = self.greedyBoyRepo.get_dir_contents("./price_history", self.branchName)
+
+            ## Checks if file already exists
+            for file in dirContent:
+                if file.name == fileName:
+                    update, fileSha = True, file.sha
+                    break
+        except: 0
 
         if update:
             self.greedyBoyRepo.update_file(
-                path="./reports/" + fileName,
+                path="./price_history/" + fileName,
                 message="",
                 content=cnt,
                 branch=self.branchName,
@@ -95,7 +97,7 @@ class KrakenBacktestGetter:
             )
         else:
             self.greedyBoyRepo.create_file(
-                path="./reports/" + fileName,
+                path="./price_history/" + fileName,
                 message="",
                 content=cnt,
                 branch=self.branchName

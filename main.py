@@ -2,12 +2,20 @@
 ### MAIN
 ###
 
-import KrakenApi, KrakenBacktestGetter
-import time
+import KrakenApi
+from KrakenBacktestGetter import KrakenBacktestGetter
+import csv, time
+
+def getConfig():
+    with open("config.csv", newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            return row['apiKey'], row['apiPrivateKey'], row['githubToken'], row['repoName'], row['dataBranchName']
 
 def main():
-    kBacktestGetter = KrakenBacktestGetter.KrakenBacktestGetter()
-#    kApi = KrakenApi.KrakenApi()
+    apiKey, apiPrivateKey, githubToken, repoName, dataBranchName = getConfig()
+    kBacktestGetter = KrakenBacktestGetter(apiKey, apiPrivateKey, githubToken, repoName, dataBranchName)
+#    kApi = KrakenApi.KrakenApi(apiKey, apiPrivateKey)
     # Continue other (non WebSocket) tasks in the main thread
     while True:
         try:

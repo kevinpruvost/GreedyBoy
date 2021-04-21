@@ -54,8 +54,8 @@ class KrakenApi:
         ws = websocket.WebSocketApp("wss://ws.kraken.com/", on_open=ws_open, on_message=ws_message)
         ws.run_forever()
 
-    def __init__(self):
-        self.apiKey, self.apiPrivateKey = getApiKeys()
+    def __init__(self, apiKey, apiPrivateKey):
+        self.apiKey, self.apiPrivateKey = apiKey, apiPrivateKey
         token = self.getToken()
         print(token)
         # Start a new thread for the WebSocket interface

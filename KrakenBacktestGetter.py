@@ -6,12 +6,10 @@ import websocket
 import _thread
 import csv
 import time, base64, hashlib, hmac, urllib.request, json
+import tempfile
+from github import Github
 
-def getApiKeys():
-        with open("config.csv", newline="", encoding="utf-8") as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                return row['apiKey'], row['apiPrivateKey']
+DATA_FILENAME = "data.csv"
 
 class KrakenBacktestGetter:
     ##
@@ -40,13 +38,13 @@ class KrakenBacktestGetter:
     ##
 
     def ws_thread(self, *args):
-        self.dataFile = open("data.csv", "r")
         try:
+            self.dataFile = open(self.dataPath, "r")
             empty = not csv.Sniffer().has_header(self.dataFile.read(1024))
+            self.dataFile.close()
         except:
             empty = True
-        self.dataFile.close()
-        self.dataFile = open("data.csv", "a")
+        self.dataFile = open(self.dataPath, "a")
         self.dataWriter = csv.DictWriter(self.dataFile, fieldnames=["epoch", "price"], lineterminator="\n")
         if empty:
             self.dataWriter.writeheader()
@@ -67,10 +65,33 @@ class KrakenBacktestGetter:
     def close(self):
         if not self.dataFile.closed:
             self.dataFile.close()
+        self.dataFile = open(self.dataPath, "r")
+        cnt = self.dataFile.read()
 
-    def __init__(self):
-        self.apiKey, self.apiPrivateKey = getApiKeys()
+        self.greedyBoyRepo.create_file(
+            path="./reports/" + time.strftime('%d-%m-%Y', time.localtime(time.time())) + ".csv",
+            message="",
+            content=cnt,
+            branch=self.greedyBoyRepo.get_branch(branch=self.branchName)
+        )
+
+    ##
+    ## GITHUB PART
+    ##
+
+    def __init__(self, apiKey, apiPrivateKey, githubToken, repoName, dataBranchName):
+        self.dataPath = tempfile.gettempdir() + "\\" + DATA_FILENAME
+
+        self.apiKey, self.apiPrivateKey = apiKey, apiPrivateKey
+        self.githubToken, self.branchName = githubToken, dataBranchName
+
+        # Kraken Token
         token = self.getToken()
         print(token)
+
+        # Github repo
+        g = Github(githubToken)
+        self.greedyBoyRepo = g.get_repo(repoName)
+
         # Start a new thread for the WebSocket interface
         _thread.start_new_thread(self.ws_thread, ())

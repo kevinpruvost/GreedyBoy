@@ -38,6 +38,9 @@ class KrakenBacktestGetter:
     ##
 
     def ws_thread(self, *args):
+        ##
+        ## TODO: Make it retrieve data from Github, not temp
+        ##
         try:
             self.dataFile = open(self.dataPath, "r")
             empty = not csv.Sniffer().has_header(self.dataFile.read(1024))
@@ -62,21 +65,44 @@ class KrakenBacktestGetter:
         ws = websocket.WebSocketApp("wss://ws.kraken.com/", on_open=ws_open, on_message=ws_message)
         ws.run_forever()
 
+    ##
+    ## GITHUB PART
+    ##
+
     def close(self):
         if not self.dataFile.closed:
             self.dataFile.close()
         self.dataFile = open(self.dataPath, "r")
         cnt = self.dataFile.read()
 
-        self.greedyBoyRepo.create_file(
-            path="./reports/" + time.strftime('%d-%m-%Y', time.localtime(time.time())) + ".csv",
-            message="",
-            content=cnt,
-            branch=self.branchName
-        )
+        fileName = time.strftime('%d-%m-%Y', time.localtime(time.time())) + ".csv"
+        dirContent = self.greedyBoyRepo.get_dir_contents("./reports", self.branchName)
+
+        ## Checks if file already exists
+        update = False
+        for file in dirContent:
+            if file.name == fileName:
+                update, fileSha = True, file.sha
+                break
+
+        if update:
+            self.greedyBoyRepo.update_file(
+                path="./reports/" + fileName,
+                message="",
+                content=cnt,
+                branch=self.branchName,
+                sha=file.sha
+            )
+        else:
+            self.greedyBoyRepo.create_file(
+                path="./reports/" + fileName,
+                message="",
+                content=cnt,
+                branch=self.branchName
+            )
 
     ##
-    ## GITHUB PART
+    ## INIT
     ##
 
     def __init__(self, apiKey, apiPrivateKey, githubToken, repoName, dataBranchName):

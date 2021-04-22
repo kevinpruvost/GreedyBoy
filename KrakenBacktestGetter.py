@@ -36,9 +36,6 @@ class KrakenBacktestGetter:
     ##
 
     def ws_thread(self, *args):
-        ##
-        ## TODO: Make it retrieve data from Github, not temp
-        ##
         try:
             githubFile = self.greedyBoyRepo.get_contents(self.githubDataPath, self.branchName)
             githubFileContent = githubFile.decoded_content.decode('ascii')
@@ -80,6 +77,8 @@ class KrakenBacktestGetter:
         self.dataFile = open(self.dataPath, "r")
         cnt = self.dataFile.read()
 
+        timer = time.perf_counter()
+
         update = False
         try:
             dirContent = self.greedyBoyRepo.get_dir_contents("./price_history", self.branchName)
@@ -107,6 +106,9 @@ class KrakenBacktestGetter:
                 content=cnt,
                 branch=self.branchName
             )
+
+        print("Sending file took " + str(time.perf_counter() - timer) + " seconds.")
+
 
     ##
     ## INIT

@@ -1,6 +1,10 @@
 # GreedyBoy - Data branch
 
-Basically contains every data used by GreedyBoy, and later by GreedyBoyDataAnalysis.
+<p align="center">
+  <img src="https://github.com/kevinpruvost/GreedyBoy/blob/main/logo/eye.png"/><br/>
+  <img src="https://github.com/kevinpruvost/GreedyBoy/blob/main/logo/title.png"/><br/><br/><br/>
+  Basically contains every data used by GreedyBoy, and later by GreedyBoyDataAnalysis.
+</p>
 
 ## Backtesting
 

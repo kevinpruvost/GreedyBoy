@@ -17,18 +17,13 @@ Automated Trading Bot coded in Python, hosted on AWS Lambda.
 If you are exporting the project to your AWS Lambda repository, DO NOT FORGET to take the libraries folders with it.
 Here's the list :
 
-| Libraries |
-|-----------|
-| certifi |
-| chardet |
-| deprecated |
-| github |
-| idna |
-| jwt |
-| requests |
-| urllib |
-| websocket |
-| wrapt |
+| Libraries | |
+|-----------|-|
+| certifi | jwt |
+| requests | urllib |
+| websocket | wrapt |
+| chardet | deprecated |
+| github | idna |
 
 ## Configuration
 

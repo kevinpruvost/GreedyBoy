@@ -15,6 +15,7 @@ Automated Trading Bot coded in Python, hosted on AWS Lambda.
 |numpy           |`pip install numpy`                                         |
 
 If you are exporting the project to your AWS Lambda repository, DO NOT FORGET to take the libraries folders with it.
+
 Here's the list :
 
 | Libraries | |

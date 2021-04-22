@@ -13,8 +13,22 @@ Automated Trading Bot coded in Python, hosted on AWS Lambda.
 |----------------|------------------------------------------------------------|
 |Python 3.7      |https://www.python.org/downloads/release/python-370/        |
 |numpy           |`pip install numpy`                                         |
-|websocket-client|Import in your project's folder manually from the repository|
-|PyGithub        |Import in your project's folder manually from the repository|
+
+If you are exporting the project to your AWS Lambda repository, DO NOT FORGET to take the libraries folders with it.
+Here's the list :
+
+| Libraries |
+|-----------|
+| certifi |
+| chardet |
+| deprecated |
+| github |
+| idna |
+| jwt |
+| requests |
+| urllib |
+| websocket |
+| wrapt |
 
 ## Configuration
 

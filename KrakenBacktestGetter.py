@@ -49,6 +49,9 @@ class KrakenBacktestGetter:
                 self.dataFile.close()
         except:
             empty = True
+            self.dataFile = open(self.dataPath, "w")
+            self.dataFile.write("")
+            self.dataFile.close()
         self.dataFile = open(self.dataPath, "a")
         self.dataWriter = csv.DictWriter(self.dataFile, fieldnames=["epoch", "price"], lineterminator="\n")
         if empty:

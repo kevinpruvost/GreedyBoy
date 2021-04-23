@@ -26,6 +26,12 @@ Here's the list :
 | chardet | deprecated |
 | github | idna |
 
+## Documentation
+
+|Software|Link                         |
+|--------|-----------------------------|
+|Plotly  |https://plotly.com/python/candlestick-charts/|
+
 ## Configuration
 
 ### config.csv

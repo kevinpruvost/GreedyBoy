@@ -13,6 +13,7 @@ Automated Trading Bot coded in Python, hosted on AWS Lambda.
 |----------------|------------------------------------------------------------|
 |Python 3.7      |https://www.python.org/downloads/release/python-370/        |
 |numpy           |`pip install numpy`                                         |
+|mpl_finance     |`pip install mpl_finance` |
 
 If you are exporting the project to your AWS Lambda repository, DO NOT FORGET to take the libraries folders with it.
 
@@ -31,6 +32,7 @@ Here's the list :
 |Software|Link                         |
 |--------|-----------------------------|
 |Plotly  |https://plotly.com/python/candlestick-charts/|
+|MatPlotLib Finance  | https://saralgyaan.com/posts/python-candlestick-chart-matplotlib-tutorial-chapter-11/ |
 
 ## Configuration
 

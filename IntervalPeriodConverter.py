@@ -19,6 +19,7 @@ import pandas as pd
 import pandas.core.generic as gen
 from numba import jit
 import copy
+from PerformanceTimer import time_function
 
 class IntervalPeriodConverter:
     def __init__(self, data: gen.NDFrame, interval: int = 15):
@@ -79,11 +80,17 @@ class IntervalPeriodConverter:
 
 data = pd.read_csv("data.csv", parse_dates=True)
 #data["epoch"] = pd.to_datetime(data["epoch"], unit='s')
+
+##
+## TODO: We must copy another DataFrame in order to give the program the capacity of Realtime price view.
+##
 data = IntervalPeriodConverter(data, 15)
-data.append(data.ordered.at[len(data.ordered) - 1, 'Date'] + 15 * 60, 2100)
-data.ordered["Date"] = pd.to_datetime(data.ordered["Date"], unit='s')
-data.ordered = data.ordered.set_index('Date')
+time_function(pd.to_datetime, data.ordered["Date"], unit='s')
+oof = copy.deepcopy(data.ordered)
+oof["Date"] = pd.to_datetime(oof["Date"], unit='s')
+oof = oof.set_index('Date')
 print(data.ordered)
+print(oof)
 
 import csv
 import matplotlib.pyplot as plt
@@ -92,8 +99,6 @@ import pandas as pd
 import matplotlib.dates as mpl_dates
 import matplotlib.animation as animation
 import time
-
-plt.style.use('ggplot')
 
 idf = data.ordered
 df = idf.loc['2021-04-24 00:00:00':'2021-04-24 12:00:00',:]

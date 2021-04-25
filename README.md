@@ -34,6 +34,7 @@ Here's the list :
 |--------|-----------------------------|
 |Plotly  |https://plotly.com/python/candlestick-charts/|
 |MatPlotLib Finance  | https://saralgyaan.com/posts/python-candlestick-chart-matplotlib-tutorial-chapter-11/ |
+|Numba | https://numba.pydata.org/numba-doc/latest/index.html|
 
 ## Configuration
 

@@ -33,7 +33,11 @@ class IntervalPeriodConverter:
             'Open': 0,
             'High': 0,
             'Low': 0,
-            'Close': 0
+            'Close': 0,
+            'MA': 0,
+            'Std': 0,
+            'LBand': 0,
+            'HBand': 0
         }
         self.newRound = copy.deepcopy(self.roundTemp)
         if 'Low' not in data:
@@ -46,7 +50,6 @@ class IntervalPeriodConverter:
     def parseToInterval(self):
         for i, row in self.data.iterrows():
             self.__append(row['epoch'], row['price'])
-        self.update()
 #        self.ordered["Date"] = pd.to_datetime(self.ordered["Date"], unit='s')
 #        self.ordered = self.ordered.set_index('Date')
         self.data = pd.DataFrame()
@@ -77,6 +80,10 @@ class IntervalPeriodConverter:
             self.ordered.at[len(self.ordered) - 1, 'Low'] = self.newRound['Low']
             self.ordered.at[len(self.ordered) - 1, 'Close'] = self.newRound['Close']
             self.ordered.at[len(self.ordered) - 1, 'Open'] = self.newRound['Open']
+        self.ordered['MA'] = self.ordered['Close'].rolling(window=20).mean()
+        self.ordered['Std'] = self.ordered['Close'].rolling(window=20).std()
+        self.ordered['HBand'] = self.ordered['MA'] + (self.ordered['Std'] * 2)
+        self.ordered['LBand'] = self.ordered['MA'] - (self.ordered['Std'] * 2)
 
 data = pd.read_csv("data.csv", parse_dates=True)
 #data["epoch"] = pd.to_datetime(data["epoch"], unit='s')
@@ -100,7 +107,7 @@ import matplotlib.dates as mpl_dates
 import matplotlib.animation as animation
 import time
 
-idf = data.ordered
+idf = oof
 df = idf.loc['2021-04-24 00:00:00':'2021-04-24 12:00:00',:]
 
 fig = mplfinance.figure(figsize=(11,5))

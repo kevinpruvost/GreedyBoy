@@ -17,11 +17,14 @@ __maintainer__  = "Kevin Pruvost"
 __email__       = "pruvostkevin0@gmail.com"
 __status__      = "Test"
 
-## plotly is the graph library
 ## csv serves as a .csv parser
-
-
 import csv
+import matplotlib.pyplot as plt
+import mplfinance
+import pandas as pd
+import matplotlib.dates as mpl_dates
+import matplotlib.animation as animation
+import time
 
 class DataFilter:
     """Takes prices data in input and returns the useful parts like high/end candles, ..."""
@@ -42,45 +45,22 @@ class GraphViewer:
         :param data: Contains an 2D array, each column contains [timestamp, open, high, low, close]
         """
 
-        self.fig = go.Figure(data=[go.Candlestick(
-            x=data[0], open=data[1], high=data[2], low=data[3], close=data[4]
-        )])
-
-        self.fig.update_layout(
-            title='Crypto Chart',
-            yaxis_title='Price',
-            shapes=[dict(
-                x0='2016-12-09', x1='2016-12-09', y0=0, y1=1, xref='x', yref='paper',
-                line_width=2)],
-            annotations=[dict(
-                x='2016-12-09', y=0.05, xref='x', yref='paper',
-                showarrow=False, xanchor='left', text='Increase Period Begins')]
-        )
-
     def figure(self):
         return self.fig
 
     def show(self):
         self.fig.show()
 
-import matplotlib.pyplot as plt
-import mplfinance
-import pandas as pd
-import matplotlib.dates as mpl_dates
-import matplotlib.animation as animation
-import time
-
 plt.style.use('ggplot')
 
 idf = pd.read_csv('candlestick_python_data.csv', index_col=0, parse_dates=True)
-idf.shape
-idf.head(3)
-idf.tail(3)
 df = idf.loc['2011-07-01':'2011-12-30',:]
 
 fig = mplfinance.figure(figsize=(11,5))
 ax1 = fig.add_subplot(2, 1, 1)
 ax2 = fig.add_subplot(3, 1, 3)
+
+print(idf.rolling(window=20, min_periods=1).mean())
 
 def animate(ival):
     if (20+ival) > len(df):
@@ -91,7 +71,8 @@ def animate(ival):
         return
     data = df.iloc[0:(20+ival)]
     ax1.clear()
-    mplfinance.plot(data, ax=ax1, volume=ax2, type='candle', style='charles')
+    mplfinance.plot(data, ax=ax1, type='candle', style='charles')
+    mplfinance.plot(data, ax=ax2, type='candle', style='charles')
 
 ani = animation.FuncAnimation(fig, animate, interval=250)
 

@@ -1,6 +1,18 @@
-###
-### Kraken Api class
-###
+#!/usr/bin/env python
+## KrakenBacktestGetter.py
+##
+## Description:
+## Gather prices data of some cryptocurrencies for testing purposes.
+##
+
+__author__      = "Kevin Pruvost"
+__copyright__   = "Copyright 2021, GreedyBoy"
+__credits__     = ["Kevin Pruvost", "Hugo Matthieu-Steinbach"]
+__license__     = "Proprietary"
+__version__     = "1.0.0"
+__maintainer__  = "Kevin Pruvost"
+__email__       = "pruvostkevin0@gmail.com"
+__status__      = "Test"
 
 import websocket
 import _thread

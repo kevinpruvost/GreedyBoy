@@ -129,7 +129,7 @@ df = df.iloc[20:]
 
 fig = mplfinance.figure(figsize=(15,7))
 ax1 = fig.add_subplot(2, 1, 1)
-ax2 = fig.add_subplot(3, 1, 3)
+ax2 = fig.add_subplot(2, 1, 2)
 print(idf)
 print(df)
 
@@ -160,14 +160,21 @@ def animate(ival):
     slower = np.ma.masked_where(df['Value'] > lower, df['Value'])
     smiddle = np.ma.masked_where((df['Value'] < lower) | (df['Value'] > upper), df['Value'])
 
-    slt2 = df.plot(ax=ax2)
+    df.plot(ax=ax2)
     ax2.axhline(y=100, color="red", lw=1, linestyle=":")
     ax2.axhline(y=0, color="green", lw=1, linestyle=":")
+    colors = ['#00a822' if val <= 0 else 'r' if val >= 100 else '#00000033' for val in df['Value']]
+    slt2 = ax2.scatter(df.index, df['Value'], color=colors)
     #ax2.plot(df.index, df.index, '-r')
 
     mplcursors.cursor(slt, hover=True)
     mplcursors.cursor(slt2, hover=True)
 
 ani = animation.FuncAnimation(fig, animate, interval=1000)
+
+figManager = plt.get_current_fig_manager()
+figManager.full_screen_toggle()
+
+plt.subplots_adjust(left=0.04, bottom=0.067, right=0.93, top=0.955)
 
 plt.show()

@@ -50,6 +50,7 @@ class IntervalPeriodConverter:
     def parseToInterval(self):
         for i, row in self.data.iterrows():
             self.__append(row['epoch'], row['price'])
+        self.update()
 #        self.ordered["Date"] = pd.to_datetime(self.ordered["Date"], unit='s')
 #        self.ordered = self.ordered.set_index('Date')
         self.data = pd.DataFrame()
@@ -96,8 +97,6 @@ time_function(pd.to_datetime, data.ordered["Date"], unit='s')
 oof = copy.deepcopy(data.ordered)
 oof["Date"] = pd.to_datetime(oof["Date"], unit='s')
 oof = oof.set_index('Date')
-print(data.ordered)
-print(oof)
 
 import csv
 import matplotlib.pyplot as plt
@@ -106,13 +105,17 @@ import pandas as pd
 import matplotlib.dates as mpl_dates
 import matplotlib.animation as animation
 import time
+import mplcursors
+
+plt.style.use('dark_background')
 
 idf = oof
 df = idf.loc['2021-04-24 00:00:00':'2021-04-24 12:00:00',:]
 
-fig = mplfinance.figure(figsize=(11,5))
+fig = mplfinance.figure(figsize=(15,7))
 ax1 = fig.add_subplot(2, 1, 1)
 ax2 = fig.add_subplot(3, 1, 3)
+print(idf)
 
 def animate(ival):
     if (20+ival) > len(df):
@@ -124,8 +127,13 @@ def animate(ival):
     datas = df.iloc[0:(20+ival)]
     ax1.clear()
     mplfinance.plot(idf, ax=ax1, type='candle', style='charles')
+    slt = idf[['HBand', 'LBand']].plot(ax=ax1, use_index=False)
+
+    mplcursors.cursor(slt, hover=True)
+
     mplfinance.plot(datas, ax=ax2, type='candle', style='charles')
+
 
 ani = animation.FuncAnimation(fig, animate, interval=250)
 
-mplfinance.show()
+plt.show()

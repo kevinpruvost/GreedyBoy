@@ -132,10 +132,6 @@ dmypy.json
 # PyCharm
 .idea/
 
-# pdoc3
-html/
-doc/
-
 # Config
 config.csv
 

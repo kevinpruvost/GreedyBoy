@@ -19,6 +19,7 @@ from GraphViewer import GraphViewer
 import pandas.core.generic as gen
 import copy
 import pandas as pd
+from PerformanceTimer import time_function
 
 class IntervalPeriodConverter:
     @classmethod
@@ -119,4 +120,4 @@ def main():
     graphicView.start()
 
 if __name__ == '__main__':
-    main()
+    time_function(main)

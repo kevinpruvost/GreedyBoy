@@ -8,7 +8,7 @@ if "%SPHINXBUILD%" == "" (
 	set SPHINXBUILD=python.exe -m sphinx.cmd.build
 )
 set SOURCEDIR=source
-set BUILDDIR=build
+set BUILDDIR=docs
 
 if "%1" == "" goto help
 

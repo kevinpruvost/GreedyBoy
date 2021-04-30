@@ -3,4 +3,4 @@
 ##
 
 doc:
-	python.exe -m sphinx.cmd.quickstart
+	make.bat html

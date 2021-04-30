@@ -22,6 +22,8 @@ import mplfinance
 import matplotlib.animation as animation
 import mplcursors
 
+ani = None
+
 class GraphViewer:
     def __init__(self, priceDatas, bollingerDatas, animateCallback = None, fullscreen: bool = True):
         """Constructs the GraphViewer
@@ -81,8 +83,6 @@ class GraphViewer:
         figManager = plt.get_current_fig_manager()
         if fullscreen: figManager.full_screen_toggle()
         plt.subplots_adjust(left=0.04, bottom=0.067, right=0.93, top=0.955)
-
-        self.start()
 
     def start(self):
         plt.show()

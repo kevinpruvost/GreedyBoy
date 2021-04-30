@@ -15,8 +15,8 @@ Automated Trading Bot coded in Python, hosted on AWS Lambda.
 |numpy           |`pip install numpy`                                         |
 |mpl_finance     |`pip install mpl_finance` |
 |mplcursors      |`pip install mplcursors`|
-|pandas |`pip install pandas`  |
-|pydoc      |`pip install pydoc-markdown`|
+|pandas          |`pip install pandas`  |
+|pdoc3           |`pip install pdoc3`|
 
 If you are exporting the project to your AWS Lambda repository, DO NOT FORGET to take the libraries folders with it.
 

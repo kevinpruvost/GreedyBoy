@@ -15,20 +15,28 @@ __maintainer__  = "Kevin Pruvost"
 __email__       = "pruvostkevin0@gmail.com"
 __status__      = "Test"
 
-import numpy as np
-import pandas as pd
+from GraphViewer import GraphViewer
 import pandas.core.generic as gen
-from numba import jit
 import copy
-from PerformanceTimer import time_function
+import pandas as pd
 
 class IntervalPeriodConverter:
-    def __init__(self, data: gen.NDFrame, interval: int = 15):
-        """Constructs IntervalPeriodConverter with the given data.
+    @classmethod
+    def fromFilename(cls, fileName: str, interval: int = 15, movingAverageSize: int = 20):
+        csvData = pd.read_csv(fileName, parse_dates=True)
+        return cls(csvData, interval, movingAverageSize)
+
+    @classmethod
+    def fromDataframe(cls, data: gen.NDFrame, interval: int = 15, movingAverageSize: int = 20):
+        return cls(data, interval, movingAverageSize)
+
+    def __init__(self, data: gen.NDFrame, interval: int = 15, movingAverageSize: int = 20):
+        """Constructs IntervalPeriodConverter with the given data formatted like a csv [epochTime, price].
         :param interval: Interval in minutes.
         """
         self.data = data
         self.interval = interval
+        self.movingAverageSize = movingAverageSize
         self.roundTemp = {
             'Date': 0,
             'Open': 0,
@@ -75,6 +83,10 @@ class IntervalPeriodConverter:
             self.newRound['High'] = price
 
     def append(self, epochTime, price):
+        """Appends new (epochTime, price) into the Dataframes.
+        :param epochTime: timestamp of the price
+        :param price: price (float)
+        """
         self.__append(epochTime, price)
         self.update()
 
@@ -86,95 +98,21 @@ class IntervalPeriodConverter:
             self.ordered.at[len(self.ordered) - 1, 'Low'] = self.newRound['Low']
             self.ordered.at[len(self.ordered) - 1, 'Close'] = self.newRound['Close']
             self.ordered.at[len(self.ordered) - 1, 'Open'] = self.newRound['Open']
-        self.ordered['MA'] = self.ordered['Close'].rolling(window=20).mean()
-        self.ordered['Std'] = self.ordered['Close'].rolling(window=20).std()
+        self.ordered['MA'] = self.ordered['Close'].rolling(window=self.movingAverageSize).mean()
+        self.ordered['Std'] = self.ordered['Close'].rolling(window=self.movingAverageSize).std()
         self.ordered['HBand'] = self.ordered['MA'] + (self.ordered['Std'] * 2)
         self.ordered['LBand'] = self.ordered['MA'] - (self.ordered['Std'] * 2)
         self.bollingerGaps['Date'] = self.ordered['Date']
         self.bollingerGaps['Value'] = (self.ordered['Close'] - self.ordered['LBand']) / (self.ordered['HBand'] - self.ordered['LBand']) * 100
 
-data = pd.read_csv("data.csv", parse_dates=True)
-#data["epoch"] = pd.to_datetime(data["epoch"], unit='s')
+    def convertForGraphicViews(self):
+        data1, data2 = copy.deepcopy(self.ordered), copy.deepcopy(self.bollingerGaps)
+        data1, data2 = data1.iloc[self.movingAverageSize:], data2.iloc[self.movingAverageSize:]
+        data1["Date"], data2["Date"] = pd.to_datetime(data1["Date"], unit='s'), pd.to_datetime(data2["Date"], unit='s')
+        data1, data2 = data1.set_index('Date'), data2.set_index('Date')
+        return data1, data2
 
-##
-## TODO: We must copy another DataFrame in order to give the program the capacity of Realtime price view.
-##
-data = IntervalPeriodConverter(data, 15)
-time_function(pd.to_datetime, data.ordered["Date"], unit='s')
-time_function(pd.to_datetime, data.bollingerGaps["Date"], unit='s')
-oof = copy.deepcopy(data.ordered)
-oof["Date"] = pd.to_datetime(oof["Date"], unit='s')
-oof = oof.set_index('Date')
-
-import csv
-import matplotlib.pyplot as plt
-from matplotlib.collections import LineCollection
-from matplotlib.colors import ListedColormap, BoundaryNorm
-import mplfinance
-import pandas as pd
-import matplotlib.dates as mpl_dates
-import matplotlib.animation as animation
-import time
-import mplcursors
-from matplotlib.colors import ListedColormap, BoundaryNorm
-
-plt.style.use('dark_background')
-
-idf = oof
-idf = idf.iloc[20:]
-df = copy.deepcopy(data.bollingerGaps)
-df['Date'] = pd.to_datetime(df['Date'], unit='s')
-df = df.set_index('Date')
-df = df.iloc[20:]
-
-fig = mplfinance.figure(figsize=(15,7))
-ax1 = fig.add_subplot(2, 1, 1)
-ax2 = fig.add_subplot(2, 1, 2)
-print(idf)
-print(df)
-
-
-
-bollinger_bands = idf[['HBand', 'LBand']]
-
-def animate(ival):
-    if (20+ival) > len(df):
-        print('no more data to plot')
-        ani.event_source.interval *= 3
-        if ani.event_source.interval > 12000:
-            exit()
-        return
-    #datas = df.iloc[0:(20+ival)]
-    ax1.clear()
-    mplfinance.plot(idf, ax=ax1, type='candle', style='charles')
-    slt = bollinger_bands.plot(ax=ax1, use_index=False)
-    fm = plt.get_current_fig_manager()
-
-    #ax1.fill_between(bollinger_bands.index, bollinger_bands['HBand'], bollinger_bands['LBand'], color='grey', alpha=0.5)
-
-    ax2.cla()
-
-    upper = 100
-    lower = 0
-    supper = np.ma.masked_where(df['Value'] < upper, df['Value'])
-    slower = np.ma.masked_where(df['Value'] > lower, df['Value'])
-    smiddle = np.ma.masked_where((df['Value'] < lower) | (df['Value'] > upper), df['Value'])
-
-    df.plot(ax=ax2)
-    ax2.axhline(y=100, color="red", lw=1, linestyle=":")
-    ax2.axhline(y=0, color="green", lw=1, linestyle=":")
-    colors = ['#00a822' if val <= 0 else 'r' if val >= 100 else '#00000033' for val in df['Value']]
-    slt2 = ax2.scatter(df.index, df['Value'], color=colors)
-    #ax2.plot(df.index, df.index, '-r')
-
-    mplcursors.cursor(slt, hover=True)
-    mplcursors.cursor(slt2, hover=True)
-
-ani = animation.FuncAnimation(fig, animate, interval=1000)
-
-figManager = plt.get_current_fig_manager()
-figManager.full_screen_toggle()
-
-plt.subplots_adjust(left=0.04, bottom=0.067, right=0.93, top=0.955)
-
-plt.show()
+intervalPeriodConverter = IntervalPeriodConverter.fromFilename("data.csv", 15, 20)
+data1, data2 = intervalPeriodConverter.convertForGraphicViews()
+graphicView = GraphViewer(data1, data2)
+graphicView.start()

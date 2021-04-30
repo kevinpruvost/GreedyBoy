@@ -17,63 +17,62 @@ __maintainer__  = "Kevin Pruvost"
 __email__       = "pruvostkevin0@gmail.com"
 __status__      = "Test"
 
-## csv serves as a .csv parser
-import csv
+import numpy as np
 import matplotlib.pyplot as plt
 import mplfinance
-import pandas as pd
-import matplotlib.dates as mpl_dates
 import matplotlib.animation as animation
-import time
-
-class DataFilter:
-    """Takes prices data in input and returns the useful parts like high/end candles, ..."""
-
-    def __init__(self):
-        return
-
-    def addData(self, time, price):
-        return
+import mplcursors
 
 class GraphViewer:
-    """Contains the graphical interface in which we will see the needed representation of our data."""
+    def __init__(self, priceDatas, bollingerDatas, animateCallback = None, fullscreen: bool = True):
+        fig = mplfinance.figure(figsize=(15, 7))
+        ax1 = fig.add_subplot(2, 1, 1)
+        ax2 = fig.add_subplot(2, 1, 2)
 
-    def __init__(self, data):
-        """
-        Constructs the GraphViewer
+        idf, df = priceDatas, bollingerDatas
+        bollinger_bands = idf[['HBand', 'LBand']]
 
-        :param data: Contains an 2D array, each column contains [timestamp, open, high, low, close]
-        """
+        def animate(ival):
+            if animateCallback: animateCallback()
+            if (20 + ival) > len(df):
+                print('no more data to plot')
+                ani.event_source.interval *= 3
+                if ani.event_source.interval > 12000:
+                    exit()
+                return
+            # datas = df.iloc[0:(20+ival)]
+            ax1.clear()
+            mplfinance.plot(idf, ax=ax1, type='candle', style='charles')
+            slt = bollinger_bands.plot(ax=ax1, use_index=False)
+            fm = plt.get_current_fig_manager()
 
-    def figure(self):
-        return self.fig
+            # ax1.fill_between(bollinger_bands.index, bollinger_bands['HBand'], bollinger_bands['LBand'], color='grey', alpha=0.5)
 
-    def show(self):
-        self.fig.show()
+            ax2.cla()
 
-plt.style.use('ggplot')
+            upper = 100
+            lower = 0
+            supper = np.ma.masked_where(df['Value'] < upper, df['Value'])
+            slower = np.ma.masked_where(df['Value'] > lower, df['Value'])
+            smiddle = np.ma.masked_where((df['Value'] < lower) | (df['Value'] > upper), df['Value'])
 
-idf = pd.read_csv('candlestick_python_data.csv', index_col=0, parse_dates=True)
-df = idf.loc['2011-07-01':'2011-12-30',:]
+            df.plot(ax=ax2)
+            ax2.axhline(y=100, color="red", lw=1, linestyle=":")
+            ax2.axhline(y=0, color="green", lw=1, linestyle=":")
+            colors = ['#00a822' if val <= 0 else 'r' if val >= 100 else '#00000033' for val in df['Value']]
+            slt2 = ax2.scatter(df.index, df['Value'], color=colors)
+            # ax2.plot(df.index, df.index, '-r')
 
-fig = mplfinance.figure(figsize=(11,5))
-ax1 = fig.add_subplot(2, 1, 1)
-ax2 = fig.add_subplot(3, 1, 3)
+            mplcursors.cursor(slt, hover=True)
+            mplcursors.cursor(slt2, hover=True)
 
-print(idf.rolling(window=20, min_periods=1).mean())
+        ani = animation.FuncAnimation(fig, animate, interval=1000)
 
-def animate(ival):
-    if (20+ival) > len(df):
-        print('no more data to plot')
-        ani.event_source.interval *= 3
-        if ani.event_source.interval > 12000:
-            exit()
-        return
-    data = df.iloc[0:(20+ival)]
-    ax1.clear()
-    mplfinance.plot(data, ax=ax1, type='candle', style='charles')
-    mplfinance.plot(data, ax=ax2, type='candle', style='charles')
+        figManager = plt.get_current_fig_manager()
+        if fullscreen: figManager.full_screen_toggle()
 
-ani = animation.FuncAnimation(fig, animate, interval=250)
+        plt.subplots_adjust(left=0.04, bottom=0.067, right=0.93, top=0.955)
+        self.start()
 
-mplfinance.show()
+    def start(self):
+        plt.show()

@@ -4,4 +4,4 @@
 
 doc:
 	make.bat html
-	Move-Item -Path '.\docs\html\*' -Destination '.\docs\.' -force
+	Move-Item -Path '.\docs\html\*' -Destination '.\docs\.' -Force

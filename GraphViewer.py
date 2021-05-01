@@ -22,9 +22,8 @@ import mplfinance
 import matplotlib.animation as animation
 import mplcursors
 
-ani = None
-
 class GraphViewer:
+    ani = None
     def __init__(self, priceDatas, bollingerDatas, animateCallback = None, fullscreen: bool = True):
         """Constructs the GraphViewer
         :param priceDatas: Dataframe containing detailed informations about prices.
@@ -32,7 +31,8 @@ class GraphViewer:
         :param animateCallback: Callback called on the animation loop.
         :param fullscreen: De/Activates fullscreen mode for Matplotlib.
         """
-        fig = mplfinance.figure(figsize=(15, 7))    # Defining figure size
+        s = mplfinance.make_mpf_style(base_mpf_style='mike', rc={'font.size': 12})
+        fig = mplfinance.figure(figsize=(15, 7), style=s)    # Defining figure size
         ax1 = fig.add_subplot(2, 1, 1)              # Defining plot 1
         ax2 = fig.add_subplot(2, 1, 2)              # Defining plot 2
 
@@ -61,21 +61,30 @@ class GraphViewer:
             ##
             ax2.cla()           # Clear
             df.plot(ax=ax2)     # Drawing data lines
-            ax2.axhline(y=100, color="red", lw=1, linestyle=":")    # Drawing '100' line limit
-            ax2.axhline(y=0, color="green", lw=1, linestyle=":")    # Drawing '0' line limit
+            ax2.axhline(y=100, color="red", lw=1.5, linestyle="-")    # Drawing '100' line limit
+            ax2.axhline(y=0, color="green", lw=1.5, linestyle="-")    # Drawing '0' line limit
 
             # Defining scatter points color considering their values
             # <= 0      : Green,
             # >= 100    : Red,
             # Otherwise : Blue
-            colors = ['#00a822' if val <= 0 else 'r' if val >= 100 else '#00000033' for val in df['Value']]
+            colors = ['g' if val <= 0 else 'r' if val >= 100 else '#00000033' for val in df['Value']]
             chart2 = ax2.scatter(df.index, df['Value'], color=colors)
 
             # Activating cursor interactions
-            mplcursors.cursor(chart1, hover=True)
-            mplcursors.cursor(chart2, hover=True)
+            cursors = list()
+            cursors.append(mplcursors.cursor(chart1, hover=True))
+            cursors.append(mplcursors.cursor(chart2, hover=True))
+            for cursor in cursors:
+                @cursor.connect("add")
+                def _(sel):
+                    print(sel.annotation.get_text())
+                    sel.annotation.set_color('black')
+                    sel.annotation.get_bbox_patch().set(color="white", alpha=1)
+                    sel.annotation.arrow_patch.set(arrowstyle="fancy", color="white", alpha=1)
 
-        ani = animation.FuncAnimation(fig, animate, interval=1000)  # Creating Animation
+        self.ani = animation.FuncAnimation(fig, animate, interval=1000)  # Creating Animation
+        ani = self.ani
 
         ##
         ## Customizing Matplotlib

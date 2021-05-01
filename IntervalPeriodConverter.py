@@ -104,8 +104,9 @@ class IntervalPeriodConverter:
         self.ordered['HBand'] = self.ordered['MA'] + (self.ordered['Std'] * 2)
         self.ordered['LBand'] = self.ordered['MA'] - (self.ordered['Std'] * 2)
         self.bollingerGaps['Date'] = self.ordered['Date']
-        self.bollingerGaps['Value'] = (self.ordered['Close'] - self.ordered['LBand']) / (self.ordered['HBand'] - self.ordered['LBand']) * 100
-
+        self.bollingerGaps['Value'] = round(
+            (self.ordered['Close'] - self.ordered['LBand']) / (self.ordered['HBand'] - self.ordered['LBand']) * 100
+        , 2)
     def convertForGraphicViews(self):
         data1, data2 = copy.deepcopy(self.ordered), copy.deepcopy(self.bollingerGaps)
         data1, data2 = data1.iloc[self.movingAverageSize:], data2.iloc[self.movingAverageSize:]

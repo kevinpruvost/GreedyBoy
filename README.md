@@ -17,7 +17,7 @@ Automated Trading Bot coded in Python, hosted on AWS Lambda.
 |mplcursors      |`pip install mplcursors`      |
 |pandas          |`pip install pandas`          |
 |sphinx          |`pip install sphinx`          |
-|sphinx theme    |`pip install insegel`|
+|sphinx theme    |https://bashtage.github.io/sphinx-material/#getting-started|
 |rinohtype       |`pip install rinohtype`|
 
 If you are exporting the project to your AWS Lambda repository, DO NOT FORGET to take the libraries folders with it.

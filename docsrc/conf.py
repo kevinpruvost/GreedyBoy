@@ -35,6 +35,9 @@ extensions = [
     'rinoh.frontend.sphinx'
 ]
 
+autosummary_generate = True
+autoclass_content = "class"
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
@@ -67,6 +70,10 @@ html_static_path = ['_static']
 html_logo = "_static/eye.png"
 html_favicon = "_static/eye.ico"
 
+html_show_sourcelink = True
+html_sidebars = {
+    "**": ["logo-text.html", "globaltoc.html", "localtoc.html", "searchbox.html"]
+}
 html_theme_options = {
     "base_url": "http://bashtage.github.io/sphinx-material/",
     "repo_url": "https://github.com/kevinpruvost/GreedyBoy/",

@@ -3,20 +3,51 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-===================
+=========
 GreedyBoy
-===================
+=========
+
+.. image:: _static/screenshot.png
+    :alt: GreedyBoy Screenshot
+
+GreedyBoy is an automated trading bot specialized in cryptocurrencies trading.
+
+Specifications
+--------------
+
+APIs
+++++
+For now, `Kraken <https://docs.kraken.com/websockets/>`_ is the only market API implemented.
+
+GreedyBoy can only perform orders and retrieve informations from this one.
+
+Cryptocurrencies
+++++++++++++++++
+GreedyBoy is virtually able to perform analysis on any cryptocurrency.
+
+But for now we are focused on these cryptocurrencies:
+
+==============  =========  =============
+Cryptocurrency  Full Name  CoinmarketCap
+==============  =========  =============
+BTC             Bitcoin     `BTC <https://coinmarketcap.com/fr/currencies/bitcoin/>`_
+ETH             Ethereum    `ETH <https://coinmarketcap.com/fr/currencies/ethereum/>`_
+XRP             Ripple      `XRP <https://coinmarketcap.com/fr/currencies/ripple/>`_
+DOGE            Dogecoin    `DOGE <https://coinmarketcap.com/fr/currencies/dogecoin/>`_
+==============  =========  =============
+
+Documentation
+-------------
 
 .. toctree::
    :maxdepth: 3
-   :caption: Contents:
+   :caption: Summary
 
    ./code.rst
 
-
+==================
 Indices and tables
 ==================
 
-#. :ref:`genindex`
-#. :ref:`modindex`
-#. :ref:`search`
+- :ref:`genindex`
+- :ref:`modindex`

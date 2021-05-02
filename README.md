@@ -37,7 +37,9 @@ Here's the list :
 ### [GreedyBoy Documentation](https://kevinpruvost.github.io/GreedyBoy/)
 
 <p align="center">
-  <img src="https://github.com/kevinpruvost/GreedyBoy/blob/main/docsrc/_static/doc_screenshot.png" href="https://kevinpruvost.github.io/GreedyBoy/"/><br/>
+  <a href="https://kevinpruvost.github.io/GreedyBoy/" target="_blank">
+    <img src="https://github.com/kevinpruvost/GreedyBoy/blob/main/docsrc/_static/doc_screenshot.png" href="https://kevinpruvost.github.io/GreedyBoy/"/><br/>
+  </a>
 </p>
 
 ### Libraries Documentation

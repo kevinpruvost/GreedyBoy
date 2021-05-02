@@ -3,7 +3,7 @@
 Description
 -----------
 The `GraphViewer` is a GUI which has the ability is to display in a simple way,
-different datas from GreedyBoy.
+different data from GreedyBoy.
 
 These informations will be displayed:
 

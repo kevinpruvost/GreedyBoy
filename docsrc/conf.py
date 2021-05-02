@@ -89,7 +89,11 @@ html_theme_options = {
     "theme_color": "#219600",
     "master_doc": False,
     "nav_links": [
-        {"href": "index", "internal": True, "title": "Material"},
+        {
+            "href": "index",
+            "internal": True,
+            "title": "Main Page"
+        },
         {
             "href": "https://github.com/kevinpruvost/GreedyBoy/",
             "internal": False,

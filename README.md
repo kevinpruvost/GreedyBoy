@@ -34,6 +34,16 @@ Here's the list :
 
 ## Documentation
 
+### [GreedyBoy Documentation](https://kevinpruvost.github.io/GreedyBoy/)
+
+<p align="center">
+  <a href="https://kevinpruvost.github.io/GreedyBoy/" target="_blank">
+    <img src="https://github.com/kevinpruvost/GreedyBoy/blob/main/docsrc/_static/doc_screenshot.png" href="https://kevinpruvost.github.io/GreedyBoy/"/><br/>
+  </a>
+</p>
+
+### Libraries Documentation
+
 |Software|Link                         |
 |--------|-----------------------------|
 |Plotly  |https://plotly.com/python/candlestick-charts/|

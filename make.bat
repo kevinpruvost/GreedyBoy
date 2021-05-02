@@ -25,7 +25,9 @@ if errorlevel 9009 (
 	exit /b 1
 )
 
+powershell -Command Remove-Item -Recurse -Force -Path '.\docs\*'
 %SPHINXBUILD% -M %1 %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
+powershell -Command Move-Item -Force -Path '.\docs\html\*' -Destination '.\docs\.'
 goto end
 
 :help

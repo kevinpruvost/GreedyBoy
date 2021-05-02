@@ -1,9 +1,10 @@
 #!/usr/bin/env python
+"""
 ## PerformanceTimer.py
-##
 ## Description:
 ## Measures the time the input function has to take to execute completely.
 ##
+"""
 
 __author__      = "Kevin Pruvost"
 __copyright__   = "Copyright 2021, GreedyBoy"

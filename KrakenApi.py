@@ -2,10 +2,11 @@
 ### Kraken Api class
 ###
 
-import websocket
+import Libs.websocket as websocket
+import Libs.urllib.request as req
 import _thread
 import csv
-import time, base64, hashlib, hmac, urllib.request, json
+import time, base64, hashlib, hmac, json
 
 def getApiKeys():
         with open("config.csv", newline="", encoding="utf-8") as f:
@@ -20,7 +21,7 @@ class KrakenApi:
 
     def getToken(self):
         api_nonce = bytes(str(int(time.time() * 1000)), "utf-8")
-        api_request = urllib.request.Request("https://api.kraken.com/0/private/GetWebSocketsToken",
+        api_request = req.Request("https://api.kraken.com/0/private/GetWebSocketsToken",
                                              b"nonce=%s" % api_nonce)
         api_request.add_header("API-Key", self.apiKey)
         api_request.add_header("API-Sign", base64.b64encode(hmac.new(
@@ -28,7 +29,7 @@ class KrakenApi:
             b"/0/private/GetWebSocketsToken" + hashlib.sha256(api_nonce + b"nonce=%s" % api_nonce).digest(),
             hashlib.sha512).digest()))
 
-        res = json.loads(urllib.request.urlopen(api_request).read())
+        res = json.loads(req.urlopen(api_request).read())
         try:
             return res['result']['token']
         except:

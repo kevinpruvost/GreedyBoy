@@ -1,11 +1,15 @@
-###
-### MAIN
-###
+#!/usr/env/python
+"""
+## lambda_function.py
+##
+## Description:
+##
+##
+"""
 
 import KrakenApi
 from KrakenBacktestGetter import KrakenBacktestGetter
 import csv, time, datetime, json
-import timeit
 
 def lambda_handler(event, context):
     main()

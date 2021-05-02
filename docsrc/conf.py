@@ -10,10 +10,9 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
-
+import os
+import sys
+sys.path.insert(0, os.path.abspath('../.'))
 
 # -- Project information -----------------------------------------------------
 
@@ -29,11 +28,23 @@ author = 'Kevin Pruvost'
 # ones.
 extensions = [
     'sphinx.ext.githubpages',
-    'sphinx.ext.autodoc',  # <== Notre nouvelle extension
+    'sphinx.ext.autodoc',
+    'sphinx.ext.viewcode',
+    'sphinx.ext.napoleon',
+    'rinoh.frontend.sphinx'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
+
+# The suffix(es) of source filenames.
+# You can specify multiple suffix as a list of string:
+#
+# source_suffix = ['.rst', '.md']
+source_suffix = '.rst'
+
+# The master toctree document.
+master_doc = 'index'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -46,19 +57,55 @@ exclude_patterns = []
 # a list of builtin themes.
 #
 import insegel
-html_theme = 'insegel'
-
-# sets the darker appearence
-html_theme_options = {
-    'style': 'darker'
-}
+html_theme = 'sphinx_material'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
-html_logo = "eye.png"
+html_logo = "_static/eye.png"
+html_favicon = "_static/eye.ico"
+
 html_theme_options = {
-    'logo_only': True,
-    'display_version': False,
+    "base_url": "http://bashtage.github.io/sphinx-material/",
+    "repo_url": "https://github.com/kevinpruvost/GreedyBoy/",
+    "repo_name": "GreedyBoy",
+    "html_minify": False,
+    "html_prettify": True,
+    "css_minify": True,
+    "repo_type": "github",
+    "globaltoc_depth": 2,
+    "color_primary": "yellow",
+    "color_accent": "amber",
+    "touch_icon": "eye.png",
+    "theme_color": "#219600",
+    "master_doc": False,
+    "nav_links": [
+        {"href": "index", "internal": True, "title": "Material"},
+        {
+            "href": "https://github.com/kevinpruvost/GreedyBoy/",
+            "internal": False,
+            "title": "Github",
+        },
+    ],
+    "heroes": {
+        "index": "A Trading Bot to get rid of all the stress of manual trading.",
+        "customization": "Configuration options to personalize your site.",
+    },
+    "version_dropdown": True,
+    "version_json": "_static/versions.json",
+    "version_info": {
+        "Release": "https://bashtage.github.io/sphinx-material/",
+        "Development": "https://bashtage.github.io/sphinx-material/devel/",
+        "Release (rel)": "/sphinx-material/",
+        "Development (rel)": "/sphinx-material/devel/",
+    },
+    "table_classes": ["plain"],
+}
+
+latex_elements = {
+    'papersize': 'letterpaper',
+    'pointsize': '10pt',
+    'preamble': '',
+    'figure_align': 'htbp'
 }

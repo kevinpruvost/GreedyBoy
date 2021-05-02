@@ -14,10 +14,11 @@ __maintainer__  = "Kevin Pruvost"
 __email__       = "pruvostkevin0@gmail.com"
 __status__      = "Test"
 
-import websocket
+import Libs.websocket as websocket
+import Libs.urllib as urllib
 import _thread
 import csv
-import time, base64, hashlib, hmac, urllib, json
+import time, base64, hashlib, hmac, json
 import tempfile
 from github import Github
 

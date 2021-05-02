@@ -1,12 +1,34 @@
 #!/usr/bin/env python
-## GraphViewer.py
-##
-## Description:
-## Graphical Interface which purpose is to show in a more comfortable way,
-## how different datas from GreedyBoy are going. Like the price chart, or the bot's actions.
-##
-## We will certainly use some candles representation, and width based bands.
-##
+"""
+Description
+-----------
+The `GraphViewer` is a GUI which has the ability is to display in a simple way,
+different datas from GreedyBoy.
+
+These informations will be displayed:
+
+- Plot 1
+
+    * Price over time (candlesticks)
+
+    * Bot's actions (points)
+
+    * Bollinger bands (lines)
+
+- Plot 2
+
+    * Bollinger bands width (lines and points)
+
+    * Volatility (lines)
+
+Video Demonstration
+-------------------
+.. raw:: html
+
+    <div style="text-align: center; margin-bottom: 2em;">
+    <iframe width="100%" height="500" src="https://www.youtube-nocookie.com/embed/GlOQnsVOa2o?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+"""
 
 __author__      = "Kevin Pruvost"
 __copyright__   = "Copyright 2021, GreedyBoy"

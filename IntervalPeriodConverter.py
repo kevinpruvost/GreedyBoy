@@ -1,14 +1,15 @@
 #!/usr/bin/env python
-## IntervalPeriodConverter.py
-##
-## Description:
-## Converts the data from the ["Date", "Price"] to wanted interval period prices.
-## The purpose is to make it easier and more practical to use.
-##
+"""
+Description
+-----------
+Converts the data from the ``["Date", "Price"]`` to wanted interval period prices.
+
+Watch for :ref:`the PriceData DataFrame<PriceData>` and :ref:`the BollingerData Dataframe<BollingerData>` for more details.
+"""
 
 __author__      = "Kevin Pruvost"
 __copyright__   = "Copyright 2021, GreedyBoy"
-__credits__     = ["Kevin Pruvost", "Hugo Matthieu-Steinbach"]
+__credits__     = ["Kevin Pruvost", "Hugo Mathieu-Steinbach"]
 __license__     = "Proprietary"
 __version__     = "1.0.0"
 __maintainer__  = "Kevin Pruvost"

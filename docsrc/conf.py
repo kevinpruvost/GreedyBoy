@@ -31,7 +31,7 @@ extensions = [
     'sphinx.ext.githubpages',
     'sphinx.ext.autodoc',
     'sphinx.ext.mathjax',
-    'sphinx.ext.viewcode',
+#    'sphinx.ext.viewcode',
     'sphinx.ext.napoleon',
     'rinoh.frontend.sphinx'
 ]
@@ -71,7 +71,8 @@ html_static_path = ['_static']
 html_logo = "_static/eye.png"
 html_favicon = "_static/eye.ico"
 
-html_show_sourcelink = True
+html_copy_source = False
+html_show_sourcelink = False
 html_sidebars = {
     "**": ["logo-text.html", "globaltoc.html", "localtoc.html", "searchbox.html"]
 }

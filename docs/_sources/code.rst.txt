@@ -10,7 +10,6 @@ Code Documentation
 *GraphViewer*
 -------------
 .. automodule:: GraphViewer
-   :imported-members:
    :members:
    :undoc-members:
    :private-members:
@@ -21,7 +20,6 @@ Code Documentation
 *KrakenBacktestGetter*
 ----------------------
 .. automodule:: KrakenBacktestGetter
-   :imported-members:
    :members:
    :undoc-members:
    :private-members:
@@ -29,7 +27,6 @@ Code Documentation
 *KrakenApi*
 -----------
 .. automodule:: KrakenApi
-   :imported-members:
    :members:
    :undoc-members:
    :private-members:
@@ -40,7 +37,6 @@ Code Documentation
 *IntervalPeriodConverter*
 -------------------------
 .. automodule:: IntervalPeriodConverter
-   :imported-members:
    :members:
    :undoc-members:
    :private-members:

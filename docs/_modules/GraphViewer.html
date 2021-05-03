@@ -309,9 +309,21 @@
 <span class="kn">import</span> <span class="nn">mplfinance</span>
 <span class="kn">import</span> <span class="nn">matplotlib.animation</span> <span class="k">as</span> <span class="nn">animation</span>
 <span class="kn">import</span> <span class="nn">mplcursors</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+
 
 <div class="viewcode-block" id="GraphViewer"><a class="viewcode-back" href="../code.html#GraphViewer.GraphViewer">[docs]</a><span class="k">class</span> <span class="nc">GraphViewer</span><span class="p">:</span>
-    <span class="sd">"""Draws in 2 plots, the **bollinger bands**, the **bollinger gaps** and the</span>
+    <span class="sd">"""</span>
+<span class="sd">    :param priceData: Dataframe containing detailed informations about prices.</span>
+<span class="sd">    :type priceData: DataFrame</span>
+<span class="sd">    :param bollingerData: Dataframe containing informations about bollinger gaps.</span>
+<span class="sd">    :type bollingerData: DataFrame</span>
+<span class="sd">    :param animateCallback: Callback called on the animation loop.</span>
+<span class="sd">    :type animateCallback: Function</span>
+<span class="sd">    :param fullscreen: De/Activates fullscreen mode for Matplotlib.</span>
+<span class="sd">    :type fullscreen: bool</span>
+
+<span class="sd">    Draws in 2 plots, the **bollinger bands**, the **bollinger gaps** and the</span>
 <span class="sd">    **price chart** of a given cryptocurrency.</span>
 
 <span class="sd">    ``priceData`` and ``bollingerData`` must be 2 ``DataFrame`` (``pandas``) in these formats:</span>
@@ -338,13 +350,7 @@
     <span class="n">ani</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="sd">"""Contains the animation callback."""</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">priceData</span><span class="p">,</span> <span class="n">bollingerData</span><span class="p">,</span> <span class="n">animateCallback</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fullscreen</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-        <span class="sd">"""Constructs the GraphViewer</span>
-<span class="sd">        :param priceData: Dataframe containing detailed informations about prices.</span>
-<span class="sd">        :param bollingerData: Dataframe containing informations about bollinger gaps.</span>
-<span class="sd">        :param animateCallback: Callback called on the animation loop.</span>
-<span class="sd">        :param fullscreen: De/Activates fullscreen mode for Matplotlib.</span>
-<span class="sd">        """</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">priceData</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">bollingerData</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">animateCallback</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fullscreen</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">mplfinance</span><span class="o">.</span><span class="n">make_mpf_style</span><span class="p">(</span><span class="n">base_mpf_style</span><span class="o">=</span><span class="s1">'mike'</span><span class="p">,</span> <span class="n">rc</span><span class="o">=</span><span class="p">{</span><span class="s1">'font.size'</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
         <span class="n">fig</span> <span class="o">=</span> <span class="n">mplfinance</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">style</span><span class="o">=</span><span class="n">s</span><span class="p">)</span>    <span class="c1"># Defining figure size</span>
         <span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>              <span class="c1"># Defining plot 1</span>

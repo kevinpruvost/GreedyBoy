@@ -43,9 +43,21 @@ import matplotlib.pyplot as plt
 import mplfinance
 import matplotlib.animation as animation
 import mplcursors
+import pandas
+
 
 class GraphViewer:
-    """Draws in 2 plots, the **bollinger bands**, the **bollinger gaps** and the
+    """
+    :param priceData: Dataframe containing detailed informations about prices.
+    :type priceData: DataFrame
+    :param bollingerData: Dataframe containing informations about bollinger gaps.
+    :type bollingerData: DataFrame
+    :param animateCallback: Callback called on the animation loop.
+    :type animateCallback: Function
+    :param fullscreen: De/Activates fullscreen mode for Matplotlib.
+    :type fullscreen: bool
+
+    Draws in 2 plots, the **bollinger bands**, the **bollinger gaps** and the
     **price chart** of a given cryptocurrency.
 
     ``priceData`` and ``bollingerData`` must be 2 ``DataFrame`` (``pandas``) in these formats:
@@ -72,13 +84,7 @@ class GraphViewer:
     ani = None
     """Contains the animation callback."""
 
-    def __init__(self, priceData, bollingerData, animateCallback = None, fullscreen: bool = True):
-        """Constructs the GraphViewer
-        :param priceData: Dataframe containing detailed informations about prices.
-        :param bollingerData: Dataframe containing informations about bollinger gaps.
-        :param animateCallback: Callback called on the animation loop.
-        :param fullscreen: De/Activates fullscreen mode for Matplotlib.
-        """
+    def __init__(self, priceData: pandas.DataFrame, bollingerData: pandas.DataFrame, animateCallback = None, fullscreen: bool = True):
         s = mplfinance.make_mpf_style(base_mpf_style='mike', rc={'font.size': 12})
         fig = mplfinance.figure(figsize=(15, 7), style=s)    # Defining figure size
         ax1 = fig.add_subplot(2, 1, 1)              # Defining plot 1

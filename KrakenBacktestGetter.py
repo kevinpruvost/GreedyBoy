@@ -1,13 +1,14 @@
 #!/usr/bin/env python
-## KrakenBacktestGetter.py
-##
-## Description:
-## Gather prices data of some cryptocurrencies for testing purposes.
-##
+"""
+Description
+-----------
+
+Gather prices data of some cryptocurrencies for testing purposes.
+"""
 
 __author__      = "Kevin Pruvost"
 __copyright__   = "Copyright 2021, GreedyBoy"
-__credits__     = ["Kevin Pruvost", "Hugo Matthieu-Steinbach"]
+__credits__     = ["Kevin Pruvost", "Hugo Mathieu-Steinbach"]
 __license__     = "Proprietary"
 __version__     = "1.0.0"
 __maintainer__  = "Kevin Pruvost"
@@ -23,13 +24,18 @@ import tempfile
 from github import Github
 
 currencyInitials = ["XDG", "XBT", "ETH", "XRP"]
+"""Contains currency codes of the cryptocurrencies to get the prices from."""
 
 class KrakenBacktestGetter:
-    ##
-    ## AUTHENTIFICATION
-    ##
+    """Retrieves informations from the Kraken API and stores it into the Github repository.
+    The informations are stored in Github to avoid paying AWS for a storage solution.
+    """
 
     def getToken(self):
+        """Gets the token from Kraken.
+
+        Check for :ref:`configuration <configuration>` to see how it works.
+        """
         api_nonce = bytes(str(int(time.time() * 1000)), "utf-8")
         api_request = urllib.request.Request("https://api.kraken.com/0/private/GetWebSocketsToken",
                                              b"nonce=%s" % api_nonce)
@@ -50,7 +56,7 @@ class KrakenBacktestGetter:
     ## REQUESTS
     ##
 
-    def ws_thread(self, *args):
+    def __ws_thread(self, *args):
         self.dataFiles = dict()
         self.dataWriters = dict()
         for i in range(len(currencyInitials)):
@@ -96,6 +102,7 @@ class KrakenBacktestGetter:
     ##
 
     def close(self):
+        """Stops the BacktestGetter and writes what's into buffers to Github."""
         timer = time.perf_counter()
 
         for i, initial in enumerate(currencyInitials):
@@ -141,6 +148,18 @@ class KrakenBacktestGetter:
     ##
 
     def __init__(self, apiKey, apiPrivateKey, githubToken, repoName, dataBranchName):
+        """
+        :param apiKey: Kraken API key
+        :type apiKey: str
+        :param apiPrivateKey: Kraken private API key
+        :type apiPrivateKey: str
+        :param githubToken: Github token
+        :type githubToken: str
+        :param repoName: Github repo name
+        :type repoName: str
+        :param dataBranchName: Github branch name
+        :type dataBranchName: str
+        """
         self.dataPaths = [tempfile.gettempdir() + "/data" + initial + ".csv" for initial in currencyInitials]
         self.githubDataFilename = time.strftime('%d-%m-%Y', time.localtime(time.time())) + ".csv"
         self.githubDataPaths = ["./price_history/" + initial + "/" + self.githubDataFilename for initial in currencyInitials]
@@ -157,4 +176,4 @@ class KrakenBacktestGetter:
         self.greedyBoyRepo = g.get_repo(repoName)
 
         # Start a new thread for the WebSocket interface
-        _thread.start_new_thread(self.ws_thread, ())
+        _thread.start_new_thread(self.__ws_thread, ())

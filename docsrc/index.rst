@@ -53,12 +53,20 @@ If you don't want to follow the text tutorial here's, first, the video tutorial.
 `Kraken <www.kraken.com>`_
 ++++++++++++++++++++++++++
 
+Installation
+------------
+
+.. toctree::
+   :maxdepth: 2
+
+   ./installation.rst
+   ./configuration.rst
+
 Documentation
 -------------
 
 .. toctree::
-   :maxdepth: 3
-   :caption: Summary
+   :maxdepth: 2
 
    ./code.rst
    ./glossary.rst

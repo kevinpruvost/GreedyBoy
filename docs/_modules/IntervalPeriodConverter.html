@@ -209,11 +209,14 @@
          </div>
          <ul class="md-nav__list">
           <li class="md-nav__item">
-           <span class="md-nav__link caption">
-            <span class="caption-text">
-             Summary
-            </span>
-           </span>
+           <a class="md-nav__link" href="../installation.html">
+            Installation
+           </a>
+          </li>
+          <li class="md-nav__item">
+           <a class="md-nav__link" href="../configuration.html">
+            Configuration
+           </a>
           </li>
           <li class="md-nav__item">
            <a class="md-nav__link" href="../code.html">
@@ -276,16 +279,40 @@
 <div class="viewcode-block" id="IntervalPeriodConverter"><a class="viewcode-back" href="../code.html#IntervalPeriodConverter.IntervalPeriodConverter">[docs]</a><span class="k">class</span> <span class="nc">IntervalPeriodConverter</span><span class="p">:</span>
 <div class="viewcode-block" id="IntervalPeriodConverter.fromFilename"><a class="viewcode-back" href="../code.html#IntervalPeriodConverter.IntervalPeriodConverter.fromFilename">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">fromFilename</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fileName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span> <span class="n">movingAverageSize</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">):</span>
+        <span class="sd">"""Constructor starting from a filename.</span>
+
+<span class="sd">        :param fileName: Name of the file containing the data.</span>
+<span class="sd">        :type fileName: str</span>
+<span class="sd">        :param interval: Time gap between each price (in min).</span>
+<span class="sd">        :type interval: int</span>
+<span class="sd">        :param movingAverageSize: Number of data taken into account to calculate a moving average.</span>
+<span class="sd">        :type movingAverageSize: int</span>
+<span class="sd">        """</span>
         <span class="n">csvData</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">csvData</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">movingAverageSize</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="IntervalPeriodConverter.fromDataframe"><a class="viewcode-back" href="../code.html#IntervalPeriodConverter.IntervalPeriodConverter.fromDataframe">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">fromDataframe</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">gen</span><span class="o">.</span><span class="n">NDFrame</span><span class="p">,</span> <span class="n">interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span> <span class="n">movingAverageSize</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">):</span>
+        <span class="sd">"""Constructor starting from a filename.</span>
+
+<span class="sd">        :param data: Structure containing prices and dates.</span>
+<span class="sd">        :type data: gen.NDFrame</span>
+<span class="sd">        :param interval: Time gap between each price (in min).</span>
+<span class="sd">        :type interval: int</span>
+<span class="sd">        :param movingAverageSize: Number of data taken into account to calculate a moving average.</span>
+<span class="sd">        :type movingAverageSize: int</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">movingAverageSize</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">gen</span><span class="o">.</span><span class="n">NDFrame</span><span class="p">,</span> <span class="n">interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span> <span class="n">movingAverageSize</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">):</span>
         <span class="sd">"""Constructs IntervalPeriodConverter with the given data formatted like a csv [epochTime, price].</span>
-<span class="sd">        :param interval: Interval in minutes.</span>
+
+<span class="sd">        :param data: Structure containing prices and dates.</span>
+<span class="sd">        :type data: gen.NDFrame</span>
+<span class="sd">        :param interval: Time gap between each price (in min).</span>
+<span class="sd">        :type interval: int</span>
+<span class="sd">        :param movingAverageSize: Number of data taken into account to calculate a moving average.</span>
+<span class="sd">        :type movingAverageSize: int</span>
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">interval</span> <span class="o">=</span> <span class="n">interval</span>
@@ -321,7 +348,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">__append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epochTime</span><span class="p">,</span> <span class="n">price</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epochTime</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">price</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">newRound</span><span class="p">[</span><span class="s1">'Date'</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">epochTime</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">newRound</span><span class="p">[</span><span class="s1">'Date'</span><span class="p">]</span> <span class="o">+</span> <span class="mi">60</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">interval</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ordered</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">ordered</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ordered</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'Date'</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">newRound</span><span class="p">[</span><span class="s1">'Date'</span><span class="p">]:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">ordered</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ordered</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">newRound</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -335,15 +362,19 @@
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">newRound</span><span class="p">[</span><span class="s1">'High'</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">price</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">newRound</span><span class="p">[</span><span class="s1">'High'</span><span class="p">]</span> <span class="o">=</span> <span class="n">price</span>
 
-<div class="viewcode-block" id="IntervalPeriodConverter.append"><a class="viewcode-back" href="../code.html#IntervalPeriodConverter.IntervalPeriodConverter.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epochTime</span><span class="p">,</span> <span class="n">price</span><span class="p">):</span>
+<div class="viewcode-block" id="IntervalPeriodConverter.append"><a class="viewcode-back" href="../code.html#IntervalPeriodConverter.IntervalPeriodConverter.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epochTime</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">price</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="sd">"""Appends new (epochTime, price) into the Dataframes.</span>
+
 <span class="sd">        :param epochTime: timestamp of the price</span>
-<span class="sd">        :param price: price (float)</span>
+<span class="sd">        :type epochTime: float</span>
+<span class="sd">        :param price: price</span>
+<span class="sd">        :type price: float</span>
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__append</span><span class="p">(</span><span class="n">epochTime</span><span class="p">,</span> <span class="n">price</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="IntervalPeriodConverter.update"><a class="viewcode-back" href="../code.html#IntervalPeriodConverter.IntervalPeriodConverter.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Updates the IntervalPeriodConverter and computes bollinger bands, moving averages, ..."""</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ordered</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ordered</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'Date'</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">newRound</span><span class="p">[</span><span class="s1">'Date'</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ordered</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ordered</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">newRound</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -360,6 +391,11 @@
             <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ordered</span><span class="p">[</span><span class="s1">'Close'</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ordered</span><span class="p">[</span><span class="s1">'LBand'</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ordered</span><span class="p">[</span><span class="s1">'HBand'</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ordered</span><span class="p">[</span><span class="s1">'LBand'</span><span class="p">])</span> <span class="o">*</span> <span class="mi">100</span>
         <span class="p">,</span> <span class="mi">2</span><span class="p">)</span></div>
 <div class="viewcode-block" id="IntervalPeriodConverter.convertForGraphicViews"><a class="viewcode-back" href="../code.html#IntervalPeriodConverter.IntervalPeriodConverter.convertForGraphicViews">[docs]</a>    <span class="k">def</span> <span class="nf">convertForGraphicViews</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Convert data and format it for :ref:`GraphViewer&lt;GraphViewer&gt;`.</span>
+
+<span class="sd">        :returns: (DataFrame containing data for Plot 1, Same for Plot 2)</span>
+<span class="sd">        :rtype: (pandas.DataFrame, pandas.DataFrame)</span>
+<span class="sd">        """</span>
         <span class="n">data1</span><span class="p">,</span> <span class="n">data2</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ordered</span><span class="p">),</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bollingerGaps</span><span class="p">)</span>
         <span class="n">data1</span><span class="p">,</span> <span class="n">data2</span> <span class="o">=</span> <span class="n">data1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">movingAverageSize</span><span class="p">:],</span> <span class="n">data2</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">movingAverageSize</span><span class="p">:]</span>
         <span class="n">data1</span><span class="p">[</span><span class="s2">"Date"</span><span class="p">],</span> <span class="n">data2</span><span class="p">[</span><span class="s2">"Date"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">data1</span><span class="p">[</span><span class="s2">"Date"</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="s1">'s'</span><span class="p">),</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">data2</span><span class="p">[</span><span class="s2">"Date"</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="s1">'s'</span><span class="p">)</span>

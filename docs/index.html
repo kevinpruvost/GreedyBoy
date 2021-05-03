@@ -52,7 +52,7 @@
   <link href="_static/eye.ico" rel="shortcut icon"/>
   <link href="genindex.html" rel="index" title="Index"/>
   <link href="search.html" rel="search" title="Search"/>
-  <link href="code.html" rel="next" title="Code Documentation"/>
+  <link href="installation.html" rel="next" title="Installation"/>
   <link href="_static/eye.png" rel="apple-touch-icon"/>
  </head>
  <body data-md-color-accent="amber" data-md-color-primary="yellow" dir="ltr">
@@ -212,11 +212,14 @@
          </div>
          <ul class="md-nav__list">
           <li class="md-nav__item">
-           <span class="md-nav__link caption">
-            <span class="caption-text">
-             Summary
-            </span>
-           </span>
+           <a class="md-nav__link" href="installation.html">
+            Installation
+           </a>
+          </li>
+          <li class="md-nav__item">
+           <a class="md-nav__link" href="configuration.html">
+            Configuration
+           </a>
           </li>
           <li class="md-nav__item">
            <a class="md-nav__link" href="code.html">
@@ -284,6 +287,11 @@
                 </li>
                </ul>
               </nav>
+             </li>
+             <li class="md-nav__item">
+              <a class="md-nav__link" href="#installation">
+               Installation
+              </a>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#documentation">
@@ -489,6 +497,33 @@
          ¶
         </a>
        </h3>
+       <h2 id="installation">
+        Installation
+        <a class="headerlink" href="#installation" title="Permalink to this headline">
+         ¶
+        </a>
+       </h2>
+       <div class="toctree-wrapper compound">
+        <ul>
+         <li class="toctree-l1">
+          <a class="reference internal" href="installation.html">
+           Installation
+          </a>
+          <ul>
+           <li class="toctree-l2">
+            <a class="reference internal" href="installation.html#softwares-libraries">
+             Softwares/Libraries
+            </a>
+           </li>
+          </ul>
+         </li>
+         <li class="toctree-l1">
+          <a class="reference internal" href="configuration.html">
+           Configuration
+          </a>
+         </li>
+        </ul>
+       </div>
        <h2 id="documentation">
         Documentation
         <a class="headerlink" href="#documentation" title="Permalink to this headline">
@@ -496,11 +531,6 @@
         </a>
        </h2>
        <div class="toctree-wrapper compound">
-        <p class="caption">
-         <span class="caption-text">
-          Summary
-         </span>
-        </p>
         <ul>
          <li class="toctree-l1">
           <a class="reference internal" href="code.html">
@@ -508,66 +538,39 @@
           </a>
           <ul>
            <li class="toctree-l2">
-            <a class="reference internal" href="code.html#gui">
-             <strong>
-              GUI
-             </strong>
+            <a class="reference internal" href="code.html#graphviewer">
+             <em>
+              GraphViewer
+             </em>
             </a>
-            <ul>
-             <li class="toctree-l3">
-              <a class="reference internal" href="code.html#module-GraphViewer">
-               <em>
-                GraphViewer
-               </em>
-              </a>
-             </li>
-            </ul>
            </li>
            <li class="toctree-l2">
-            <a class="reference internal" href="code.html#backtesting-api-interactions">
-             <strong>
-              Backtesting / API interactions
-             </strong>
+            <a class="reference internal" href="code.html#module-KrakenBacktestGetter">
+             <em>
+              KrakenBacktestGetter
+             </em>
             </a>
-            <ul>
-             <li class="toctree-l3">
-              <a class="reference internal" href="code.html#module-KrakenBacktestGetter">
-               <em>
-                KrakenBacktestGetter
-               </em>
-              </a>
-             </li>
-             <li class="toctree-l3">
-              <a class="reference internal" href="code.html#module-KrakenApi">
-               <em>
-                KrakenApi
-               </em>
-              </a>
-             </li>
-            </ul>
            </li>
            <li class="toctree-l2">
-            <a class="reference internal" href="code.html#trading-algorithm">
-             <strong>
-              Trading Algorithm
-             </strong>
+            <a class="reference internal" href="code.html#module-KrakenApi">
+             <em>
+              KrakenApi
+             </em>
             </a>
-            <ul>
-             <li class="toctree-l3">
-              <a class="reference internal" href="code.html#module-IntervalPeriodConverter">
-               <em>
-                IntervalPeriodConverter
-               </em>
-              </a>
-             </li>
-             <li class="toctree-l3">
-              <a class="reference internal" href="code.html#module-GreedyBoy">
-               <em>
-                GreedyBoy
-               </em>
-              </a>
-             </li>
-            </ul>
+           </li>
+           <li class="toctree-l2">
+            <a class="reference internal" href="code.html#module-IntervalPeriodConverter">
+             <em>
+              IntervalPeriodConverter
+             </em>
+            </a>
+           </li>
+           <li class="toctree-l2">
+            <a class="reference internal" href="code.html#module-GreedyBoy">
+             <em>
+              GreedyBoy
+             </em>
+            </a>
            </li>
           </ul>
          </li>
@@ -580,50 +583,11 @@
             <a class="reference internal" href="glossary.html#dataframes-keywords">
              Dataframes keywords
             </a>
-            <ul>
-             <li class="toctree-l3">
-              <a class="reference internal" href="glossary.html#ma">
-               MA
-              </a>
-             </li>
-             <li class="toctree-l3">
-              <a class="reference internal" href="glossary.html#std">
-               Std
-              </a>
-             </li>
-             <li class="toctree-l3">
-              <a class="reference internal" href="glossary.html#hband">
-               HBand
-              </a>
-             </li>
-             <li class="toctree-l3">
-              <a class="reference internal" href="glossary.html#lband">
-               LBand
-              </a>
-             </li>
-            </ul>
            </li>
            <li class="toctree-l2">
             <a class="reference internal" href="glossary.html#technical-notions">
              Technical notions
             </a>
-            <ul>
-             <li class="toctree-l3">
-              <a class="reference internal" href="glossary.html#bollinger-bands">
-               Bollinger Bands
-              </a>
-             </li>
-             <li class="toctree-l3">
-              <a class="reference internal" href="glossary.html#day-trading">
-               Day Trading
-              </a>
-             </li>
-             <li class="toctree-l3">
-              <a class="reference internal" href="glossary.html#backtesting">
-               Backtesting
-              </a>
-             </li>
-            </ul>
            </li>
           </ul>
          </li>
@@ -663,13 +627,13 @@
   <footer class="md-footer">
    <div class="md-footer-nav">
     <nav class="md-footer-nav__inner md-grid">
-     <a class="md-flex md-footer-nav__link md-footer-nav__link--next" href="code.html" rel="next" title="Code Documentation">
+     <a class="md-flex md-footer-nav__link md-footer-nav__link--next" href="installation.html" rel="next" title="Installation">
       <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
        <span class="md-flex__ellipsis">
         <span class="md-footer-nav__direction">
          Next
         </span>
-        Code Documentation
+        Installation
        </span>
       </div>
       <div class="md-flex__cell md-flex__cell--shrink">

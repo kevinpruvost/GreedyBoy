@@ -25,16 +25,40 @@ from PerformanceTimer import time_function
 class IntervalPeriodConverter:
     @classmethod
     def fromFilename(cls, fileName: str, interval: int = 15, movingAverageSize: int = 20):
+        """Constructor starting from a filename.
+
+        :param fileName: Name of the file containing the data.
+        :type fileName: str
+        :param interval: Time gap between each price (in min).
+        :type interval: int
+        :param movingAverageSize: Number of data taken into account to calculate a moving average.
+        :type movingAverageSize: int
+        """
         csvData = pd.read_csv(fileName, parse_dates=True)
         return cls(csvData, interval, movingAverageSize)
 
     @classmethod
     def fromDataframe(cls, data: gen.NDFrame, interval: int = 15, movingAverageSize: int = 20):
+        """Constructor starting from a filename.
+
+        :param data: Structure containing prices and dates.
+        :type data: gen.NDFrame
+        :param interval: Time gap between each price (in min).
+        :type interval: int
+        :param movingAverageSize: Number of data taken into account to calculate a moving average.
+        :type movingAverageSize: int
+        """
         return cls(data, interval, movingAverageSize)
 
     def __init__(self, data: gen.NDFrame, interval: int = 15, movingAverageSize: int = 20):
         """Constructs IntervalPeriodConverter with the given data formatted like a csv [epochTime, price].
-        :param interval: Interval in minutes.
+
+        :param data: Structure containing prices and dates.
+        :type data: gen.NDFrame
+        :param interval: Time gap between each price (in min).
+        :type interval: int
+        :param movingAverageSize: Number of data taken into account to calculate a moving average.
+        :type movingAverageSize: int
         """
         self.data = data
         self.interval = interval
@@ -70,7 +94,7 @@ class IntervalPeriodConverter:
         self.update()
         self.data = pd.DataFrame()
 
-    def __append(self, epochTime, price):
+    def __append(self, epochTime: float, price: float):
         if self.newRound['Date'] != 0 and epochTime >= self.newRound['Date'] + 60 * self.interval:
             if len(self.ordered) == 0 or self.ordered.at[len(self.ordered) - 1, 'Date'] != self.newRound['Date']:
                 self.ordered = self.ordered.append(self.newRound, ignore_index=True)
@@ -84,15 +108,19 @@ class IntervalPeriodConverter:
         elif self.newRound['High'] < price:
             self.newRound['High'] = price
 
-    def append(self, epochTime, price):
+    def append(self, epochTime: float, price: float):
         """Appends new (epochTime, price) into the Dataframes.
+
         :param epochTime: timestamp of the price
-        :param price: price (float)
+        :type epochTime: float
+        :param price: price
+        :type price: float
         """
         self.__append(epochTime, price)
         self.update()
 
     def update(self):
+        """Updates the IntervalPeriodConverter and computes bollinger bands, moving averages, ..."""
         if self.ordered.at[len(self.ordered) - 1, 'Date'] != self.newRound['Date']:
             self.ordered = self.ordered.append(self.newRound, ignore_index=True)
         else:
@@ -109,6 +137,11 @@ class IntervalPeriodConverter:
             (self.ordered['Close'] - self.ordered['LBand']) / (self.ordered['HBand'] - self.ordered['LBand']) * 100
         , 2)
     def convertForGraphicViews(self):
+        """Convert data and format it for :ref:`GraphViewer<GraphViewer>`.
+
+        :returns: (DataFrame containing data for Plot 1, Same for Plot 2)
+        :rtype: (pandas.DataFrame, pandas.DataFrame)
+        """
         data1, data2 = copy.deepcopy(self.ordered), copy.deepcopy(self.bollingerGaps)
         data1, data2 = data1.iloc[self.movingAverageSize:], data2.iloc[self.movingAverageSize:]
         data1["Date"], data2["Date"] = pd.to_datetime(data1["Date"], unit='s'), pd.to_datetime(data2["Date"], unit='s')

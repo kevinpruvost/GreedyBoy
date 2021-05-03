@@ -45,9 +45,10 @@ import matplotlib.animation as animation
 import mplcursors
 
 class GraphViewer:
-    """Draws in 2 plots, the bollinger bands, the bollinger gaps and the price chart of a given cryptocurrency.
+    """Draws in 2 plots, the **bollinger bands**, the **bollinger gaps** and the
+    **price chart** of a given cryptocurrency.
 
-    The data must be given in DataFrames (pandas) in this format:
+    ``priceData`` and ``bollingerData`` must be 2 ``DataFrame`` (``pandas``) in these formats:
 
     **Price Data**
 
@@ -69,12 +70,12 @@ class GraphViewer:
     """
 
     ani = None
-    """"""
+    """Contains the animation callback."""
 
-    def __init__(self, priceDatas, bollingerDatas, animateCallback = None, fullscreen: bool = True):
+    def __init__(self, priceData, bollingerData, animateCallback = None, fullscreen: bool = True):
         """Constructs the GraphViewer
-        :param priceDatas: Dataframe containing detailed informations about prices.
-        :param bollingerDatas: Dataframe containing informations about bollinger gaps.
+        :param priceData: Dataframe containing detailed informations about prices.
+        :param bollingerData: Dataframe containing informations about bollinger gaps.
         :param animateCallback: Callback called on the animation loop.
         :param fullscreen: De/Activates fullscreen mode for Matplotlib.
         """
@@ -83,7 +84,7 @@ class GraphViewer:
         ax1 = fig.add_subplot(2, 1, 1)              # Defining plot 1
         ax2 = fig.add_subplot(2, 1, 2)              # Defining plot 2
 
-        idf, df = priceDatas, bollingerDatas
+        idf, df = priceData, bollingerData
         bollinger_bands = idf[['HBand', 'LBand']]
 
         def animate(ival):
@@ -141,4 +142,10 @@ class GraphViewer:
         plt.subplots_adjust(left=0.04, bottom=0.067, right=0.93, top=0.955)
 
     def start(self):
+        """Starts the graph.
+
+        .. important::
+
+           It is a blocking function (like an app.exec() in Qt).
+        """
         plt.show()

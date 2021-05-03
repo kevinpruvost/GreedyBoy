@@ -64,10 +64,11 @@
   </script>
   <script src="_static/js/micromodal.min.js">
   </script>
+  <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
   <link href="_static/eye.ico" rel="shortcut icon"/>
   <link href="genindex.html" rel="index" title="Index"/>
   <link href="search.html" rel="search" title="Search"/>
-  <link href="MA.html" rel="next" title="MA"/>
   <link href="code.html" rel="prev" title="Code Documentation"/>
   <link href="_static/eye.png" rel="apple-touch-icon"/>
  </head>
@@ -241,7 +242,39 @@
             Glossary
            </a>
            <nav class="md-nav md-nav--secondary">
+            <label class="md-nav__title" for="__toc">
+             Contents
+            </label>
             <ul class="md-nav__list" data-md-scrollfix="">
+             <li class="md-nav__item">
+              <a class="md-nav__link" href="#glossary--page-root">
+               Glossary
+              </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#ma">
+                  MA
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#std">
+                  Std
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#hband">
+                  HBand
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#lband">
+                  LBand
+                 </a>
+                </li>
+               </ul>
+              </nav>
+             </li>
              <li class="md-nav__item">
               <a class="md-nav__extra_link" href="_sources/glossary.rst.txt">
                Show Source
@@ -251,22 +284,22 @@
            </nav>
            <ul class="md-nav__list">
             <li class="md-nav__item">
-             <a class="md-nav__link" href="MA.html">
+             <a class="md-nav__link" href="#ma">
               MA
              </a>
             </li>
             <li class="md-nav__item">
-             <a class="md-nav__link" href="Std.html">
+             <a class="md-nav__link" href="#std">
               Std
              </a>
             </li>
             <li class="md-nav__item">
-             <a class="md-nav__link" href="HBand.html">
+             <a class="md-nav__link" href="#hband">
               HBand
              </a>
             </li>
             <li class="md-nav__item">
-             <a class="md-nav__link" href="LBand.html">
+             <a class="md-nav__link" href="#lband">
               LBand
              </a>
             </li>
@@ -281,7 +314,39 @@
       <div class="md-sidebar__scrollwrap">
        <div class="md-sidebar__inner">
         <nav class="md-nav md-nav--secondary">
+         <label class="md-nav__title" for="__toc">
+          Contents
+         </label>
          <ul class="md-nav__list" data-md-scrollfix="">
+          <li class="md-nav__item">
+           <a class="md-nav__link" href="#glossary--page-root">
+            Glossary
+           </a>
+           <nav class="md-nav">
+            <ul class="md-nav__list">
+             <li class="md-nav__item">
+              <a class="md-nav__link" href="#ma">
+               MA
+              </a>
+             </li>
+             <li class="md-nav__item">
+              <a class="md-nav__link" href="#std">
+               Std
+              </a>
+             </li>
+             <li class="md-nav__item">
+              <a class="md-nav__link" href="#hband">
+               HBand
+              </a>
+             </li>
+             <li class="md-nav__item">
+              <a class="md-nav__link" href="#lband">
+               LBand
+              </a>
+             </li>
+            </ul>
+           </nav>
+          </li>
           <li class="md-nav__item">
            <a class="md-nav__extra_link" href="_sources/glossary.rst.txt">
             Show Source
@@ -303,34 +368,159 @@
         </a>
        </h1>
        <div class="toctree-wrapper compound">
-        <p class="caption">
-         <span class="caption-text">
-          Contents:
-         </span>
-        </p>
-        <ul>
-         <li class="toctree-l1">
-          <a class="reference internal" href="MA.html">
-           MA
-          </a>
-         </li>
-         <li class="toctree-l1">
-          <a class="reference internal" href="Std.html">
-           Std
-          </a>
-         </li>
-         <li class="toctree-l1">
-          <a class="reference internal" href="HBand.html">
-           HBand
-          </a>
-         </li>
-         <li class="toctree-l1">
-          <a class="reference internal" href="LBand.html">
-           LBand
-          </a>
-         </li>
-        </ul>
        </div>
+       <span id="id1">
+       </span>
+       <h2 id="ma">
+        MA
+        <a class="headerlink" href="#ma" title="Permalink to this headline">
+         ¶
+        </a>
+       </h2>
+       <p>
+        <strong>
+         Description
+        </strong>
+        : MA (Moving Average) represents the average value on a given length (20-30 elements for GreedyBoy).
+       </p>
+       <p>
+        It means that if we’re checking prices every 15min, we’ll need 20*15min of price values to determine the first
+moving average.
+       </p>
+       <p>
+        <strong>
+         Moving average formula
+        </strong>
+        :
+        <span class="math notranslate nohighlight">
+         \(MA = \frac{Sum\ of\ elements}{Number\ of\ elements}\)
+        </span>
+       </p>
+       <p>
+        <strong>
+         Type
+        </strong>
+        :
+        <code class="docutils literal notranslate">
+         <span class="pre">
+          float
+         </span>
+        </code>
+       </p>
+       <span id="id2">
+       </span>
+       <h2 id="std">
+        Std
+        <a class="headerlink" href="#std" title="Permalink to this headline">
+         ¶
+        </a>
+       </h2>
+       <p>
+        <strong>
+         Description
+        </strong>
+        : Std (Standard Deviation) represents the standard deviation on a given length (20-30 elements for GreedyBoy).
+       </p>
+       <p>
+        It means that if we’re checking prices every 15min, we’ll need 20*15min of price values to determine the first
+standard deviation.
+       </p>
+       <p>
+        <strong>
+         Standard Deviation formula
+        </strong>
+        :
+        <span class="math notranslate nohighlight">
+         \(Std = \sqrt{\frac{Sum\ of\ squared\ deviation\ from\ MA\ of\ every\ elements}{Number\ of\ elements}}\)
+        </span>
+       </p>
+       <p>
+        <strong>
+         Type
+        </strong>
+        :
+        <code class="docutils literal notranslate">
+         <span class="pre">
+          float
+         </span>
+        </code>
+       </p>
+       <span id="id3">
+       </span>
+       <h2 id="hband">
+        HBand
+        <a class="headerlink" href="#hband" title="Permalink to this headline">
+         ¶
+        </a>
+       </h2>
+       <p>
+        <strong>
+         Description
+        </strong>
+        : HBand (Higher Band) represents the higher bollinger band.
+       </p>
+       <p>
+        It means that if the Close price is going over this band, then the price is rising
+at an abnormal rate.
+       </p>
+       <p>
+        <strong>
+         Higher Band formula
+        </strong>
+        :
+        <span class="math notranslate nohighlight">
+         \(HBand = MA + Std * 2\)
+        </span>
+       </p>
+       <p>
+        <strong>
+         Type
+        </strong>
+        :
+        <code class="docutils literal notranslate">
+         <span class="pre">
+          float
+         </span>
+        </code>
+       </p>
+       <span id="id4">
+       </span>
+       <h2 id="lband">
+        LBand
+        <a class="headerlink" href="#lband" title="Permalink to this headline">
+         ¶
+        </a>
+       </h2>
+       <p>
+        <strong>
+         Description
+        </strong>
+        : LBand (Lower Band) represents the lower bollinger band.
+       </p>
+       <p>
+        It means that if the Close price is going under this band, then the price is dipping
+at an abnormal rate.
+       </p>
+       <p>
+        <strong>
+         Lower Band formula
+        </strong>
+        :
+        <span class="math notranslate nohighlight">
+         \(LBand = MA - Std * 2\)
+        </span>
+       </p>
+       <p>
+        <strong>
+         Type
+        </strong>
+        :
+        <code class="docutils literal notranslate">
+         <span class="pre">
+          float
+         </span>
+        </code>
+       </p>
       </article>
      </div>
     </div>
@@ -351,20 +541,6 @@
         </span>
         Code Documentation
        </span>
-      </div>
-     </a>
-     <a class="md-flex md-footer-nav__link md-footer-nav__link--next" href="MA.html" rel="next" title="MA">
-      <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
-       <span class="md-flex__ellipsis">
-        <span class="md-footer-nav__direction">
-         Next
-        </span>
-        MA
-       </span>
-      </div>
-      <div class="md-flex__cell md-flex__cell--shrink">
-       <i class="md-icon md-icon--arrow-forward md-footer-nav__button">
-       </i>
       </div>
      </a>
     </nav>

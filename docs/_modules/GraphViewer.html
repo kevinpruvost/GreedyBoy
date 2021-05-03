@@ -311,9 +311,10 @@
 <span class="kn">import</span> <span class="nn">mplcursors</span>
 
 <div class="viewcode-block" id="GraphViewer"><a class="viewcode-back" href="../code.html#GraphViewer.GraphViewer">[docs]</a><span class="k">class</span> <span class="nc">GraphViewer</span><span class="p">:</span>
-    <span class="sd">"""Draws in 2 plots, the bollinger bands, the bollinger gaps and the price chart of a given cryptocurrency.</span>
+    <span class="sd">"""Draws in 2 plots, the **bollinger bands**, the **bollinger gaps** and the</span>
+<span class="sd">    **price chart** of a given cryptocurrency.</span>
 
-<span class="sd">    The data must be given in DataFrames (pandas) in this format:</span>
+<span class="sd">    ``priceData`` and ``bollingerData`` must be 2 ``DataFrame`` (``pandas``) in these formats:</span>
 
 <span class="sd">    **Price Data**</span>
 
@@ -335,12 +336,12 @@
 <span class="sd">    """</span>
 
     <span class="n">ani</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="sd">""""""</span>
+    <span class="sd">"""Contains the animation callback."""</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">priceDatas</span><span class="p">,</span> <span class="n">bollingerDatas</span><span class="p">,</span> <span class="n">animateCallback</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fullscreen</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">priceData</span><span class="p">,</span> <span class="n">bollingerData</span><span class="p">,</span> <span class="n">animateCallback</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fullscreen</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="sd">"""Constructs the GraphViewer</span>
-<span class="sd">        :param priceDatas: Dataframe containing detailed informations about prices.</span>
-<span class="sd">        :param bollingerDatas: Dataframe containing informations about bollinger gaps.</span>
+<span class="sd">        :param priceData: Dataframe containing detailed informations about prices.</span>
+<span class="sd">        :param bollingerData: Dataframe containing informations about bollinger gaps.</span>
 <span class="sd">        :param animateCallback: Callback called on the animation loop.</span>
 <span class="sd">        :param fullscreen: De/Activates fullscreen mode for Matplotlib.</span>
 <span class="sd">        """</span>
@@ -349,7 +350,7 @@
         <span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>              <span class="c1"># Defining plot 1</span>
         <span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>              <span class="c1"># Defining plot 2</span>
 
-        <span class="n">idf</span><span class="p">,</span> <span class="n">df</span> <span class="o">=</span> <span class="n">priceDatas</span><span class="p">,</span> <span class="n">bollingerDatas</span>
+        <span class="n">idf</span><span class="p">,</span> <span class="n">df</span> <span class="o">=</span> <span class="n">priceData</span><span class="p">,</span> <span class="n">bollingerData</span>
         <span class="n">bollinger_bands</span> <span class="o">=</span> <span class="n">idf</span><span class="p">[[</span><span class="s1">'HBand'</span><span class="p">,</span> <span class="s1">'LBand'</span><span class="p">]]</span>
 
         <span class="k">def</span> <span class="nf">animate</span><span class="p">(</span><span class="n">ival</span><span class="p">):</span>
@@ -407,6 +408,12 @@
         <span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mf">0.067</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.93</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mf">0.955</span><span class="p">)</span>
 
 <div class="viewcode-block" id="GraphViewer.start"><a class="viewcode-back" href="../code.html#GraphViewer.GraphViewer.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Starts the graph.</span>
+
+<span class="sd">        .. important::</span>
+
+<span class="sd">           It is a blocking function (like an app.exec() in Qt).</span>
+<span class="sd">        """</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div></div>
 </pre>
        </div>

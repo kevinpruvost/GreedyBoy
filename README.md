@@ -19,6 +19,7 @@ Automated Trading Bot coded in Python, hosted on AWS Lambda.
 |sphinx          |`pip install sphinx`          |
 |sphinx theme    |https://bashtage.github.io/sphinx-material/#getting-started|
 |rinohtype       |`pip install rinohtype`|
+|sphinx-hoverxref|`pip install --pre sphinx-hoverxref`|
 
 If you are exporting the project to your AWS Lambda repository, DO NOT FORGET to take the libraries folders with it.
 

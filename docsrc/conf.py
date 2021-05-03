@@ -30,10 +30,35 @@ author = 'Kevin Pruvost'
 extensions = [
     'sphinx.ext.githubpages',
     'sphinx.ext.autodoc',
+    'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
     'sphinx.ext.napoleon',
-    'rinoh.frontend.sphinx'
+    'rinoh.frontend.sphinx',
+    'hoverxref.extension'
 ]
+
+## HoverXRef
+hoverxref_api_host = "http://localhost:8000"
+
+hoverxref_tooltip_maxwidth = 650
+hoverxref_auto_ref = True
+hoverxref_roles = [
+    'confval',
+]
+
+hoverxref_role_types = {
+    'hoverxref': 'tooltip',
+    'confval': 'tooltip',
+    'MA': 'tooltip',
+    'ref': 'modal',
+    'mod': 'modal',
+    'class': 'modal',
+}
+hoverxref_domains = [
+    'py',
+]
+hoverxref_sphinxtabs = True
+hoverxref_mathjax = True
 
 autosummary_generate = True
 autoclass_content = "class"
@@ -121,3 +146,10 @@ latex_elements = {
     'preamble': '',
     'figure_align': 'htbp'
 }
+
+def setup(app):
+    app.add_object_type(
+        'confval',  # directivename
+        'confval',  # rolename
+        'pair: %s; configuration value',  # indextemplate
+    )

@@ -45,7 +45,32 @@ import matplotlib.animation as animation
 import mplcursors
 
 class GraphViewer:
+    """Draws in 2 plots, the bollinger bands, the bollinger gaps and the price chart of a given cryptocurrency.
+
+    The data must be given in DataFrames (pandas) in this format:
+
+    **Price Data**
+
+    ===================  =======  =======  =======  =======  =========  ==========  ============  ============
+    Date (as index)      Open     Close    High     Low      :ref:`MA`  :ref:`Std`  :ref:`LBand`  :ref:`LBand`
+    ===================  =======  =======  =======  =======  =========  ==========  ============  ============
+    2021-04-24 05:00:00  1917.24  1920.21  1932.10  1899.24  1901.26    20.547      1860.124      1948.472
+    ...                  ...      ...      ...      ...      ...        ...         ...           ...
+    ===================  =======  =======  =======  =======  =========  ==========  ============  ============
+
+    **Bollinger Data**
+
+    ===================  ========
+    Date (as index)      Value
+    ===================  ========
+    2021-04-24 05:00:00  67.00
+    ...                  ...
+    ===================  ========
+    """
+
     ani = None
+    """"""
+
     def __init__(self, priceDatas, bollingerDatas, animateCallback = None, fullscreen: bool = True):
         """Constructs the GraphViewer
         :param priceDatas: Dataframe containing detailed informations about prices.

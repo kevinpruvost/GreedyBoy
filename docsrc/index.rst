@@ -61,6 +61,7 @@ Documentation
    :caption: Summary
 
    ./code.rst
+   ./glossary.rst
 
 
 ==================

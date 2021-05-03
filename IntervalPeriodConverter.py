@@ -117,6 +117,7 @@ class IntervalPeriodConverter:
 def main():
     intervalPeriodConverter = IntervalPeriodConverter.fromFilename("data.csv", 15, 20)
     data1, data2 = intervalPeriodConverter.convertForGraphicViews()
+    print(data1, data2)
     graphicView = GraphViewer(data1, data2)
     graphicView.start()
 

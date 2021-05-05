@@ -24,7 +24,7 @@ def getConfig():
             return row['apiKey'], row['apiPrivateKey'], row['githubToken'], row['repoName'], row['dataBranchName']
 
 def main():
-    timer = time.perf_counter() + 60 * 15 - 15
+    timer = time.perf_counter() + 2 * 15 - 15
     apiKey, apiPrivateKey, githubToken, repoName, dataBranchName = getConfig()
     kBacktestGetter = KrakenBacktestGetter(apiKey, apiPrivateKey, githubToken, repoName, dataBranchName)
 #    kApi = KrakenApi.KrakenApi(apiKey, apiPrivateKey)

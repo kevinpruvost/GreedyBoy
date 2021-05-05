@@ -6,8 +6,8 @@ Description
 Makes every interactions between GreedyBoy and the Kraken API.
 """
 
-import Libs.websocket as websocket
-import Libs.urllib.request as req
+import websocket as websocket
+import urllib.request as req
 import _thread
 import tempfile
 import time, base64, hashlib, hmac, json

@@ -33,6 +33,7 @@ extensions = [
     'sphinx.ext.mathjax',
 #    'sphinx.ext.viewcode',
     'sphinx.ext.napoleon',
+    'sphinxemoji.sphinxemoji',
     'rinoh.frontend.sphinx'
 ]
 
@@ -71,8 +72,8 @@ html_static_path = ['_static']
 html_logo = "_static/eye.png"
 html_favicon = "_static/eye.ico"
 
-html_copy_source = False
-html_show_sourcelink = False
+html_copy_source = True
+html_show_sourcelink = True
 html_sidebars = {
     "**": ["logo-text.html", "globaltoc.html", "localtoc.html", "searchbox.html"]
 }

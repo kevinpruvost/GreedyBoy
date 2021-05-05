@@ -116,5 +116,5 @@ With GreedyBoy, the *Backtesting* is done through data we retrieve from Kraken a
 
 We use a pretty compact format of historical data that we were forced to retrieve ourselves.
 
-In average, the time gap between each price if of 5 seconds. In order to ensure the security of the results of GreedyBoy
+In average, the time gap between each price is of 5 seconds. In order to ensure the security of the results of GreedyBoy
 on day trading operations.

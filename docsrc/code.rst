@@ -13,8 +13,8 @@ GreedyBoy is split into several parts:
    :maxdepth: 2
    :caption: Contents:
 
-   ./GraphViewer.rst
-   ./KrakenBacktestGetter.rst
-   ./KrakenApi.rst
-   ./IntervalPeriodConverter.rst
-   ./GreedyBoy.rst
+   ./codeDocumentation/GraphViewer.rst
+   ./codeDocumentation/KrakenBacktestGetter.rst
+   ./codeDocumentation/KrakenApi.rst
+   ./codeDocumentation/IntervalPeriodConverter.rst
+   ./codeDocumentation/GreedyBoy.rst

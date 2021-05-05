@@ -15,15 +15,15 @@ __maintainer__  = "Kevin Pruvost"
 __email__       = "pruvostkevin0@gmail.com"
 __status__      = "Test"
 
-import Libs.websocket as websocket
-import Libs.urllib as urllib
+import websocket as websocket
+import urllib as urllib
 import _thread
 import csv
 import time, base64, hashlib, hmac, json
 import tempfile
 from github import Github
 
-currencyInitials = ["XDG", "XBT", "ETH", "XRP"]
+currencyInitials = ["XDG", "XBT", "ETH", "XRP", "ETC", "LINK"]
 """Contains currency codes of the cryptocurrencies to get the prices from."""
 
 class KrakenBacktestGetter:

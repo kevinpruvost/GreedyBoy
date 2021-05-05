@@ -17,9 +17,9 @@ __email__       = "pruvostkevin0@gmail.com"
 __status__      = "Test"
 
 from GraphViewer import GraphViewer
-import Libs.pandas.core.generic as gen
+import pandas.core.generic as gen
 import copy
-import Libs.pandas as pd
+import pandas as pd
 from PerformanceTimer import time_function
 
 class IntervalPeriodConverter:

@@ -42,8 +42,7 @@ import matplotlib.pyplot as plt
 import mplfinance
 import matplotlib.animation as animation
 import mplcursors
-import pandas
-
+import pandas as pandas
 
 class GraphViewer:
     """

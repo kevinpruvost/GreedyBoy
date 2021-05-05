@@ -1,5 +1,5 @@
 .. _Configuration:
 
-*************
-Configuration
-*************
+***********************
+Configuration |:tools:|
+***********************

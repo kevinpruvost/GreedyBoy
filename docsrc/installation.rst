@@ -39,17 +39,17 @@ The rest is needed if you want to modify the code or make the documentation.
 1. Create an account on `Amazon Web Services <https://signin.aws.amazon.com/signin?redirect_uri=https%3A%2F%2Fconsole.aws.amazon.com%2Fconsole%2Fhome%3Fstate%3DhashArgs%2523%26isauthcode%3Dtrue&client_id=arn%3Aaws%3Aiam%3A%3A015428540659%3Auser%2Fhomepage&forceMobileApp=0&code_challenge=m7wzKrnU8hLURRt6uphy1wVuC7JvjkF0DvQoF8APjwI&code_challenge_method=SHA-256>`_
 2. Once you've created an account, search for **AWS Lambda** and go on it.
 
-.. image:: _static/installation_screenshot1.png
+.. image:: _static/installation/screenshot1.png
     :alt: Type ``Lambda`` in the **Search bar** and click on **Lambda**
 
 3. Then **Create a function**.
 
-.. image:: _static/installation_screenshot2.png
+.. image:: _static/installation/screenshot2.png
     :alt: Click on **Create function**
 
 4. Chose **Author from scratch**, pick **Python 3.7** and click on **Create function**.
 
-.. image:: _static/installation_screenshot3.png
+.. image:: _static/installation/screenshot3.png
     :alt: Click on **Author from scratch**, pick **Python 3.7** in the **Runtime list** and click on **Create function**
 
 .. warning::
@@ -63,10 +63,10 @@ The rest is needed if you want to modify the code or make the documentation.
 
 5. Upload the archive of your GreedyBoy (``deploy.zip``) to your **Lambda** function.
 
-.. image:: _static/installation_screenshot4.png
+.. image:: _static/installation/screenshot4.png
     :alt: Click on **Upload from** and **.zip file**
 
-.. image:: _static/installation_screenshot5.png
+.. image:: _static/installation/screenshot5.png
     :alt: Click on **Upload** and search for your ``deploy.zip``
 
 6. Then configure your **Lambda** function to set the **Timeout** to **15min (AWS Lambda maximum Timeout)**.
@@ -74,19 +74,19 @@ The rest is needed if you want to modify the code or make the documentation.
 .. note::
    We need to do that in order for GreedyBoy to stay active as long as possible.
 
-.. image:: _static/installation_screenshot6.png
+.. image:: _static/installation/screenshot6.png
     :alt: Click on **Configuration** and **Edit**
 
-.. image:: _static/installation_screenshot7.png
+.. image:: _static/installation/screenshot7.png
     :alt: Set **Timeout** to **15min**
 
-.. image:: _static/installation_screenshot8.png
+.. image:: _static/installation/screenshot8.png
     :alt: Click on **Test (next to Code & Monitor)** and then **Test (next to Save Changes)**
 
 **Test Result**
 +++++++++++++++
 
-.. image:: _static/installation_screenshot9.png
+.. image:: _static/installation/screenshot9.png
     :alt: GreedyBoy do be **fresh** though |:flushed:|
 
 If there's no error, then your GreedyBoy is good to go ! |:partying_face:|

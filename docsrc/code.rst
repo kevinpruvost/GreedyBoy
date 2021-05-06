@@ -1,5 +1,5 @@
-Code Documentation
-**************************
+Code Documentation |:blue_book:|
+********************************
 
 GreedyBoy is split into several parts:
 

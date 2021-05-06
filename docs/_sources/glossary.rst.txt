@@ -1,4 +1,4 @@
-Glossary
+Glossary |:closed_book:|
 **************************
 .. toctree::
    :maxdepth: 2

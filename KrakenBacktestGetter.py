@@ -1,10 +1,7 @@
 #!/usr/bin/env python
-"""
-Description
------------
-
-Gather prices data of some cryptocurrencies for testing purposes.
-"""
+##
+## KrakenBacktestGetter.py
+##
 
 __author__      = "Kevin Pruvost"
 __copyright__   = "Copyright 2021, GreedyBoy"

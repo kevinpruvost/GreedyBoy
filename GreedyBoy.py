@@ -1,10 +1,7 @@
 #!/usr/bin/env python
-"""
-Description
-+++++++++++
-The `GreedyBoy` is the main class where every relevant data which will serve to the bot for decision making
-will be contained here.
-"""
+##
+## GreedyBoy.py
+##
 
 __author__      = "Kevin Pruvost"
 __copyright__   = "Copyright 2021, GreedyBoy"

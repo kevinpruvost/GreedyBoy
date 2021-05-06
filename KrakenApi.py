@@ -1,10 +1,7 @@
 #!/usr/bin/env python
-"""
-Description
------------
-
-Makes every interactions between GreedyBoy and the Kraken API.
-"""
+##
+## KrakenApi.py
+##
 
 import websocket as websocket
 import urllib.request as req

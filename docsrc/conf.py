@@ -107,7 +107,7 @@ html_theme_options = {
         "index": "A Trading Bot to get rid of all the stress of manual trading.",
         "customization": "Configuration options to personalize your site.",
     },
-    "version_dropdown": True,
+    "version_dropdown": False,
     "version_json": "_static/versions.json",
     "version_info": {
         "Release": "https://bashtage.github.io/sphinx-material/",

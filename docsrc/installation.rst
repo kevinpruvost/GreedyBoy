@@ -37,7 +37,7 @@ The rest is needed if you want to modify the code or make the documentation.
 ============
 
 1. Create an account on `Amazon Web Services <https://signin.aws.amazon.com/signin?redirect_uri=https%3A%2F%2Fconsole.aws.amazon.com%2Fconsole%2Fhome%3Fstate%3DhashArgs%2523%26isauthcode%3Dtrue&client_id=arn%3Aaws%3Aiam%3A%3A015428540659%3Auser%2Fhomepage&forceMobileApp=0&code_challenge=m7wzKrnU8hLURRt6uphy1wVuC7JvjkF0DvQoF8APjwI&code_challenge_method=SHA-256>`_
-2. Once you've created an account search for **AWS Lambda** and go on it.
+2. Once you've created an account, search for **AWS Lambda** and go on it.
 
 .. image:: _static/installation_screenshot1.png
     :alt: Type ``Lambda`` in the **Search bar** and click on **Lambda**

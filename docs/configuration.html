@@ -251,6 +251,20 @@
                        <a class="md-nav__link" href="#databranchname">
                         dataBranchName
                        </a>
+                       <nav class="md-nav">
+                        <ul class="md-nav__list">
+                         <li class="md-nav__item">
+                          <a class="md-nav__link" href="#github-desktop-computer">
+                           Github Desktop 💻
+                          </a>
+                         </li>
+                         <li class="md-nav__item">
+                          <a class="md-nav__link" href="#git-command-man-technologist">
+                           Git Command 👨‍💻
+                          </a>
+                         </li>
+                        </ul>
+                       </nav>
                       </li>
                      </ul>
                     </nav>
@@ -346,6 +360,20 @@
                     <a class="md-nav__link" href="#databranchname">
                      dataBranchName
                     </a>
+                    <nav class="md-nav">
+                     <ul class="md-nav__list">
+                      <li class="md-nav__item">
+                       <a class="md-nav__link" href="#github-desktop-computer">
+                        Github Desktop 💻
+                       </a>
+                      </li>
+                      <li class="md-nav__item">
+                       <a class="md-nav__link" href="#git-command-man-technologist">
+                        Git Command 👨‍💻
+                       </a>
+                      </li>
+                     </ul>
+                    </nav>
                    </li>
                   </ul>
                  </nav>
@@ -707,8 +735,42 @@
         <div>
          <ol class="arabic simple">
           <li>
+           <p>
+            Go on
+            <a class="reference external" href="https://github.com/">
+             github.com
+            </a>
+            and create a
+            <strong>
+             New
+            </strong>
+            repository.
+           </p>
           </li>
          </ol>
+         <img alt="_images/screenshot12.png" src="_images/screenshot12.png"/>
+         <ol class="arabic simple" start="2">
+          <li>
+           <p>
+            Configure &amp; Create your repository.
+           </p>
+          </li>
+         </ol>
+         <img alt="_images/screenshot22.png" src="_images/screenshot22.png"/>
+         <ol class="arabic simple" start="3">
+          <li>
+           <p>
+            You can now get
+            <code class="docutils literal notranslate">
+             <span class="pre">
+              repoName
+             </span>
+            </code>
+            in these 2 fields.
+           </p>
+          </li>
+         </ol>
+         <img alt="_images/screenshot32.png" src="_images/screenshot32.png"/>
         </div>
        </blockquote>
        <span id="id3">
@@ -719,10 +781,203 @@
          ¶
         </a>
        </h4>
+       <div class="admonition warning">
+        <p class="admonition-title">
+         Warning
+        </p>
+        <p>
+         For this last step, you will need
+         <a class="reference external" href="https://desktop.github.com/">
+          Github Dekstop
+         </a>
+         or whatever form of
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           Git
+          </span>
+         </code>
+         you are using
+(
+         <strong>
+          Git Bash
+         </strong>
+         ,
+         <strong>
+          git (package from Linux)
+         </strong>
+         , …)
+        </p>
+       </div>
+       <h5 id="github-desktop-computer">
+        Github Desktop 💻
+        <a class="headerlink" href="#github-desktop-computer" title="Permalink to this headline">
+         ¶
+        </a>
+       </h5>
        <blockquote>
         <div>
          <ol class="arabic simple">
           <li>
+           <p>
+            Clone the repository wherever you want
+           </p>
+          </li>
+         </ol>
+         <img alt="_images/screenshot42.png" src="_images/screenshot42.png"/>
+         <p>
+          2. If you want to make GreedyBoy use the main branch of your repository you cant stop there
+and just take
+          <code class="docutils literal notranslate">
+           <span class="pre">
+            main
+           </span>
+          </code>
+          as your
+          <code class="docutils literal notranslate">
+           <span class="pre">
+            `dataBranchName
+           </span>
+          </code>
+         </p>
+         <p>
+          However, if you want to make another branch, then click on
+          <strong>
+           Current branch
+          </strong>
+          , type in the new branch name and
+click on
+          <strong>
+           Create new branch
+          </strong>
+          .
+         </p>
+         <img alt="_images/screenshot5.png" src="_images/screenshot5.png"/>
+         <ol class="arabic simple" start="3">
+          <li>
+           <p>
+            Click on
+            <strong>
+             Publish branch
+            </strong>
+            and get your
+            <strong>
+             new branch name
+            </strong>
+            as
+            <code class="docutils literal notranslate">
+             <span class="pre">
+              dataBranchName
+             </span>
+            </code>
+           </p>
+          </li>
+         </ol>
+         <img alt="_images/screenshot6.png" src="_images/screenshot6.png"/>
+        </div>
+       </blockquote>
+       <h5 id="git-command-man-technologist">
+        Git Command 👨‍💻
+        <a class="headerlink" href="#git-command-man-technologist" title="Permalink to this headline">
+         ¶
+        </a>
+       </h5>
+       <blockquote>
+        <div>
+         <ol class="arabic simple">
+          <li>
+           <p>
+            So if you want to go with brute force, go on whatever
+            <strong>
+             shell
+            </strong>
+            you wanna use.
+           </p>
+          </li>
+         </ol>
+         <p>
+          <code class="docutils literal notranslate">
+           <span class="pre">
+            cd
+           </span>
+          </code>
+          into the directory you want to clone your repository to.
+         </p>
+         <p>
+          Then launch this command
+          <code class="docutils literal notranslate">
+           <span class="pre">
+            git
+           </span>
+           <span class="pre">
+            clone
+           </span>
+           <span class="pre">
+            $REPO_SSH_LINK|$REPO_HTTP_LINK
+           </span>
+          </code>
+          .
+         </p>
+         <img alt="_images/screenshot7.png" src="_images/screenshot7.png"/>
+         <ol class="arabic simple" start="2">
+          <li>
+           <p>
+            <code class="docutils literal notranslate">
+             <span class="pre">
+              cd
+             </span>
+            </code>
+            into your repository,
+            <code class="docutils literal notranslate">
+             <span class="pre">
+              git
+             </span>
+             <span class="pre">
+              branch
+             </span>
+             <span class="pre">
+              $BRANCH_NAME
+             </span>
+            </code>
+            , and
+            <code class="docutils literal notranslate">
+             <span class="pre">
+              git
+             </span>
+             <span class="pre">
+              push
+             </span>
+             <span class="pre">
+              -u
+             </span>
+             <span class="pre">
+              origin
+             </span>
+             <span class="pre">
+              $BRANCH_NAME
+             </span>
+            </code>
+            .
+           </p>
+          </li>
+         </ol>
+         <img alt="_images/screenshot8.png" src="_images/screenshot8.png"/>
+         <ol class="arabic simple" start="3">
+          <li>
+           <p>
+            You’re good to go, take
+            <code class="docutils literal notranslate">
+             <span class="pre">
+              $BRANCH_NAME
+             </span>
+            </code>
+            as your
+            <code class="docutils literal notranslate">
+             <span class="pre">
+              dataBranchName
+             </span>
+            </code>
+            .
+           </p>
           </li>
          </ol>
         </div>

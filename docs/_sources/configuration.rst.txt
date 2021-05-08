@@ -95,7 +95,17 @@ How to get these informations |:card_file_box:|
  repoName
 ++++++++++
 
-   1.
+   1. Go on `github.com <https://github.com/>`_ and create a **New** repository.
+
+   .. image:: _static/repo_keys/screenshot1.png
+
+   2. Configure & Create your repository.
+
+   .. image:: _static/repo_keys/screenshot2.png
+
+   3. You can now get ``repoName`` in these 2 fields.
+
+   .. image:: _static/repo_keys/screenshot3.png
 
 .. _dataBranchName:
 
@@ -103,4 +113,44 @@ How to get these informations |:card_file_box:|
  dataBranchName
 ++++++++++++++++
 
-   1.
+.. warning::
+   For this last step, you will need `Github Dekstop <https://desktop.github.com/>`_ or whatever form of ``Git`` you are using
+   (**Git Bash**, **git (package from Linux)**, ...)
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Github Desktop |:computer:|
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   1. Clone the repository wherever you want
+
+   .. image:: _static/repo_keys/screenshot4.png
+
+   2. If you want to make GreedyBoy use the main branch of your repository you cant stop there
+   and just take ``main`` as your ```dataBranchName``
+
+   However, if you want to make another branch, then click on **Current branch**, type in the new branch name and
+   click on **Create new branch**.
+
+   .. image:: _static/repo_keys/screenshot5.png
+
+   3. Click on **Publish branch** and get your **new branch name** as ``dataBranchName``
+
+   .. image:: _static/repo_keys/screenshot6.png
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Git Command |:man_technologist:|
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   1. So if you want to go with brute force, go on whatever **shell** you wanna use.
+
+   ``cd`` into the directory you want to clone your repository to.
+
+   Then launch this command ``git clone $REPO_SSH_LINK|$REPO_HTTP_LINK``.
+
+   .. image:: _static/repo_keys/screenshot7.png
+
+   2. ``cd`` into your repository, ``git branch $BRANCH_NAME``, and ``git push -u origin $BRANCH_NAME``.
+
+   .. image:: _static/repo_keys/screenshot8.png
+
+   3. You're good to go, take ``$BRANCH_NAME`` as your ``dataBranchName``.

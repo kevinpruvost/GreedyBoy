@@ -1,4 +1,4 @@
-*IntervalPeriodConverter*
+*GBDataMachine*
 =========================
 
 Description
@@ -10,6 +10,6 @@ Watch for :ref:`the PriceData DataFrame<PriceData>` and :ref:`the BollingerData 
 Code
 ----
 
-.. automodule:: IntervalPeriodConverter
+.. automodule:: GBDataMachine
    :members:
    :undoc-members:

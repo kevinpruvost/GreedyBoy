@@ -8,6 +8,7 @@ Description
 
 import KrakenApi
 from KrakenBacktestGetter import KrakenBacktestGetter
+import ConfigManager
 import csv, time, datetime, json
 
 def lambda_handler(event, context):
@@ -17,15 +18,9 @@ def lambda_handler(event, context):
         'body': json.dumps("Hello coomers !")
     }
 
-def getConfig():
-    with open("config.csv", newline="", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            return row['apiKey'], row['apiPrivateKey'], row['githubToken'], row['repoName'], row['dataBranchName']
-
 def main():
     timer = time.perf_counter() + 2 * 15 - 15
-    apiKey, apiPrivateKey, githubToken, repoName, dataBranchName = getConfig()
+    apiKey, apiPrivateKey, githubToken, repoName, dataBranchName = ConfigManager.getConfig()
     kBacktestGetter = KrakenBacktestGetter(apiKey, apiPrivateKey, githubToken, repoName, dataBranchName)
 #    kApi = KrakenApi.KrakenApi(apiKey, apiPrivateKey)
     # Continue other (non WebSocket) tasks in the main thread

@@ -12,7 +12,7 @@ __maintainer__  = "Kevin Pruvost"
 __email__       = "pruvostkevin0@gmail.com"
 __status__      = "Test"
 
-from IntervalPeriodConverter import IntervalPeriodConverter
+from GBDataMachine import GBDataMachine
 
 class GreedyBoy:
     def __init__(self):

@@ -37,7 +37,7 @@
   </script>
   <link href="../_static/eye.png" rel="apple-touch-icon"/>
   <title>
-   IntervalPeriodConverter — GreedyBoy
+   GBDecisionMachine — GreedyBoy
   </title>
   <link href="../_static/pygments.css" rel="stylesheet" type="text/css"/>
   <link href="../_static/material.css" rel="stylesheet" type="text/css"/>
@@ -53,7 +53,7 @@
   <link href="../genindex.html" rel="index" title="Index"/>
   <link href="../search.html" rel="search" title="Search"/>
   <link href="GreedyBoy.html" rel="next" title="GreedyBoy"/>
-  <link href="KrakenApi.html" rel="prev" title="KrakenApi"/>
+  <link href="GBDataMachine.html" rel="prev" title="GBDataMachine"/>
   <link href="../_static/eye.png" rel="apple-touch-icon"/>
  </head>
  <body data-md-color-accent="amber" data-md-color-primary="yellow" dir="ltr">
@@ -69,7 +69,7 @@
   <input class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
   <label class="md-overlay" data-md-component="overlay" for="__drawer">
   </label>
-  <a class="md-skip" href="#codeDocumentation/IntervalPeriodConverter" tabindex="1">
+  <a class="md-skip" href="#codeDocumentation/GBDecisionMachine" tabindex="1">
    Skip to content
   </a>
   <header class="md-header" data-md-component="header">
@@ -90,7 +90,7 @@
         GreedyBoy
        </span>
        <span class="md-header-nav__topic">
-        IntervalPeriodConverter
+        GBDecisionMachine
        </span>
       </div>
      </div>
@@ -228,15 +228,22 @@
              </a>
             </li>
             <li class="md-nav__item">
+             <a class="md-nav__link" href="GBDataMachine.html">
+              <em>
+               GBDataMachine
+              </em>
+             </a>
+            </li>
+            <li class="md-nav__item">
              <input class="md-toggle md-nav__toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
              <label class="md-nav__link md-nav__link--active" for="__toc">
               <em>
-               IntervalPeriodConverter
+               GBDecisionMachine
               </em>
              </label>
              <a class="md-nav__link md-nav__link--active" href="#">
               <em>
-               IntervalPeriodConverter
+               GBDecisionMachine
               </em>
              </a>
              <nav class="md-nav md-nav--secondary">
@@ -245,9 +252,9 @@
               </label>
               <ul class="md-nav__list" data-md-scrollfix="">
                <li class="md-nav__item">
-                <a class="md-nav__link" href="#codedocumentation-intervalperiodconverter--page-root">
+                <a class="md-nav__link" href="#codedocumentation-gbdecisionmachine--page-root">
                  <em>
-                  IntervalPeriodConverter
+                  GBDecisionMachine
                  </em>
                 </a>
                 <nav class="md-nav">
@@ -256,9 +263,23 @@
                    <a class="md-nav__link" href="#description">
                     Description
                    </a>
+                   <nav class="md-nav">
+                    <ul class="md-nav__list">
+                     <li class="md-nav__item">
+                      <a class="md-nav__link" href="#decisions-table-representation">
+                       Decisions Table representation
+                      </a>
+                     </li>
+                     <li class="md-nav__item">
+                      <a class="md-nav__link" href="#decisions-csv-representation">
+                       Decisions CSV representation
+                      </a>
+                     </li>
+                    </ul>
+                   </nav>
                   </li>
                   <li class="md-nav__item">
-                   <a class="md-nav__link" href="#module-IntervalPeriodConverter">
+                   <a class="md-nav__link" href="#module-GBDecisionMachine">
                     Code
                    </a>
                   </li>
@@ -266,7 +287,7 @@
                 </nav>
                </li>
                <li class="md-nav__item">
-                <a class="md-nav__extra_link" href="../_sources/codeDocumentation/IntervalPeriodConverter.rst.txt">
+                <a class="md-nav__extra_link" href="../_sources/codeDocumentation/GBDecisionMachine.rst.txt">
                  Show Source
                 </a>
                </li>
@@ -301,9 +322,9 @@
          </label>
          <ul class="md-nav__list" data-md-scrollfix="">
           <li class="md-nav__item">
-           <a class="md-nav__link" href="#codedocumentation-intervalperiodconverter--page-root">
+           <a class="md-nav__link" href="#codedocumentation-gbdecisionmachine--page-root">
             <em>
-             IntervalPeriodConverter
+             GBDecisionMachine
             </em>
            </a>
            <nav class="md-nav">
@@ -312,9 +333,23 @@
               <a class="md-nav__link" href="#description">
                Description
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#decisions-table-representation">
+                  Decisions Table representation
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#decisions-csv-representation">
+                  Decisions CSV representation
+                 </a>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
-              <a class="md-nav__link" href="#module-IntervalPeriodConverter">
+              <a class="md-nav__link" href="#module-GBDecisionMachine">
                Code
               </a>
              </li>
@@ -322,7 +357,7 @@
            </nav>
           </li>
           <li class="md-nav__item">
-           <a class="md-nav__extra_link" href="../_sources/codeDocumentation/IntervalPeriodConverter.rst.txt">
+           <a class="md-nav__extra_link" href="../_sources/codeDocumentation/GBDecisionMachine.rst.txt">
             Show Source
            </a>
           </li>
@@ -335,11 +370,11 @@
      </div>
      <div class="md-content">
       <article class="md-content__inner md-typeset" role="main">
-       <h1 id="codedocumentation-intervalperiodconverter--page-root">
+       <h1 id="codedocumentation-gbdecisionmachine--page-root">
         <em>
-         IntervalPeriodConverter
+         GBDecisionMachine
         </em>
-        <a class="headerlink" href="#codedocumentation-intervalperiodconverter--page-root" title="Permalink to this headline">
+        <a class="headerlink" href="#codedocumentation-gbdecisionmachine--page-root" title="Permalink to this headline">
          ¶
         </a>
        </h1>
@@ -350,42 +385,122 @@
         </a>
        </h2>
        <p>
-        Converts the data from the
-        <code class="docutils literal notranslate">
-         <span class="pre">
-          ["Date",
-         </span>
-         <span class="pre">
-          "Price"]
-         </span>
-        </code>
-        to wanted interval period prices.
+        Manages GreedyBoy decisions history, it creates, stores and retrieves data about them.
        </p>
-       <p>
-        Watch for
-        <a class="reference internal" href="GraphViewer.html#pricedata">
-         <span class="std std-ref">
-          the PriceData DataFrame
-         </span>
+       <h3 id="decisions-table-representation">
+        Decisions Table representation
+        <a class="headerlink" href="#decisions-table-representation" title="Permalink to this headline">
+         ¶
         </a>
-        and
-        <a class="reference internal" href="GraphViewer.html#bollingerdata">
-         <span class="std std-ref">
-          the BollingerData Dataframe
-         </span>
+       </h3>
+       <table>
+        <colgroup>
+         <col style="width: 35%"/>
+         <col style="width: 13%"/>
+         <col style="width: 15%"/>
+         <col style="width: 38%"/>
+        </colgroup>
+        <thead>
+         <tr class="row-odd">
+          <th class="head">
+           <p>
+            Date
+           </p>
+          </th>
+          <th class="head">
+           <p>
+            Price
+           </p>
+          </th>
+          <th class="head">
+           <p>
+            Amount
+           </p>
+          </th>
+          <th class="head">
+           <p>
+            <abbr title="B/S">
+             Order
+            </abbr>
+           </p>
+          </th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr class="row-even">
+          <td>
+           <p>
+            1619222453.181015
+           </p>
+          </td>
+          <td>
+           <p>
+            0.523
+           </p>
+          </td>
+          <td>
+           <p>
+            13000
+           </p>
+          </td>
+          <td>
+           <p>
+            <abbr title="Buy">
+             B
+            </abbr>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <p>
+            1619226521.475621
+           </p>
+          </td>
+          <td>
+           <p>
+            0.553
+           </p>
+          </td>
+          <td>
+           <p>
+            13000
+           </p>
+          </td>
+          <td>
+           <p>
+            <abbr title="Sell">
+             S
+            </abbr>
+           </p>
+          </td>
+         </tr>
+        </tbody>
+       </table>
+       <h3 id="decisions-csv-representation">
+        Decisions CSV representation
+        <a class="headerlink" href="#decisions-csv-representation" title="Permalink to this headline">
+         ¶
         </a>
-        for more details.
-       </p>
+       </h3>
+       <div class="highlight-default notranslate">
+        <div class="highlight">
+         <pre><span></span><span class="n">date</span><span class="p">,</span><span class="n">price</span><span class="p">,</span><span class="n">amount</span><span class="p">,</span><span class="n">order</span>
+<span class="mf">1619222453.181015</span><span class="p">,</span><span class="mf">0.523</span><span class="p">,</span><span class="mi">13000</span><span class="p">,</span><span class="n">B</span>
+<span class="mf">1619226521.475621</span><span class="p">,</span><span class="mf">0.553</span><span class="p">,</span><span class="mi">13000</span><span class="p">,</span><span class="n">S</span>
+</pre>
+        </div>
+       </div>
        <span id="code">
        </span>
-       <h2 id="module-IntervalPeriodConverter">
+       <h2 id="module-GBDecisionMachine">
         Code
-        <a class="headerlink" href="#module-IntervalPeriodConverter" title="Permalink to this headline">
+        <a class="headerlink" href="#module-GBDecisionMachine" title="Permalink to this headline">
          ¶
         </a>
        </h2>
        <dl class="py class">
-        <dt id="IntervalPeriodConverter.IntervalPeriodConverter">
+        <dt id="GBDecisionMachine.GBDecisionMachine">
          <em class="property">
           <span class="pre">
            class
@@ -393,12 +508,12 @@
          </em>
          <code class="sig-prename descclassname">
           <span class="pre">
-           IntervalPeriodConverter.
+           GBDecisionMachine.
           </span>
          </code>
          <code class="sig-name descname">
           <span class="pre">
-           IntervalPeriodConverter
+           GBDecisionMachine
           </span>
          </code>
          <span class="sig-paren">
@@ -421,72 +536,16 @@
            </span>
           </span>
          </em>
-         ,
-         <em class="sig-param">
-          <span class="n">
-           <span class="pre">
-            interval
-           </span>
-          </span>
-          <span class="p">
-           <span class="pre">
-            :
-           </span>
-          </span>
-          <span class="n">
-           <span class="pre">
-            int
-           </span>
-          </span>
-          <span class="o">
-           <span class="pre">
-            =
-           </span>
-          </span>
-          <span class="default_value">
-           <span class="pre">
-            15
-           </span>
-          </span>
-         </em>
-         ,
-         <em class="sig-param">
-          <span class="n">
-           <span class="pre">
-            movingAverageSize
-           </span>
-          </span>
-          <span class="p">
-           <span class="pre">
-            :
-           </span>
-          </span>
-          <span class="n">
-           <span class="pre">
-            int
-           </span>
-          </span>
-          <span class="o">
-           <span class="pre">
-            =
-           </span>
-          </span>
-          <span class="default_value">
-           <span class="pre">
-            20
-           </span>
-          </span>
-         </em>
          <span class="sig-paren">
           )
          </span>
-         <a class="headerlink" href="#IntervalPeriodConverter.IntervalPeriodConverter" title="Permalink to this definition">
+         <a class="headerlink" href="#GBDecisionMachine.GBDecisionMachine" title="Permalink to this definition">
           ¶
          </a>
         </dt>
         <dd>
          <dl class="py method">
-          <dt id="IntervalPeriodConverter.IntervalPeriodConverter.append">
+          <dt id="GBDecisionMachine.GBDecisionMachine.append">
            <code class="sig-name descname">
             <span class="pre">
              append
@@ -533,7 +592,7 @@
            <span class="sig-paren">
             )
            </span>
-           <a class="headerlink" href="#IntervalPeriodConverter.IntervalPeriodConverter.append" title="Permalink to this definition">
+           <a class="headerlink" href="#GBDecisionMachine.GBDecisionMachine.append" title="Permalink to this definition">
             ¶
            </a>
           </dt>
@@ -577,7 +636,7 @@
           </dd>
          </dl>
          <dl class="py method">
-          <dt id="IntervalPeriodConverter.IntervalPeriodConverter.convertForGraphicViews">
+          <dt id="GBDecisionMachine.GBDecisionMachine.convertForGraphicViews">
            <code class="sig-name descname">
             <span class="pre">
              convertForGraphicViews
@@ -589,7 +648,7 @@
            <span class="sig-paren">
             )
            </span>
-           <a class="headerlink" href="#IntervalPeriodConverter.IntervalPeriodConverter.convertForGraphicViews" title="Permalink to this definition">
+           <a class="headerlink" href="#GBDecisionMachine.GBDecisionMachine.convertForGraphicViews" title="Permalink to this definition">
             ¶
            </a>
           </dt>
@@ -624,7 +683,7 @@
           </dd>
          </dl>
          <dl class="py method">
-          <dt id="IntervalPeriodConverter.IntervalPeriodConverter.fromDataframe">
+          <dt id="GBDecisionMachine.GBDecisionMachine.fromDataframe">
            <em class="property">
             <span class="pre">
              classmethod
@@ -655,66 +714,10 @@
              </span>
             </span>
            </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              interval
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="n">
-             <span class="pre">
-              int
-             </span>
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              15
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              movingAverageSize
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="n">
-             <span class="pre">
-              int
-             </span>
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              20
-             </span>
-            </span>
-           </em>
            <span class="sig-paren">
             )
            </span>
-           <a class="headerlink" href="#IntervalPeriodConverter.IntervalPeriodConverter.fromDataframe" title="Permalink to this definition">
+           <a class="headerlink" href="#GBDecisionMachine.GBDecisionMachine.fromDataframe" title="Permalink to this definition">
             ¶
            </a>
           </dt>
@@ -770,7 +773,7 @@
           </dd>
          </dl>
          <dl class="py method">
-          <dt id="IntervalPeriodConverter.IntervalPeriodConverter.fromFilename">
+          <dt id="GBDecisionMachine.GBDecisionMachine.fromFilename">
            <em class="property">
             <span class="pre">
              classmethod
@@ -801,66 +804,10 @@
              </span>
             </span>
            </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              interval
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="n">
-             <span class="pre">
-              int
-             </span>
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              15
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              movingAverageSize
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="n">
-             <span class="pre">
-              int
-             </span>
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              20
-             </span>
-            </span>
-           </em>
            <span class="sig-paren">
             )
            </span>
-           <a class="headerlink" href="#IntervalPeriodConverter.IntervalPeriodConverter.fromFilename" title="Permalink to this definition">
+           <a class="headerlink" href="#GBDecisionMachine.GBDecisionMachine.fromFilename" title="Permalink to this definition">
             ¶
            </a>
           </dt>
@@ -916,7 +863,7 @@
           </dd>
          </dl>
          <dl class="py method">
-          <dt id="IntervalPeriodConverter.IntervalPeriodConverter.parseToInterval">
+          <dt id="GBDecisionMachine.GBDecisionMachine.parseToInterval">
            <code class="sig-name descname">
             <span class="pre">
              parseToInterval
@@ -928,7 +875,7 @@
            <span class="sig-paren">
             )
            </span>
-           <a class="headerlink" href="#IntervalPeriodConverter.IntervalPeriodConverter.parseToInterval" title="Permalink to this definition">
+           <a class="headerlink" href="#GBDecisionMachine.GBDecisionMachine.parseToInterval" title="Permalink to this definition">
             ¶
            </a>
           </dt>
@@ -936,7 +883,7 @@
           </dd>
          </dl>
          <dl class="py method">
-          <dt id="IntervalPeriodConverter.IntervalPeriodConverter.update">
+          <dt id="GBDecisionMachine.GBDecisionMachine.update">
            <code class="sig-name descname">
             <span class="pre">
              update
@@ -948,23 +895,23 @@
            <span class="sig-paren">
             )
            </span>
-           <a class="headerlink" href="#IntervalPeriodConverter.IntervalPeriodConverter.update" title="Permalink to this definition">
+           <a class="headerlink" href="#GBDecisionMachine.GBDecisionMachine.update" title="Permalink to this definition">
             ¶
            </a>
           </dt>
           <dd>
            <p>
-            Updates the IntervalPeriodConverter and computes bollinger bands, moving averages, …
+            Updates the GBDataMachine and computes bollinger bands, moving averages, …
            </p>
           </dd>
          </dl>
         </dd>
        </dl>
        <dl class="py function">
-        <dt id="IntervalPeriodConverter.main">
+        <dt id="GBDecisionMachine.main">
          <code class="sig-prename descclassname">
           <span class="pre">
-           IntervalPeriodConverter.
+           GBDecisionMachine.
           </span>
          </code>
          <code class="sig-name descname">
@@ -978,7 +925,7 @@
          <span class="sig-paren">
           )
          </span>
-         <a class="headerlink" href="#IntervalPeriodConverter.main" title="Permalink to this definition">
+         <a class="headerlink" href="#GBDecisionMachine.main" title="Permalink to this definition">
           ¶
          </a>
         </dt>
@@ -993,7 +940,7 @@
   <footer class="md-footer">
    <div class="md-footer-nav">
     <nav class="md-footer-nav__inner md-grid">
-     <a class="md-flex md-footer-nav__link md-footer-nav__link--prev" href="KrakenApi.html" rel="prev" title="KrakenApi">
+     <a class="md-flex md-footer-nav__link md-footer-nav__link--prev" href="GBDataMachine.html" rel="prev" title="GBDataMachine">
       <div class="md-flex__cell md-flex__cell--shrink">
        <i class="md-icon md-icon--arrow-back md-footer-nav__button">
        </i>
@@ -1004,7 +951,7 @@
          Previous
         </span>
         <em>
-         KrakenApi
+         GBDataMachine
         </em>
        </span>
       </div>

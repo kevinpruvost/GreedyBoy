@@ -37,6 +37,7 @@ toIgnore = [
     "AOT_Test.py",
     "JIT_Test.py",
     "GraphViewer.py",
+    "GraphViewerDataMachine.py"
     "Zipper.py"
 ]
 

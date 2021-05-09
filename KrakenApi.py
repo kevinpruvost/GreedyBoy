@@ -70,7 +70,7 @@ class KrakenApi:
         :param dataBranchName: Github branch name
         :type dataBranchName: str
         """
-        self.dataPaths = tempfile.gettempdir() + "/data" + currencyInitial + ".csv"
+        self.dataPaths = tempfile.gettempdir() + "/" + currencyInitial + ".csv"
         self.githubDataFilename = time.strftime('%d-%m-%Y', time.localtime(time.time())) + ".csv"
         self.githubDataPaths = "./price_history/" + currencyInitial + "/" + self.githubDataFilename
         self.apiKey, self.apiPrivateKey = apiKey, apiPrivateKey

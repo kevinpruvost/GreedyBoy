@@ -157,7 +157,7 @@ class KrakenBacktestGetter:
         :param dataBranchName: Github branch name
         :type dataBranchName: str
         """
-        self.dataPaths = [tempfile.gettempdir() + "/data" + initial + ".csv" for initial in currencyInitials]
+        self.dataPaths = [tempfile.gettempdir() + "/" + initial + ".csv" for initial in currencyInitials]
         self.githubDataFilename = time.strftime('%d-%m-%Y', time.localtime(time.time())) + ".csv"
         self.githubDataPaths = ["./price_history/" + initial + "/" + self.githubDataFilename for initial in currencyInitials]
 

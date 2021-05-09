@@ -17,7 +17,7 @@ Specifications
 
 APIs
 ++++
-For now, `Kraken <https://docs.kraken.com/websockets/>`_ is the only market API implemented.
+For now, the `Kraken API <https://docs.kraken.com/websockets/>`_ is the only market API implemented.
 
 GreedyBoy can only perform orders and retrieve informations from this one.
 

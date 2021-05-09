@@ -26,7 +26,7 @@ Configuring ``config.csv`` is a mandatory step to make GreedyBoy able to work on
  File representation |:file_folder:|
 -------------------------------------
 
-   .. code-block:: csv
+   .. code-block::
 
       apiKey,apiPrivateKey,githubToken,repoName,dataBranchName
       `Api_Key`,`Api_Private_Key`,`Github_Token`,kevinpruvost/GreedyBoy,data

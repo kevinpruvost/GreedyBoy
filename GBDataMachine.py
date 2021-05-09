@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 ##
-## IntervalPeriodConverter.py
+## GBDataMachine.py
 ##
 
 __author__      = "Kevin Pruvost"
@@ -12,15 +12,13 @@ __maintainer__  = "Kevin Pruvost"
 __email__       = "pruvostkevin0@gmail.com"
 __status__      = "Test"
 
-from GraphViewer import GraphViewer
 import pandas.core.generic as gen
 import copy
 import pandas as pd
-from PerformanceTimer import time_function
 
-class IntervalPeriodConverter:
+class GBDataMachine:
     @classmethod
-    def fromFilename(cls, fileName: str, interval: int = 15, movingAverageSize: int = 20):
+    def fromFilename(cls, fileName: str, interval: int = 15, movingAverageSize: int = 30):
         """Constructor starting from a filename.
 
         :param fileName: Name of the file containing the data.
@@ -34,7 +32,7 @@ class IntervalPeriodConverter:
         return cls(csvData, interval, movingAverageSize)
 
     @classmethod
-    def fromDataframe(cls, data: gen.NDFrame, interval: int = 15, movingAverageSize: int = 20):
+    def fromDataframe(cls, data: gen.NDFrame, interval: int = 15, movingAverageSize: int = 30):
         """Constructor starting from a filename.
 
         :param data: Structure containing prices and dates.
@@ -46,8 +44,8 @@ class IntervalPeriodConverter:
         """
         return cls(data, interval, movingAverageSize)
 
-    def __init__(self, data: gen.NDFrame, interval: int = 15, movingAverageSize: int = 20):
-        """Constructs IntervalPeriodConverter with the given data formatted like a csv [epochTime, price].
+    def __init__(self, data: gen.NDFrame, interval: int = 15, movingAverageSize: int = 30):
+        """Constructs GBDataMachine with the given data formatted like a csv [epochTime, price].
 
         :param data: Structure containing prices and dates.
         :type data: gen.NDFrame
@@ -116,7 +114,7 @@ class IntervalPeriodConverter:
         self.update()
 
     def update(self):
-        """Updates the IntervalPeriodConverter and computes bollinger bands, moving averages, ..."""
+        """Updates the GBDataMachine and computes bollinger bands, moving averages, ..."""
         if self.ordered.at[len(self.ordered) - 1, 'Date'] != self.newRound['Date']:
             self.ordered = self.ordered.append(self.newRound, ignore_index=True)
         else:
@@ -132,6 +130,7 @@ class IntervalPeriodConverter:
         self.bollingerGaps['Value'] = round(
             (self.ordered['Close'] - self.ordered['LBand']) / (self.ordered['HBand'] - self.ordered['LBand']) * 100
         , 2)
+
     def convertForGraphicViews(self):
         """Convert data and format it for :ref:`GraphViewer<GraphViewer>`.
 
@@ -143,13 +142,3 @@ class IntervalPeriodConverter:
         data1["Date"], data2["Date"] = pd.to_datetime(data1["Date"], unit='s'), pd.to_datetime(data2["Date"], unit='s')
         data1, data2 = data1.set_index('Date'), data2.set_index('Date')
         return data1, data2
-
-def main():
-    intervalPeriodConverter = IntervalPeriodConverter.fromFilename("data.csv", 15, 20)
-    data1, data2 = intervalPeriodConverter.convertForGraphicViews()
-    print(data1, data2)
-    graphicView = GraphViewer(data1, data2)
-    graphicView.start()
-
-if __name__ == '__main__':
-    time_function(main)

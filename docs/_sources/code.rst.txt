@@ -16,5 +16,6 @@ GreedyBoy is split into several parts:
    ./codeDocumentation/GraphViewer.rst
    ./codeDocumentation/KrakenBacktestGetter.rst
    ./codeDocumentation/KrakenApi.rst
-   ./codeDocumentation/IntervalPeriodConverter.rst
+   ./codeDocumentation/GBDataMachine.rst
+   ./codeDocumentation/GBDecisionMachine.rst
    ./codeDocumentation/GreedyBoy.rst

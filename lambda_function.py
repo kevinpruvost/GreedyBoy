@@ -19,7 +19,7 @@ def lambda_handler(event, context):
     }
 
 def main():
-    timer = time.perf_counter() + 2 * 15 - 15
+    timer = time.perf_counter() + 60 * 15 - 15
     apiKey, apiPrivateKey, githubToken, repoName, dataBranchName = ConfigManager.getConfig()
     kBacktestGetter = KrakenBacktestGetter(apiKey, apiPrivateKey, githubToken, repoName, dataBranchName)
 #    kApi = KrakenApi.KrakenApi(apiKey, apiPrivateKey)

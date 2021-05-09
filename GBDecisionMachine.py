@@ -54,7 +54,6 @@ class GBDecisionMachine:
         :param movingAverageSize: Number of data taken into account to calculate a moving average.
         :type movingAverageSize: int
         """
-        self.data = data
         self.roundTemp = {
             'Date': 0,
             'Price': 0,
@@ -63,22 +62,12 @@ class GBDecisionMachine:
         }
         self.newRound = copy.deepcopy(self.roundTemp)
         self.bollingerGaps = pd.DataFrame()
-        if 'Low' not in data:
-            self.ordered = pd.DataFrame()
-            self.parseToArray()
-        else:
-            self.ordered = data
+        self.ordered = data
         return
-
-    def parseToArray(self):
-        for i, row in self.data.iterrows():
-            self.__append(row['epoch'], row['price'])
-        self.update()
-        self.data = pd.DataFrame()
 
     def __append(self, epochTime: float, price: float, amount: float, order: str):
         self.newRound['Date', 'Price', 'Amount', 'Order'] = epochTime, price, amount, order
-        self.ordered.append(self.newRound)
+        self.ordered.append(self.newRound, ignore_index=True)
 
     def append(self, epochTime: float, price: float, amount: float, order: str):
         """Appends new (epochTime, price) into the Dataframes.
@@ -89,7 +78,6 @@ class GBDecisionMachine:
         :type price: float
         """
         self.__append(epochTime, price, amount, order)
-        self.update()
 
     def convertForGraphicViews(self):
         """Convert data and format it for :ref:`GraphViewer<GraphViewer>`.
@@ -98,6 +86,7 @@ class GBDecisionMachine:
         :rtype: (pandas.DataFrame)
         """
         data = copy.deepcopy(self.ordered)
-        data["Date"] = pd.to_datetime(data["Date"], unit='s'), pd.to_datetime(data["Date"], unit='s')
+        print(data)
+        data["Date"] = pd.to_datetime(data["Date"], unit='s')
         data = data.set_index('Date')
         return data

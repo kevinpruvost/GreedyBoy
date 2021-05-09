@@ -12,15 +12,17 @@ __maintainer__  = "Kevin Pruvost"
 __email__       = "pruvostkevin0@gmail.com"
 __status__      = "Test"
 
+import pandas as pd
 import websocket as websocket
 import urllib as urllib
 import _thread
+from threading import Thread
 import csv
 import time, base64, hashlib, hmac, json
 import tempfile
 from github import Github
 
-currencyInitials = ["XDG", "XBT", "ETH", "XRP", "ETC", "LINK"]
+currencyInitials = ["XDG", "ETC", "LINK", "ETH"]
 """Contains currency codes of the cryptocurrencies to get the prices from."""
 
 class KrakenBacktestGetter:
@@ -54,12 +56,14 @@ class KrakenBacktestGetter:
     ##
 
     def __ws_thread(self, *args):
+        self.dataFrames = dict()
         self.dataFiles = dict()
         self.dataWriters = dict()
         for i in range(len(currencyInitials)):
             try:
                 self.dataFiles[currencyInitials[i]] = None
                 self.dataWriters[currencyInitials[i]] = None
+                self.dataFrames[currencyInitials[i]] = None
                 githubFile = self.greedyBoyRepo.get_contents(self.githubDataPaths[i], self.branchName)
                 githubFileContent = githubFile.decoded_content.decode('ascii')
                 empty = not csv.Sniffer().has_header(githubFileContent)
@@ -68,46 +72,40 @@ class KrakenBacktestGetter:
                     self.dataFile.write(githubFileContent)
                     self.dataFile.close()
             except:
-                empty = True
                 self.dataFile = open(self.dataPaths[i], "w")
-                self.dataFile.write("")
+                self.dataFile.write("epoch,price\n")
                 self.dataFile.close()
-            self.dataFiles[currencyInitials[i]] = open(self.dataPaths[i], "a")
-            self.dataWriters[currencyInitials[i]] = csv.DictWriter(self.dataFiles[currencyInitials[i]], fieldnames=["epoch", "price"], lineterminator="\n")
-            if empty:
-                self.dataWriters[currencyInitials[i]].writeheader()
+            self.dataFrames[currencyInitials[i]] = pd.read_csv(self.dataPaths[i])
 
         def ws_message(ws, message):
             j = json.loads(message)
-            #print(j)
             for initial in currencyInitials:
                 initialEur = initial + "/EUR"
                 if isinstance(j, list) and j[-1] == initialEur:
                     for info in j[1]:
-                        self.dataWriters[initial].writerow({"epoch": str(info[2]), "price": str(info[0])})
                         print(initialEur + "[" + time.strftime('%d/%m/%Y %H:%M:%S', time.localtime(float(info[2]))) + "]: " + info[0] + "€")
+                        newRow = {'epoch': info[2], 'price': info[0]}
+                        self.dataFrames[initial] = self.dataFrames[initial].append(newRow, ignore_index=True)
 
         def ws_open(ws):
             for initial in currencyInitials:
                 ws.send('{"event":"subscribe", "subscription":{"name":"trade"}, "pair":["' + initial + '/EUR"]}')
 
-        ws = websocket.WebSocketApp("wss://ws.kraken.com/", on_open=ws_open, on_message=ws_message)
-        ws.run_forever()
+        def ws_close(ws):
+            print("Closing")
+            self.__close()
+            self.ws.close()
+
+        self.ws = websocket.WebSocketApp("wss://ws.kraken.com/", on_open=ws_open, on_message=ws_message, on_close=ws_close)
+        self.ws.run_forever()
 
     ##
     ## GITHUB PART
     ##
 
-    def close(self):
-        """Stops the BacktestGetter and writes what's into buffers to Github."""
-        timer = time.perf_counter()
-
+    def __close(self):
         for i, initial in enumerate(currencyInitials):
-            if not self.dataFiles[initial].closed:
-                self.dataFiles[initial].close()
-            self.dataFiles[initial] = open(self.dataPaths[i], "r")
-            cnt = self.dataFiles[initial].read()
-            self.dataFiles[initial].close()
+            cnt = self.dataFrames[initial].to_csv(index=False)
 
             update = False
             try:
@@ -118,7 +116,8 @@ class KrakenBacktestGetter:
                     if file.name == self.githubDataFilename:
                         update, fileSha = True, file.sha
                         break
-            except: 0
+            except:
+                print("Couldn't get dir content.")
 
             msg = self.githubDataFilename + " updated."
             if update:
@@ -127,7 +126,7 @@ class KrakenBacktestGetter:
                     message=msg,
                     content=cnt,
                     branch=self.branchName,
-                    sha=file.sha
+                    sha=fileSha
                 )
             else:
                 self.greedyBoyRepo.create_file(
@@ -137,8 +136,13 @@ class KrakenBacktestGetter:
                     branch=self.branchName
                 )
 
-        print("Sending files took " + str(time.perf_counter() - timer) + " seconds.")
+    def close(self):
+        """Stops the BacktestGetter and writes what's into buffers to Github."""
+        timer = time.perf_counter()
+        self.ws.keep_running = False
+        self.thread.join()
 
+        print("Sending files took " + str(time.perf_counter() - timer) + " seconds.")
 
     ##
     ## INIT
@@ -173,4 +177,6 @@ class KrakenBacktestGetter:
         self.greedyBoyRepo = g.get_repo(repoName)
 
         # Start a new thread for the WebSocket interface
-        _thread.start_new_thread(self.__ws_thread, ())
+        self.thread = Thread(target=self.__ws_thread, args=())
+        self.thread.start()
+        #_thread.start_new_thread(self.__ws_thread, ())

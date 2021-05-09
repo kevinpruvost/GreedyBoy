@@ -28,7 +28,7 @@ def main():
     today = datetime.datetime.today()
     today = today.replace(hour=0, minute=0, second=0, microsecond=0)
     tomorrowLimit = datetime.datetime.fromtimestamp(
-        today.timestamp() + 86400 - 10
+        today.timestamp() + 86400 - 15
     )
 
     while True:

@@ -74,36 +74,29 @@ class GraphViewer:
 
     def __init__(self, priceData: pandas.DataFrame, bollingerData: pandas.DataFrame, animateCallback = None, fullscreen: bool = True):
         self.setPricesData(priceData, bollingerData)
+        self.draw = None
 
         s = mplfinance.make_mpf_style(base_mpf_style='mike', rc={'font.size': 12})
         fig = mplfinance.figure(figsize=(15, 7), style=s)    # Defining figure size
         ax1 = fig.add_subplot(2, 1, 1)              # Defining plot 1
         ax2 = fig.add_subplot(2, 1, 2)              # Defining plot 2
 
-        def animate(ival):
-            if animateCallback: animateCallback()
-            if (20 + ival) > len(self.bollingerData):
-                print('no more data to plot')
-                ani.event_source.interval *= 3
-                if ani.event_source.interval > 12000:
-                    exit()
-                return
-            # datas = df.iloc[0:(20+ival)]
-
+        def draw():
             ##
             ## Drawing Price Candle Chart + Bollinger Bands
             ##
-            ax1.clear()     # Clear
-            mplfinance.plot(self.priceData, ax=ax1, type='candle', style='charles')     # Drawing Candle Chart
-            chart1 = self.bollinger_bands.plot(ax=ax1, use_index=False)                 # Drawing Bollinger Bands
+            ax1.clear()  # Clear
+            mplfinance.plot(self.priceData, ax=ax1, type='candle', style='charles')  # Drawing Candle Chart
+            chart1 = self.bollinger_bands.plot(ax=ax1, use_index=False)  # Drawing Bollinger Bands
+            #            self.reportData.plot(ax=ax1, use_index=False)
 
             ##
             ## Drawing Bollinger Gaps
             ##
-            ax2.cla()           # Clear
-            self.bollingerData.plot(ax=ax2)     # Drawing data lines
-            ax2.axhline(y=100, color="red", lw=1.5, linestyle="-")    # Drawing '100' line limit
-            ax2.axhline(y=0, color="green", lw=1.5, linestyle="-")    # Drawing '0' line limit
+            ax2.cla()  # Clear
+            self.bollingerData.plot(ax=ax2)  # Drawing data lines
+            ax2.axhline(y=100, color="red", lw=1.5, linestyle="-")  # Drawing '100' line limit
+            ax2.axhline(y=0, color="green", lw=1.5, linestyle="-")  # Drawing '0' line limit
 
             # Defining scatter points color considering their values
             # <= 0      : Green,
@@ -123,6 +116,19 @@ class GraphViewer:
                     sel.annotation.get_bbox_patch().set(color="white", alpha=1)
                     sel.annotation.arrow_patch.set(arrowstyle="fancy", color="white", alpha=1)
 
+        def animate(ival):
+            if animateCallback: animateCallback()
+            if (20 + ival) > len(self.bollingerData):
+                print('no more data to plot')
+                ani.event_source.interval *= 3
+                if ani.event_source.interval > 12000:
+                    exit()
+                return
+            # datas = df.iloc[0:(20+ival)]
+            self.draw()
+
+        self.draw = draw
+
         self.ani = animation.FuncAnimation(fig, animate, interval=10000)  # Creating Animation
         ani = self.ani
 
@@ -137,6 +143,9 @@ class GraphViewer:
         self.priceData, self.bollingerData = priceData, bollingerData
         self.bollinger_bands = self.priceData[['HBand', 'LBand']]
 
+    def setReportData(self, reportData: pandas.DataFrame):
+        self.reportData = reportData
+
     def start(self):
         """Starts the graph.
 
@@ -144,17 +153,23 @@ class GraphViewer:
 
            It is a blocking function (like an app.exec() in Qt).
         """
+        self.draw()
         plt.show()
 
 def main():
     apiKey, apiPrivateKey, githubToken, repoName, dataBranchName = ConfigManager.getConfig()
     dataMachine = GraphViewerDataMachine(githubToken, repoName, dataBranchName, currencyInitial)
-    data = dataMachine.getData()
-    mergedData = pd.concat(data)
-    intervalPeriodConverter = GBDataMachine.fromDataframe(mergedData, 15, 20)
-    data1, data2 = intervalPeriodConverter.convertForGraphicViews()
+    priceData, reportData = dataMachine.getData()
+    mergedData = pd.concat(priceData)
 
-    graphicView = GraphViewer(data1, data2)
+    dataMachine = GBDataMachine.fromDataframe(mergedData, 15, 30)
+    if 'Date' in reportData: decisionMachine = GBDecisionMachine.fromDataframe(reportData)
+
+    pricesData, bollinerData = dataMachine.convertForGraphicViews()
+    if 'Date' in reportData: reportData = decisionMachine.convertForGraphicViews()
+
+    graphicView = GraphViewer(pricesData, bollinerData)
+    if 'Date' in reportData: graphicView.setReportData(reportData)
     graphicView.start()
 
 if __name__ == '__main__':

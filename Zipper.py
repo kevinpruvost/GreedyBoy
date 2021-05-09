@@ -26,19 +26,24 @@ toIgnore = [
     ".gitignore",
     "config_example.csv",
     "README.md",
-    "requirements.txt"
     "logo",
     "docs",
     "docsrc",
     "logo",
     "make.bat",
     "Makefile",
+    "LayersAWSLambda",
     "AOT_Compile.py",
     "AOT_Test.py",
     "JIT_Test.py",
     "GraphViewer.py",
-    "GraphViewerDataMachine.py"
-    "Zipper.py"
+    "GraphViewerDataMachine.py",
+    "Zipper.py",
+    "GBDataMachine.py",
+    "GBDecisionMachine.py",
+    "temp.csv",
+    "data.csv",
+    "candlestick_python_data.csv",
 ]
 
 def main():

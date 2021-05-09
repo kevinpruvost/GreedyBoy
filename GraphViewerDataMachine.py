@@ -36,6 +36,21 @@ class GraphViewerDataMachine:
                     self.priceData.append(pd.read_csv(self.dataPath))
             except:
                 print("Couldn't get data from " + dataPath)
+        try:
+            githubFile = self.greedyBoyRepo.get_contents(self.githubReportPath, self.branchName)
+            githubFileContent = githubFile.decoded_content.decode('ascii')
+            empty = not csv.Sniffer().has_header(githubFileContent)
+            if not empty:
+                try:
+                    os.makedirs(os.path.dirname(self.dataPath))
+                except:
+                    0
+                dataFile = open(self.dataPath, "w")
+                dataFile.write(githubFileContent)
+                dataFile.close()
+                self.reportData = (pd.read_csv(self.dataPath))
+        except:
+            print("Couldn't get report data from " + self.githubReportPath)
 
     def __init__(self, githubToken, repoName, dataBranchName, currency):
         """
@@ -47,11 +62,13 @@ class GraphViewerDataMachine:
         :type dataBranchName: str
         """
         self.currencyInitial = currency
+        self.reportData = pd.DataFrame()
         self.priceData = []
         self.dataPath = tempfile.gettempdir() + "/GreedyBoy/graphViewer/" + self.currencyInitial + ".csv"
         self.githubDataFilenames = [time.strftime('%d-%m-%Y', time.localtime(time.time() - 24 * 60 * 60)) + ".csv",
                                     time.strftime('%d-%m-%Y', time.localtime(time.time())) + ".csv"]
         self.githubDataPaths = ["./price_history/" + self.currencyInitial + "/" + githubDataFilename for githubDataFilename in self.githubDataFilenames]
+        self.githubReportPath = "./reports/" + self.currencyInitial + "/" + "report.csv"
         self.githubToken, self.branchName = githubToken, dataBranchName
 
         # Github repo
@@ -61,4 +78,4 @@ class GraphViewerDataMachine:
         self.retrieveDataFromGithub()
 
     def getData(self):
-        return self.priceData
+        return self.priceData, self.reportData

@@ -86,6 +86,8 @@ class GreedyBoyDecisionMaker:
         self.makeDecision()
         #print(self.dataMachine.iloc[:5].to_csv(index=False))
 
+    ######################################################################
+    ## Decisions Making
     def makeDecision(self):
         self.AddOrder("buy", 1500, 0.5)
 

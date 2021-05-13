@@ -11,8 +11,6 @@ import _thread
 import tempfile
 import time, base64, hashlib, hmac, json
 
-from toml import ordered
-
 
 def get_kraken_signature(urlpath, data, secret):
     postdata = urllib.parse.urlencode(data)

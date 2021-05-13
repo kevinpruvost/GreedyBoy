@@ -77,7 +77,7 @@ class GreedyBoy:
 
 
         def ws_message(ws, message):
-            if self.limitTime - time.perf_counter() <= 0: self.ws.close()
+            if time.time() >= self.limitTime: self.ws.close()
             j = json.loads(message)
             for initial in currencyInitials:
                 initialEur = initial + "/EUR"
@@ -185,26 +185,25 @@ import datetime
 import ConfigManager
 
 def main(event, context):
-    timer = time.perf_counter() + 2 * 15 - 15
-    apiKey, apiPrivateKey, githubToken, repoName, dataBranchName = ConfigManager.getConfig()
-    greedyBoy = GreedyBoy(apiKey, apiPrivateKey, githubToken, repoName, dataBranchName, timer)
-
+    # Timer 14:45
+    timer = time.time() + 2 * 15 - 20
+    # Day limit 23:59:45
     today = datetime.datetime.today()
-    today = today.replace(hour=0, minute=0, second=0, microsecond=0)
-    tomorrowLimit = datetime.datetime.fromtimestamp(
-        today.timestamp() + 86400 - 15
-    )
+    today = today.replace(hour=23, minute=59, second=60 - 20, microsecond=0)
+    tomorrowLimit = datetime.datetime.fromtimestamp(today.timestamp())
+
+    timeLimit = timer if timer < today.timestamp() else today.timestamp()
+
+    apiKey, apiPrivateKey, githubToken, repoName, dataBranchName = ConfigManager.getConfig()
+    greedyBoy = GreedyBoy(apiKey, apiPrivateKey, githubToken, repoName, dataBranchName, timeLimit)
 
     while True:
         try:
             print(time.strftime('Now: %H:%M:%S, ', time.localtime(time.time()))
                   + time.strftime('Limit : %d/%m/%Y %H:%M:%S, Time remaining: ', time.localtime(tomorrowLimit.timestamp()))
-                  + str(timer - time.perf_counter()))
-            if time.time() > tomorrowLimit.timestamp():
-                print("Day finished !")
-                break
+                  + str(timeLimit - time.time()))
             time.sleep(3)
-            if time.perf_counter() > timer:
+            if time.time() >= timeLimit:
                 break
         except:
             break

@@ -39,8 +39,6 @@ toIgnore = [
     "GraphViewer.py",
     "GraphViewerDataMachine.py",
     "Zipper.py",
-    "GBDataMachine.py",
-    "GBDecisionMachine.py",
     "temp.csv",
     "data.csv",
     "candlestick_python_data.csv",

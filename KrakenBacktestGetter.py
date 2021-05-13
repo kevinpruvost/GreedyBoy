@@ -9,7 +9,7 @@ import time, base64, hashlib, hmac, urllib, json
 import tempfile
 from github import Github
 
-currencyInitials = ["XDG", "ETH", "ETC", "LINK"]
+currencyInitials = ["XDG", "ETH"]
 
 class KrakenBacktestGetter:
     ##

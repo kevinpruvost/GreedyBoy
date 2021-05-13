@@ -44,7 +44,7 @@ class GBDataMachine:
         """
         return cls(data, interval, movingAverageSize)
 
-    def __init__(self, data: gen.NDFrame, interval: int = 15, movingAverageSize: int = 30):
+    def __init__(self, data: gen.NDFrame = None, interval: int = 15, movingAverageSize: int = 30):
         """Constructs GBDataMachine with the given data formatted like a csv [epochTime, price].
 
         :param data: Structure containing prices and dates.
@@ -54,7 +54,6 @@ class GBDataMachine:
         :param movingAverageSize: Number of data taken into account to calculate a moving average.
         :type movingAverageSize: int
         """
-        self.data = data
         self.interval = interval
         self.movingAverageSize = movingAverageSize
         self.roundTemp = {
@@ -75,18 +74,20 @@ class GBDataMachine:
         self.newRound = copy.deepcopy(self.roundTemp)
         self.newGapRound = copy.deepcopy(self.bGapRoundTemp)
         self.bollingerGaps = pd.DataFrame()
-        if 'Low' not in data:
-            self.ordered = pd.DataFrame()
-            self.parseToInterval()
+        if data:
+            if 'Low' not in data:
+                self.ordered = pd.DataFrame()
+                self.parseToInterval(data)
+            else:
+                self.ordered = data
         else:
-            self.ordered = data
+            self.ordered = pd.DataFrame()
         return
 
-    def parseToInterval(self):
-        for i, row in self.data.iterrows():
+    def parseToInterval(self, data):
+        for i, row in data.iterrows():
             self.__append(row['epoch'], row['price'])
         self.update()
-        self.data = pd.DataFrame()
 
     def __append(self, epochTime: float, price: float):
         if self.newRound['Date'] != 0 and epochTime >= self.newRound['Date'] + 60 * self.interval:
@@ -101,6 +102,24 @@ class GBDataMachine:
             self.newRound['Low'] = price
         elif self.newRound['High'] < price:
             self.newRound['High'] = price
+
+    def appendFormated(self, date: float, open: float, high: float, low: float, close: float):
+        self.ordered = self.ordered.append({
+            'Date': date,
+            'Open': float(open),
+            'High': float(high),
+            'Low': float(low),
+            'Close': float(close),
+            'MA': 0,
+            'Std': 0,
+            'LBand': 0,
+            'HBand': 0
+        }, ignore_index=True)
+
+    def appendDataframe(self, dataFrame: pd.DataFrame):
+        for i, row in dataFrame.iterrows():
+            self.__append(row['epoch'], row['price'])
+        self.update()
 
     def append(self, epochTime: float, price: float):
         """Appends new (epochTime, price) into the Dataframes.
@@ -142,3 +161,6 @@ class GBDataMachine:
         data1["Date"], data2["Date"] = pd.to_datetime(data1["Date"], unit='s'), pd.to_datetime(data2["Date"], unit='s')
         data1, data2 = data1.set_index('Date'), data2.set_index('Date')
         return data1, data2
+
+    def memoryUsage(self):
+        return self.ordered.memory_usage(deep=True).sum() + self.bollingerGaps.memory_usage(deep=True).sum()

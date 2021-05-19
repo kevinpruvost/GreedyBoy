@@ -45,6 +45,18 @@ def main():
     testTimes = getTestTimeList(greedyBoyRepo, dataBranchName)
     testTimes.sort()
 
+    # Log test
+    testLog = open(tempfile.gettempdir() + "/testResults.csv", "w")
+    testLogWriter = csv.DictWriter(
+        testLog,
+        fieldnames=['Date', 'Crypto', 'Fiat', 'OpeningPrice', 'ClosePrice', 'OverallBenefit', 'BotBenefit'],
+        lineterminator="\n"
+    )
+    testLogWriter.writeheader()
+
+    # Test Configurations
+    cryptoBalance, fiatBalance = 15000, 0 # 15000 XDG, 0 euros
+
     # Loading test files
     testDatas = []
     for i, testTime in enumerate(testTimes):
@@ -86,8 +98,39 @@ def main():
             testTime=testTime                               # Test Time
         )
         gbDM.dataMachine.appendDataframe(testDatas[i - 1])
+
+        # To get for comparisons
+        beginningPrice = gbDM.dataMachine.lastPrice()
+
+        gbDM.setCustomBalance(cryptoBalance, fiatBalance)
         for i, row in testDatas[i].iterrows():
             gbDM.addData(row['epoch'], row['price'])
+
+        # Log
+        startingMoney = fiatBalance + cryptoBalance * beginningPrice
+
+        # Benefits computed in percentage
+        overallBenefit = (gbDM.fiatBalance + gbDM.cryptoBalance * gbDM.dataMachine.lastPrice()) / startingMoney
+        botBenefit = (gbDM.fiatBalance + gbDM.cryptoBalance * gbDM.dataMachine.lastPrice()) / \
+                     (fiatBalance + cryptoBalance * gbDM.dataMachine.lastPrice())
+
+        overallBenefit = (overallBenefit - 1) * 100
+        botBenefit = (botBenefit - 1) * 100
+
+        row = {
+            'Date': testTime,
+            'Crypto': gbDM.cryptoBalance,
+            'Fiat': gbDM.fiatBalance,
+            'OpeningPrice': beginningPrice,
+            'ClosePrice': gbDM.dataMachine.lastPrice(),
+            'OverallBenefit': overallBenefit,
+            'BotBenefit': botBenefit
+        }
+        testLogWriter.writerow(row)
+        print("Results of " + time.strftime('%d/%m/%Y', time.gmtime(testTime)) + ": " + str(row))
+
+    # Close log
+    testLog.close()
 
 if __name__ == '__main__':
     main()

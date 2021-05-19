@@ -40,34 +40,12 @@ class GreedyBoyDecisionMaker:
         if empty:
             self.orderWriter.writeheader()
 
-    def AddOrder(self, buyOrSell: str, amount, price = None):
-        if not price:
-            price = self.dataMachine.ordered.iloc[-1]["Close"] # Gets Last price registered
-
-        if self.buySellLimit != 0:
-            maxAmount = self.buySellLimit / price # Gets max amount to buy or sell
-            amount = min(amount, maxAmount)
-
-        ##
-        ## TODO: Corriger buy amount par rapport au frique disponible, pareil pour sell
-        ##
-
-        self.krakenApi.AddOrder(buyOrSell, "market", amount, self.initial)
-        self.__writeRowToTemp({'Date': self.lastOrder, 'Price': str(price), 'Amount': str(amount), 'Order': buyOrSell})
-        self.lastOrder = {'Date': self.lastOrder, 'Price': price, 'Amount': amount, 'Order': buyOrSell}
-        if self.testTime:
-            if self.buyOrSellPosition == "buy":
-                self.cryptoBalance += amount * (1 - 0.002)
-                self.fiatBalance -= amount * price * (1 - 0.002)
-            elif self.buyOrSellPosition == "sell":
-                self.cryptoBalance -= amount * (1 - 0.002)
-                self.fiatBalance += amount * price * (1 - 0.002)
-            self.buyOrSellPosition = "buy" if self.buyOrSellPosition == "sell" else "sell"
+    def __setBuyOrSellPosition(self):
+        price = self.dataMachine.lastPrice()  # Gets Last price registered
+        if price:
+            self.buyOrSellPosition = "buy" if self.fiatBalance > self.cryptoBalance * price else "sell"
         else:
-            self.getCryptoAndFiatBalance()
-        self.highest = self.lowest = 50
-        print("Balance :" + str(self.cryptoBalance) + self.initial + ", " + str(self.fiatBalance) + " euros")
-        print("Added to reports : " + str(self.lastOrder))
+            self.buyOrSellPosition = "buy" if self.fiatBalance >= 10 else "sell"
 
     def start(self):
         self.__readLastOrders()
@@ -122,6 +100,41 @@ class GreedyBoyDecisionMaker:
         print("\t" + str(self.fiatBalance) + " euros")
         #print(self.dataMachine.ordered.to_csv(index=False))
 
+    def AddOrderMax(self, buyOrSell: str):
+        price = self.dataMachine.ordered.iloc[-1]["Close"]  # Gets Last price registered
+        amount = self.fiatBalance / price if buyOrSell == "buy" else self.cryptoBalance
+        self.AddOrder(buyOrSell, amount, price)
+
+    def AddOrder(self, buyOrSell: str, amount, price = None):
+        if not price:
+            price = self.dataMachine.ordered.iloc[-1]["Close"] # Gets Last price registered
+
+        if self.buySellLimit != 0:
+            maxAmount = self.buySellLimit / price # Gets max amount to buy or sell
+            amount = min(amount, maxAmount)
+
+        if buyOrSell == "buy":
+            amount = min(amount, self.fiatBalance / price * 0.999)
+        elif buyOrSell == "sell":
+            amount = min(amount, self.cryptoBalance * 0.999)
+
+        self.krakenApi.AddOrder(buyOrSell, "market", amount, self.initial)
+        self.__writeRowToTemp({'Date': self.lastOrder, 'Price': str(price), 'Amount': str(amount), 'Order': buyOrSell})
+        self.lastOrder = {'Date': self.lastOrder, 'Price': price, 'Amount': amount, 'Order': buyOrSell}
+        if self.testTime:
+            if self.buyOrSellPosition == "buy":
+                self.cryptoBalance += amount * (1 - 0.002)
+                self.fiatBalance -= amount * price * (1 - 0.002)
+            elif self.buyOrSellPosition == "sell":
+                self.cryptoBalance -= amount * (1 - 0.002)
+                self.fiatBalance += amount * price * (1 - 0.002)
+            self.__setBuyOrSellPosition()
+        else:
+            self.getCryptoAndFiatBalance()
+        self.highest = self.lowest = 50
+        print("Balance :" + str(self.cryptoBalance) + self.initial + ", " + str(self.fiatBalance) + " euros")
+        print("Added to reports : " + str(self.lastOrder))
+
     def addData(self, epoch, price):
         self.lastOrder = epoch
         self.dataMachine.append(epoch, price, False)
@@ -130,11 +143,15 @@ class GreedyBoyDecisionMaker:
 
     def getCryptoAndFiatBalance(self):
         self.cryptoBalance, self.fiatBalance = self.krakenApi.GetCryptoAndFiatBalance(self.initial, "EUR")
-        self.buyOrSellPosition = "buy" if self.fiatBalance >= 1 else "sell"
+        self.__setBuyOrSellPosition()
         return self.cryptoBalance, self.fiatBalance
 
     def setBuySellLimit(self, fiatValue: float):
         self.buySellLimit = fiatValue
+
+    def setCustomBalance(self, cryptoBalance: float, fiatBalance: float):
+        self.cryptoBalance, self.fiatBalance = cryptoBalance, fiatBalance
+        self.__setBuyOrSellPosition()
 
     ######################################################################
     ## Decisions Making
@@ -152,13 +169,13 @@ class GreedyBoyDecisionMaker:
                     curBolVal - self.lowest >= self.bollingerTolerance:
                 print(time.strftime('%d/%m/%Y %H:%M:%S', time.gmtime(self.dataMachine.bollingerGaps.iloc[-1]['Date'])))
                 print("Current bollinger value :", curBolVal)
-                self.AddOrder("buy", 1500)
+                self.AddOrderMax("buy")
         elif self.buyOrSellPosition == "sell":
             if self.highest > 100 and \
                     self.highest - curBolVal >= self.bollingerTolerance:
                 print(time.strftime('%d/%m/%Y %H:%M:%S', time.gmtime(self.dataMachine.bollingerGaps.iloc[-1]['Date'])))
                 print("Current bollinger value :", curBolVal)
-                self.AddOrder("sell", 1500)
+                self.AddOrderMax("sell")
 
     def __init__(self, apiKey, apiPrivateKey, githubToken, repoName, dataBranchName, initial, todayDataFilename,
                  ordersTempPath, ordersGithubPath, krakenToken = None, bollingerTolerance: float = 20, testTime: float = None):

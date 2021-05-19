@@ -175,3 +175,6 @@ class GBDataMachine:
 
     def currentBollingerValue(self):
         return self.bollingerGaps.iloc[[-1]].iloc[0]['Value']
+
+    def lastPrice(self):
+        return self.ordered.iloc[-1]["Close"] if len(self.ordered.index) != 0 else None

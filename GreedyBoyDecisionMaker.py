@@ -48,9 +48,25 @@ class GreedyBoyDecisionMaker:
             maxAmount = self.buySellLimit / price # Gets max amount to buy or sell
             amount = min(amount, maxAmount)
 
+        ##
+        ## TODO: Corriger buy amount par rapport au frique disponible, pareil pour sell
+        ##
+
         self.krakenApi.AddOrder(buyOrSell, "market", amount, self.initial)
-        self.__writeRowToTemp({'Date': str(time.time()), 'Price': str(price), 'Amount': str(amount), 'Order': buyOrSell})
-        self.lastOrder = {'Date': time.time(), 'Price': price, 'Amount': amount, 'Order': buyOrSell}
+        self.__writeRowToTemp({'Date': self.lastOrder, 'Price': str(price), 'Amount': str(amount), 'Order': buyOrSell})
+        self.lastOrder = {'Date': self.lastOrder, 'Price': price, 'Amount': amount, 'Order': buyOrSell}
+        if self.testTime:
+            if self.buyOrSellPosition == "buy":
+                self.cryptoBalance += amount * (1 - 0.002)
+                self.fiatBalance -= amount * price * (1 - 0.002)
+            elif self.buyOrSellPosition == "sell":
+                self.cryptoBalance -= amount * (1 - 0.002)
+                self.fiatBalance += amount * price * (1 - 0.002)
+            self.buyOrSellPosition = "buy" if self.buyOrSellPosition == "sell" else "sell"
+        else:
+            self.getCryptoAndFiatBalance()
+        self.highest = self.lowest = 50
+        print("Balance :" + str(self.cryptoBalance) + self.initial + ", " + str(self.fiatBalance) + " euros")
         print("Added to reports : " + str(self.lastOrder))
 
     def start(self):
@@ -100,9 +116,14 @@ class GreedyBoyDecisionMaker:
         except: 0
 
         print("Memory usage :", self.dataMachine.memoryUsage())
+        self.getCryptoAndFiatBalance()
+        print("Initial balance :")
+        print("\t" + str(self.cryptoBalance) + " XDG")
+        print("\t" + str(self.fiatBalance) + " euros")
         #print(self.dataMachine.ordered.to_csv(index=False))
 
     def addData(self, epoch, price):
+        self.lastOrder = epoch
         self.dataMachine.append(epoch, price, False)
         self.makeDecision()
         #print(self.dataMachine.iloc[:5].to_csv(index=False))
@@ -118,10 +139,29 @@ class GreedyBoyDecisionMaker:
     ######################################################################
     ## Decisions Making
     def makeDecision(self):
-        self.AddOrder("buy", 1500, 0.5)
+        curBolVal = self.dataMachine.currentBollingerValue()
+
+        if not self.buyOrSellPosition: return
+        if curBolVal <= 100 - self.bollingerTolerance and curBolVal >= self.bollingerTolerance: return
+
+        if curBolVal > self.highest: self.highest = curBolVal
+        elif curBolVal < self.lowest: self.lowest = curBolVal
+
+        if self.buyOrSellPosition == "buy":
+            if self.lowest < 0 and \
+                    curBolVal - self.lowest >= self.bollingerTolerance:
+                print(time.strftime('%d/%m/%Y %H:%M:%S', time.gmtime(self.dataMachine.bollingerGaps.iloc[-1]['Date'])))
+                print("Current bollinger value :", curBolVal)
+                self.AddOrder("buy", 1500)
+        elif self.buyOrSellPosition == "sell":
+            if self.highest > 100 and \
+                    self.highest - curBolVal >= self.bollingerTolerance:
+                print(time.strftime('%d/%m/%Y %H:%M:%S', time.gmtime(self.dataMachine.bollingerGaps.iloc[-1]['Date'])))
+                print("Current bollinger value :", curBolVal)
+                self.AddOrder("sell", 1500)
 
     def __init__(self, apiKey, apiPrivateKey, githubToken, repoName, dataBranchName, initial, todayDataFilename,
-                 ordersTempPath, ordersGithubPath, krakenToken = None, testTime: float = None):
+                 ordersTempPath, ordersGithubPath, krakenToken = None, bollingerTolerance: float = 20, testTime: float = None):
         self.initial = initial
         self.dataPathWrite = tempfile.gettempdir() + "/data" + initial + "_old.csv"
         self.githubDataFilename = time.strftime('%d-%m-%Y', time.localtime(time.time() - 86400)) + ".csv"
@@ -145,8 +185,9 @@ class GreedyBoyDecisionMaker:
         self.krakenApi = KrakenApi(apiKey, apiPrivateKey, krakenToken)
 
         # Decision making
+        self.bollingerTolerance = bollingerTolerance
         self.lastOrder = None
-        self.lowest = self.highest = None
+        self.lowest = self.highest = 50
         self.cryptoBalance = self.fiatBalance = 0
         self.buyOrSellPosition = None # "buy" / "sell"
         self.buySellLimit = 0 # 0 if no limit

@@ -83,7 +83,7 @@ class GreedyBoy:
         def ws_message(ws, message):
             # Check timer
             now = time.time()
-            if now - self.decisionMakerTimer >= 5: # if 5 seconds passed
+            if now - self.decisionMakerTimer >= 10: # if 10 seconds passed
                 self.decisionMakerTimer = now
                 self.decisionMaker.getCryptoAndFiatBalance()
 

@@ -147,6 +147,7 @@ class GBDataMachine:
         self.ordered['Std'] = self.ordered['Close'].rolling(window=self.movingAverageSize).std()
         self.ordered['HBand'] = self.ordered['MA'] + (self.ordered['Std'] * 2)
         self.ordered['LBand'] = self.ordered['MA'] - (self.ordered['Std'] * 2)
+        self.bollingerGaps = pd.DataFrame()
         self.bollingerGaps['Date'] = self.ordered['Date']
         self.bollingerGaps['Value'] = round(
             (self.ordered['Close'] - self.ordered['LBand']) / (self.ordered['HBand'] - self.ordered['LBand']) * 100
@@ -171,3 +172,6 @@ class GBDataMachine:
 
     def printPrices(self):
         print(self.ordered.to_csv(index=False))
+
+    def currentBollingerValue(self):
+        return self.bollingerGaps.iloc[[-1]].iloc[0]['Value']

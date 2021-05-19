@@ -7,6 +7,9 @@ import tempfile
 import pandas as pd
 import requests
 import csv
+
+from pdoc import reset
+
 from GBDataMachine import GBDataMachine
 from KrakenApi import KrakenApi
 from github import Github
@@ -37,11 +40,18 @@ class GreedyBoyDecisionMaker:
         if empty:
             self.orderWriter.writeheader()
 
-    def AddOrder(self, buyOrSell: str, amount, price):
+    def AddOrder(self, buyOrSell: str, amount, price = None):
+        if not price:
+            price = self.dataMachine.ordered.iloc[-1]["Close"] # Gets Last price registered
+
+        if self.buySellLimit != 0:
+            maxAmount = self.buySellLimit / price # Gets max amount to buy or sell
+            amount = min(amount, maxAmount)
+
         self.krakenApi.AddOrder(buyOrSell, "market", amount, self.initial)
         self.__writeRowToTemp({'Date': str(time.time()), 'Price': str(price), 'Amount': str(amount), 'Order': buyOrSell})
         self.lastOrder = {'Date': time.time(), 'Price': price, 'Amount': amount, 'Order': buyOrSell}
-        print("Added to reports : " + self.lastOrder)
+        print("Added to reports : " + str(self.lastOrder))
 
     def start(self):
         self.__readLastOrders()
@@ -49,12 +59,22 @@ class GreedyBoyDecisionMaker:
 
         ###################################
         # Getting data from the day before
-        resp = requests.get('https://api.kraken.com/0/public/OHLC?pair=' + self.initial + 'EUR&interval=15&since=' + str(time.time() - 86400))
-        if len(resp.json()["error"]) == 0: # If request actually got useful information
-            results = resp.json()["result"][self.initial + "EUR"]
-            for result in results:
+        lastTime = time.time() - 86401
+        resp = self.krakenApi.GetPrices(self.initial, 15, lastTime)
+        if resp: # If request actually got useful information
+            for result in resp:
                 self.dataMachine.appendFormated(result[0], result[1], result[2], result[3], result[4])
-        else:
+            lastTime = resp[-1][0] - 1
+        resp = self.krakenApi.GetPrices(self.initial, 1, lastTime)
+        if resp:
+            for result in resp:
+                self.dataMachine.append(result[0], result[1])
+                self.dataMachine.append(result[0], result[2])
+                self.dataMachine.append(result[0], result[3])
+                self.dataMachine.append(result[0], result[4])
+                self.dataMachine.append(result[0], result[5])
+
+        if self.dataMachine.ordered.size == 0:
             self.dataFiles = dict()
             try:
                self.dataFiles[self.initial] = None
@@ -82,9 +102,17 @@ class GreedyBoyDecisionMaker:
         #print(self.dataMachine.ordered.to_csv(index=False))
 
     def addData(self, epoch, price):
-        self.dataMachine.append(epoch, price)
+        self.dataMachine.append(epoch, price, False)
         self.makeDecision()
         #print(self.dataMachine.iloc[:5].to_csv(index=False))
+
+    def getCryptoAndFiatBalance(self):
+        self.cryptoBalance, self.fiatBalance = self.krakenApi.GetCryptoAndFiatBalance(self.initial, "EUR")
+        self.buyOrSellPosition = "buy" if self.fiatBalance >= 1 else "sell"
+        return self.cryptoBalance, self.fiatBalance
+
+    def setBuySellLimit(self, fiatValue: float):
+        self.buySellLimit = fiatValue
 
     ######################################################################
     ## Decisions Making
@@ -115,5 +143,8 @@ class GreedyBoyDecisionMaker:
         # Decision making
         self.lastOrder = None
         self.lowest = self.highest = None
+        self.cryptoBalance = self.fiatBalance = 0
+        self.buyOrSellPosition = None # "buy" / "sell"
+        self.buySellLimit = 0 # 0 if no limit
 
         self.start()

@@ -121,7 +121,7 @@ class GBDataMachine:
             self.__append(row['epoch'], row['price'])
         self.update()
 
-    def append(self, epochTime: float, price: float):
+    def append(self, epochTime: float, price: float, shouldPrint: bool = False):
         """Appends new (epochTime, price) into the Dataframes.
 
         :param epochTime: timestamp of the price
@@ -129,10 +129,12 @@ class GBDataMachine:
         :param price: price
         :type price: float
         """
+        if type(epochTime) != float: epochTime = float(epochTime)
+        if type(price) != float: price = float(price)
         self.__append(epochTime, price)
-        self.update()
+        self.update(shouldPrint)
 
-    def update(self):
+    def update(self, shouldPrint: bool = False):
         """Updates the GBDataMachine and computes bollinger bands, moving averages, ..."""
         if self.ordered.at[len(self.ordered) - 1, 'Date'] != self.newRound['Date']:
             self.ordered = self.ordered.append(self.newRound, ignore_index=True)
@@ -149,6 +151,8 @@ class GBDataMachine:
         self.bollingerGaps['Value'] = round(
             (self.ordered['Close'] - self.ordered['LBand']) / (self.ordered['HBand'] - self.ordered['LBand']) * 100
         , 2)
+        if shouldPrint:
+            print(self.ordered.iloc[[-1]])
 
     def convertForGraphicViews(self):
         """Convert data and format it for :ref:`GraphViewer<GraphViewer>`.
@@ -164,3 +168,6 @@ class GBDataMachine:
 
     def memoryUsage(self):
         return self.ordered.memory_usage(deep=True).sum() + self.bollingerGaps.memory_usage(deep=True).sum()
+
+    def printPrices(self):
+        print(self.ordered.to_csv(index=False))

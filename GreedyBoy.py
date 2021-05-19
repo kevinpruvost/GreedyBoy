@@ -74,10 +74,20 @@ class GreedyBoy:
             self.branchName, currencyInitials[0], self.dataPaths[0],              # Branch name, trading initial, temp path of today's data
             self.ordersDataPath, self.githubOrdersPath, self.token                # temp path containing orders, kraken token
         )
+        self.decisionMaker.setBuySellLimit(10)
+        self.decisionMaker.AddOrder("buy", 500)
+        return
+        self.decisionMakerTimer = time.time()
 
 
         def ws_message(ws, message):
-            if time.time() >= self.limitTime: self.ws.close()
+            # Check timer
+            now = time.time()
+            if now - self.decisionMakerTimer >= 5: # if 5 seconds passed
+                self.decisionMakerTimer = now
+                self.decisionMaker.getCryptoAndFiatBalance()
+
+            if now >= self.limitTime: self.ws.close()
             j = json.loads(message)
             for initial in currencyInitials:
                 initialEur = initial + "/EUR"

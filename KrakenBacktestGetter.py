@@ -1,7 +1,7 @@
 ###
 ### Kraken Api class
 ###
-
+import pandas
 import websocket
 import _thread
 import csv
@@ -51,6 +51,8 @@ class KrakenBacktestGetter:
                     self.dataFile = open(self.dataPaths[i], "w")
                     self.dataFile.write(githubFileContent)
                     self.dataFile.close()
+                    test = pandas.read_csv(self.dataPaths[i], parse_dates=True)
+                    print(test.info(memory_usage="deep"))
             except:
                 empty = True
                 self.dataFile = open(self.dataPaths[i], "w")

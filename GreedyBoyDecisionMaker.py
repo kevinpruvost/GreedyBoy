@@ -99,7 +99,7 @@ class GreedyBoyDecisionMaker:
             self.dataMachine.appendDataframe(todayData)
         except: 0
 
-        print(self.dataMachine.memoryUsage())
+        print("Memory usage :", self.dataMachine.memoryUsage())
         #print(self.dataMachine.ordered.to_csv(index=False))
 
     def addData(self, epoch, price):

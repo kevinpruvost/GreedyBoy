@@ -145,7 +145,7 @@ class KrakenApi:
 
         # Kraken Token
         self.token = token if token else self.getToken()
-        print(self.token)
+        #print(self.token)
 
 if __name__ == '__main__':
     api = KrakenApi("jN1hIQ7abFkjmn/ffco27/E2PC7/OfLatbX87vG5wa6vDlZP0GQTsoDa",

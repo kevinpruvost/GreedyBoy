@@ -42,6 +42,7 @@ toIgnore = [
     "temp.csv",
     "data.csv",
     "candlestick_python_data.csv",
+    "XDGEUR.csv"
 ]
 
 def main():

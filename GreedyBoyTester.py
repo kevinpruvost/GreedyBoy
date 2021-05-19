@@ -8,6 +8,7 @@ from ConfigManager import getConfig
 from KrakenApi import get_kraken_token
 import tempfile, time, csv, os
 from github import Github
+import pandas as pd
 
 # Testing with Dogecoin
 currencyInitial = "XDG"
@@ -17,7 +18,6 @@ def getTestTimeList(greedyBoyRepo, branchName) -> [float]:
 
     tab = []
     try:
-        print(os.path.dirname(githubDataPath))
         dirContent = greedyBoyRepo.get_contents(os.path.dirname(githubDataPath), branchName)
 
         ## Checks if file already exists
@@ -43,15 +43,24 @@ def main():
 
     # Loop
     testTimes = getTestTimeList(greedyBoyRepo, dataBranchName)
-    for testTime in testTimes:
-        print(testTime)
+    testTimes.sort()
+    print("Beginning tests...")
+    for i, testTime in enumerate(testTimes):
+        if i == 0: continue
+        if testTimes[i - 1] != testTime - 86400: continue
+        print("Test " + time.strftime('%d/%m/%Y', time.gmtime(testTime)))
         continue
+        start_date = testTime - 86400
+        end_date = testTime
+        mask = (overallData['epoch'] >= start_date) & (overallData['epoch'] <= end_date)
+        dataToUse = overallData.loc[mask]
+        print(overallData)
+        return
         dataPath = tempfile.gettempdir() + "/data" + currencyInitial + ".csv"
-        githubDataFilename = time.strftime('%d-%m-%Y', testTime) + ".csv"
+        githubDataFilename = time.strftime('%d-%m-%Y', time.gmtime(testTime)) + ".csv"
         githubDataPath = "./price_history/" + currencyInitial + "/" + githubDataFilename
 
         try:
-            dataFile = None
             dataWriter = None
             githubFile = greedyBoyRepo.get_contents(githubDataPath, dataBranchName)
             githubFileContent = githubFile.decoded_content.decode('ascii')
@@ -65,10 +74,6 @@ def main():
             dataFile = open(dataPath, "w")
             dataFile.write("")
             dataFile.close()
-        dataFile = open(dataPath, "a")
-        dataWriters = csv.DictWriter(dataFile, fieldnames=["epoch", "price"], lineterminator="\n")
-        if empty:
-            dataWriter.writeheader()
 
         # Test decision maker
         gbDM = GreedyBoyDecisionMaker(

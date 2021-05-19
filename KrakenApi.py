@@ -21,6 +21,27 @@ def get_kraken_signature(urlpath, data, secret):
     sigdigest = base64.b64encode(mac.digest())
     return sigdigest.decode()
 
+def get_kraken_token(apiKey, apiPrivateKey):
+    """Gets the token from Kraken.
+
+    Check for :ref:`configuration <configuration>` to see how it works.
+    """
+    api_nonce = bytes(str(int(time.time() * 1000)), "utf-8")
+    api_request = req.Request("https://api.kraken.com/0/private/GetWebSocketsToken",
+                                             b"nonce=%s" % api_nonce)
+    api_request.add_header("API-Key", apiKey)
+    api_request.add_header("API-Sign", base64.b64encode(hmac.new(
+        base64.b64decode(apiPrivateKey),
+        b"/0/private/GetWebSocketsToken" + hashlib.sha256(api_nonce + b"nonce=%s" % api_nonce).digest(),
+        hashlib.sha512).digest()))
+
+    res = json.loads(req.urlopen(api_request).read())
+    try:
+        return res['result']['token']
+    except:
+        print("Didn't get that token.")
+        return get_kraken_token(apiKey, apiPrivateKey)
+
 class KrakenApi:
     """Interacts with Kraken API.
     """
@@ -45,21 +66,7 @@ class KrakenApi:
 
         Check for :ref:`configuration <configuration>` to see how it works.
         """
-        api_nonce = bytes(str(int(time.time() * 1000)), "utf-8")
-        api_request = req.Request("https://api.kraken.com/0/private/GetWebSocketsToken",
-                                             b"nonce=%s" % api_nonce)
-        api_request.add_header("API-Key", self.apiKey)
-        api_request.add_header("API-Sign", base64.b64encode(hmac.new(
-            base64.b64decode(self.apiPrivateKey),
-            b"/0/private/GetWebSocketsToken" + hashlib.sha256(api_nonce + b"nonce=%s" % api_nonce).digest(),
-            hashlib.sha512).digest()))
-
-        res = json.loads(req.urlopen(api_request).read())
-        try:
-            return res['result']['token']
-        except:
-            print("Didn't get that token.")
-            return self.getToken()
+        return get_kraken_token(self.apiKey, self.apiPrivateKey)
 
     def GetPrices(self, crypto: str, interval: int, since: int, fiat: str = "EUR"):
         resp = self.kraken_get_request('/0/public/OHLC?pair={0}&interval={1}&since={2}'.format(crypto + fiat, interval, since - 1))

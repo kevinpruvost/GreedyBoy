@@ -59,20 +59,21 @@ class GreedyBoyDecisionMaker:
 
         ###################################
         # Getting data from the day before
-        lastTime = time.time() - 86401
-        resp = self.krakenApi.GetPrices(self.initial, 15, lastTime)
-        if resp: # If request actually got useful information
-            for result in resp:
-                self.dataMachine.appendFormated(result[0], result[1], result[2], result[3], result[4])
-            lastTime = resp[-1][0] - 1
-        resp = self.krakenApi.GetPrices(self.initial, 1, lastTime)
-        if resp:
-            for result in resp:
-                self.dataMachine.append(result[0], result[1])
-                self.dataMachine.append(result[0], result[2])
-                self.dataMachine.append(result[0], result[3])
-                self.dataMachine.append(result[0], result[4])
-                self.dataMachine.append(result[0], result[5])
+        if not self.testTime:
+            lastTime = time.time() - 86401
+            resp = self.krakenApi.GetPrices(self.initial, 15, lastTime)
+            if resp: # If request actually got useful information
+                for result in resp:
+                    self.dataMachine.appendFormated(result[0], result[1], result[2], result[3], result[4])
+                lastTime = resp[-1][0] - 1
+            resp = self.krakenApi.GetPrices(self.initial, 1, lastTime)
+            if resp:
+                for result in resp:
+                    self.dataMachine.append(result[0], result[1])
+                    self.dataMachine.append(result[0], result[2])
+                    self.dataMachine.append(result[0], result[3])
+                    self.dataMachine.append(result[0], result[4])
+                    self.dataMachine.append(result[0], result[5])
 
         if self.dataMachine.ordered.size == 0:
             self.dataFiles = dict()
@@ -120,7 +121,7 @@ class GreedyBoyDecisionMaker:
         self.AddOrder("buy", 1500, 0.5)
 
     def __init__(self, apiKey, apiPrivateKey, githubToken, repoName, dataBranchName, initial, todayDataFilename,
-                 ordersTempPath, ordersGithubPath, krakenToken = None):
+                 ordersTempPath, ordersGithubPath, krakenToken = None, testTime: float = None):
         self.initial = initial
         self.dataPathWrite = tempfile.gettempdir() + "/data" + initial + "_old.csv"
         self.githubDataFilename = time.strftime('%d-%m-%Y', time.localtime(time.time() - 86400)) + ".csv"
@@ -132,6 +133,9 @@ class GreedyBoyDecisionMaker:
         self.branchName = dataBranchName
 
         self.todayDataFilename = todayDataFilename
+
+        # For testing purposes
+        self.testTime = testTime
 
         # Github repo
         g = Github(githubToken)

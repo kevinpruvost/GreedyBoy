@@ -34,7 +34,10 @@ class GreedyBoyDecisionMaker:
                 self.orderFile.write(githubFileContent)
                 self.orderFile.close()
                 self.dataMachine = GBDataMachine.fromFilename(self.ordersDataTempPath)
-        except: 0
+        except:
+            self.orderFile = open(self.ordersDataTempPath, "w")
+            self.orderFile.write("")
+            self.orderFile.close()
         self.orderFile = open(self.ordersDataTempPath, "a")
         self.orderWriter = csv.DictWriter(self.orderFile, fieldnames=['Date', 'Price', 'Amount', 'Order'], lineterminator="\n")
         if empty:
@@ -114,20 +117,20 @@ class GreedyBoyDecisionMaker:
             amount = min(amount, maxAmount)
 
         if buyOrSell == "buy":
-            amount = min(amount, self.fiatBalance / price * 0.999)
+            amount = min(amount, self.fiatBalance / price * 0.9995)
         elif buyOrSell == "sell":
-            amount = min(amount, self.cryptoBalance * 0.999)
+            amount = min(amount, self.cryptoBalance * 0.9995)
 
         self.krakenApi.AddOrder(buyOrSell, "market", amount, self.initial)
         self.__writeRowToTemp({'Date': self.lastOrder, 'Price': str(price), 'Amount': str(amount), 'Order': buyOrSell})
         self.lastOrder = {'Date': self.lastOrder, 'Price': price, 'Amount': amount, 'Order': buyOrSell}
         if self.testTime:
             if self.buyOrSellPosition == "buy":
-                self.cryptoBalance += amount * (1 - 0.002)
-                self.fiatBalance -= amount * price * (1 - 0.002)
+                self.cryptoBalance += amount * (0.995)
+                self.fiatBalance -= amount * price
             elif self.buyOrSellPosition == "sell":
-                self.cryptoBalance -= amount * (1 - 0.002)
-                self.fiatBalance += amount * price * (1 - 0.002)
+                self.cryptoBalance -= amount
+                self.fiatBalance += amount * price * (0.995)
             self.__setBuyOrSellPosition()
         else:
             self.getCryptoAndFiatBalance()

@@ -65,6 +65,11 @@ def main():
         print("Loading", time.strftime('%d/%m/%Y', time.gmtime(testTime)), "...")
 
         dataPath = tempfile.gettempdir() + "/data" + currencyInitial + str(testTime) + ".csv"
+
+        if os.path.exists(dataPath):
+            testDatas += [pd.read_csv(dataPath, parse_dates=False)]
+            continue
+
         githubDataFilename = time.strftime('%d-%m-%Y', time.gmtime(testTime)) + ".csv"
         githubDataPath = "./price_history/" + currencyInitial + "/" + githubDataFilename
 
@@ -82,6 +87,7 @@ def main():
 
     print("Beginning tests...")
     for i, testTime in enumerate(testTimes):
+        #if testTime < testTimes[-5]: continue
         if i == 0 or i + 1 == len(testTimes): continue
         if testTimes[i - 1] != testTime - 86400: continue
         print("Test " + time.strftime('%d/%m/%Y', time.gmtime(testTime)) + ": ")

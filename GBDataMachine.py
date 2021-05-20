@@ -138,8 +138,8 @@ class GBDataMachine:
         :param price: price
         :type price: float
         """
-        if type(epochTime) != float: epochTime = float(epochTime)
-        if type(price) != float: price = float(price)
+        epochTime = float(epochTime)
+        price = float(price)
         self.__append(epochTime, price)
         self.update(shouldPrint)
 

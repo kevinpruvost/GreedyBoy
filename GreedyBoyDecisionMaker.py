@@ -33,7 +33,7 @@ class GreedyBoyDecisionMaker:
                 self.orderFile = open(self.ordersDataTempPath, "w")
                 self.orderFile.write(githubFileContent)
                 self.orderFile.close()
-                self.dataMachine = GBDataMachine.fromFilename(self.ordersDataTempPath)
+                self.dataMachine = GBDataMachine.fromFilename(self.ordersDataTempPath, interval=5)
         except:
             self.orderFile = open(self.ordersDataTempPath, "w")
             self.orderFile.write("")
@@ -58,13 +58,13 @@ class GreedyBoyDecisionMaker:
 
     def start(self):
         self.__readLastOrders()
-        self.dataMachine = GBDataMachine()
+        self.dataMachine = GBDataMachine(interval=5)
 
         ###################################
         # Getting data from the day before
         if not self.testTime:
             lastTime = time.time() - 86401
-            resp = self.krakenApi.GetPrices(self.initial, 15, lastTime)
+            resp = self.krakenApi.GetPrices(self.initial, 5, lastTime)
             if resp: # If request actually got useful information
                 for result in resp:
                     self.dataMachine.appendFormated(result[0], result[1], result[2], result[3], result[4])
@@ -123,20 +123,20 @@ class GreedyBoyDecisionMaker:
             amount = min(amount, maxAmount)
 
         if buyOrSell == "buy":
-            amount = min(amount, self.fiatBalance / price * 0.9995)
+            amount = min(amount, self.fiatBalance / price * 0.99975)
         elif buyOrSell == "sell":
-            amount = min(amount, self.cryptoBalance * 0.9995)
+            amount = min(amount, self.cryptoBalance * 0.99975)
 
         self.krakenApi.AddOrder(buyOrSell, "market", amount, self.initial)
         self.__writeRowToTemp({'Date': self.lastData, 'Price': str(price), 'Amount': str(amount), 'Order': buyOrSell})
         self.lastOrder = {'Date': self.lastData, 'Price': price, 'Amount': amount, 'Order': buyOrSell}
         if self.testTime:
             if self.buyOrSellPosition == "buy":
-                self.cryptoBalance += amount * (0.995)
+                self.cryptoBalance += amount * (0.9975)
                 self.fiatBalance -= amount * price
             elif self.buyOrSellPosition == "sell":
                 self.cryptoBalance -= amount
-                self.fiatBalance += amount * price * (0.995)
+                self.fiatBalance += amount * price * (0.9975)
             self.__setBuyOrSellPosition()
         else:
             self.getCryptoAndFiatBalance()
@@ -166,39 +166,79 @@ class GreedyBoyDecisionMaker:
     ######################################################################
     ## Decisions Making
     def makeDecision(self):
-        curBolVal = self.dataMachine.currentBollingerValue()
+        ########################################################################
+        ## Bollinger Strategy
+        def bollingerStrategy():
+            curBolVal = self.dataMachine.currentBollingerValue()
 
-        if not self.buyOrSellPosition: return
-        if curBolVal <= 100 - self.bollingerTolerance and curBolVal >= self.bollingerTolerance: return
+            if not self.buyOrSellPosition: return
+            if curBolVal <= 100 - self.bollingerTolerance and curBolVal >= self.bollingerTolerance: return
 
-        if curBolVal > self.highest: self.highest = curBolVal
-        elif curBolVal < self.lowest: self.lowest = curBolVal
+            if curBolVal > self.highest: self.highest = curBolVal
+            elif curBolVal < self.lowest: self.lowest = curBolVal
 
-        if self.lastOrder and self.lastOrder['Date'] + self.dataMachine.interval * 60 < self.lastData:
-            lastPrice = self.dataMachine.lastPrice()
-            if self.lastOrder['Order'] == "buy":
-                if lastPrice < self.lastOrder['Price']:
+            if self.lastOrder and self.lastOrder['Date'] + self.dataMachine.interval * 60 < self.lastData:
+                lastPrice = self.dataMachine.lastPrice()
+                if self.lastOrder['Order'] == "buy":
+                    if lastPrice < self.lastOrder['Price']:
+                        print(time.strftime('%d/%m/%Y %H:%M:%S', time.gmtime(self.dataMachine.bollingerGaps.iloc[-1]['Date'])))
+                        print("Current bollinger value :", curBolVal)
+                        return self.AddOrderMax("sell")
+                elif self.lastOrder['Order'] == "sell":
+                    if lastPrice > self.lastOrder['Price']:
+                        print(time.strftime('%d/%m/%Y %H:%M:%S', time.gmtime(self.dataMachine.bollingerGaps.iloc[-1]['Date'])))
+                        print("Current bollinger value :", curBolVal)
+                        return self.AddOrderMax("buy")
+
+            if self.buyOrSellPosition == "buy":
+                if self.lowest < 0 and \
+                        curBolVal - self.lowest >= self.bollingerTolerance:
                     print(time.strftime('%d/%m/%Y %H:%M:%S', time.gmtime(self.dataMachine.bollingerGaps.iloc[-1]['Date'])))
                     print("Current bollinger value :", curBolVal)
-                    return self.AddOrderMax("sell")
-            elif self.lastOrder['Order'] == "sell":
-                if lastPrice > self.lastOrder['Price']:
+                    self.AddOrderMax("buy")
+            elif self.buyOrSellPosition == "sell":
+                if self.highest > 100 and \
+                        self.highest - curBolVal >= self.bollingerTolerance:
                     print(time.strftime('%d/%m/%Y %H:%M:%S', time.gmtime(self.dataMachine.bollingerGaps.iloc[-1]['Date'])))
                     print("Current bollinger value :", curBolVal)
-                    return self.AddOrderMax("buy")
+                    self.AddOrderMax("sell")
 
-        if self.buyOrSellPosition == "buy":
-            if self.lowest < 0 and \
-                    curBolVal - self.lowest >= self.bollingerTolerance:
-                print(time.strftime('%d/%m/%Y %H:%M:%S', time.gmtime(self.dataMachine.bollingerGaps.iloc[-1]['Date'])))
-                print("Current bollinger value :", curBolVal)
-                self.AddOrderMax("buy")
-        elif self.buyOrSellPosition == "sell":
-            if self.highest > 100 and \
-                    self.highest - curBolVal >= self.bollingerTolerance:
-                print(time.strftime('%d/%m/%Y %H:%M:%S', time.gmtime(self.dataMachine.bollingerGaps.iloc[-1]['Date'])))
-                print("Current bollinger value :", curBolVal)
-                self.AddOrderMax("sell")
+        ########################################################################
+        ## Scalping Strategy
+        def scalpingStrategy(): # Begins by selling, so you need the crypto first
+            if not self.buyOrSellPosition: return
+
+            if self.scalping is not None: # Sold
+                last = self.dataMachine.ordered.iloc[-1]
+                closePrice = last['Close']
+                if closePrice >= self.scalping['Min'] * self.scalping['MaxPercentage'] or\
+                    closePrice <= self.scalping['SellPrice'] / self.scalping['MaxPercentage']:
+                    print(time.strftime('%d/%m/%Y %H:%M:%S', time.gmtime(self.dataMachine.bollingerGaps.iloc[-1]['Date'])))
+                    print("Close: {0:6.5f}, EMA20: {1:6.5f}, EMA50: {2:6.5f}, Percentage : {3:6.3f}".format(
+                        closePrice, last['EMA20'], last['EMA50'], (self.scalping['SellPrice'] / closePrice - 1) * 100 - 0.2))
+                    self.AddOrderMax("buy")
+                    self.scalping = None
+                elif closePrice < self.scalping['Min']:
+                    self.scalping['Min'] = closePrice
+            elif self.dataMachine.intervalClosed():
+                last = self.dataMachine.ordered.iloc[-2]
+                ema20, ema50 = last['EMA20'], last['EMA50']
+                closePrice = last['Close']
+                if last['Open'] < closePrice \
+                    and last['Low'] <= ema20 and last['Open'] <= ema20 \
+                    and last['High'] >= ema20 and last['High'] < ema50 \
+                    and ema50 / closePrice >= 1.012:
+                    print(time.strftime('%d/%m/%Y %H:%M:%S', time.gmtime(self.dataMachine.bollingerGaps.iloc[-1]['Date'])))
+                    print("Close: {0:6.5f}, EMA20: {1:6.5f}, EMA50: {2:6.5f}, Percentage : {3:6.3f}".format(closePrice, ema20, ema50, (ema50 / closePrice - 1) * 100))
+                    self.AddOrderMax("sell")
+                    self.scalping = {
+                        'MaxPercentage': ema50 / closePrice,
+                        'SellPrice': closePrice,
+                        'Min': closePrice
+                    }
+
+        #return bollingerStrategy()
+        return scalpingStrategy()
 
     def __init__(self, apiKey, apiPrivateKey, githubToken, repoName, dataBranchName, initial, todayDataFilename,
                  ordersTempPath, ordersGithubPath, krakenToken = None, bollingerTolerance: float = 20, testTime: float = None):
@@ -225,11 +265,14 @@ class GreedyBoyDecisionMaker:
         self.krakenApi = KrakenApi(apiKey, apiPrivateKey, krakenToken)
 
         # Decision making
-        self.bollingerTolerance = bollingerTolerance
         self.lastOrder, self.lastData = None, None
-        self.lowest = self.highest = 50
+        self.buyOrSellPosition = None  # "buy" / "sell"
         self.cryptoBalance = self.fiatBalance = 0
-        self.buyOrSellPosition = None # "buy" / "sell"
+            ## Bollinger Strat
+        self.bollingerTolerance = bollingerTolerance
+        self.lowest = self.highest = 50
         self.buySellLimit = 0 # 0 if no limit
+            ## Scalping Start
+        self.scalping = None
 
         self.start()

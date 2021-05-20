@@ -42,6 +42,12 @@ class GreedyBoyDecisionMaker:
         self.orderWriter = csv.DictWriter(self.orderFile, fieldnames=['Date', 'Price', 'Amount', 'Order'], lineterminator="\n")
         if empty:
             self.orderWriter.writeheader()
+        else: # Read Last Order
+            orders = pd.read_csv(self.ordersDataTempPath, parse_dates=False)
+            if len(orders.index) != 0:
+                self.lastOrder = {
+                    'Date': orders.iloc[-1]['Date'], 'Price': orders.iloc[-1]['Price'],
+                    'Amount': orders.iloc[-1]['Amount'], 'Order': orders.iloc[-1]['Order']}
 
     def __setBuyOrSellPosition(self):
         price = self.dataMachine.lastPrice()  # Gets Last price registered
@@ -122,8 +128,8 @@ class GreedyBoyDecisionMaker:
             amount = min(amount, self.cryptoBalance * 0.9995)
 
         self.krakenApi.AddOrder(buyOrSell, "market", amount, self.initial)
-        self.__writeRowToTemp({'Date': self.lastOrder, 'Price': str(price), 'Amount': str(amount), 'Order': buyOrSell})
-        self.lastOrder = {'Date': self.lastOrder, 'Price': price, 'Amount': amount, 'Order': buyOrSell}
+        self.__writeRowToTemp({'Date': self.lastData, 'Price': str(price), 'Amount': str(amount), 'Order': buyOrSell})
+        self.lastOrder = {'Date': self.lastData, 'Price': price, 'Amount': amount, 'Order': buyOrSell}
         if self.testTime:
             if self.buyOrSellPosition == "buy":
                 self.cryptoBalance += amount * (0.995)
@@ -139,7 +145,7 @@ class GreedyBoyDecisionMaker:
         print("Added to reports : " + str(self.lastOrder))
 
     def addData(self, epoch, price):
-        self.lastOrder = epoch
+        self.lastData = epoch
         self.dataMachine.append(epoch, price, False)
         self.makeDecision()
         #print(self.dataMachine.iloc[:5].to_csv(index=False))
@@ -206,7 +212,7 @@ class GreedyBoyDecisionMaker:
 
         # Decision making
         self.bollingerTolerance = bollingerTolerance
-        self.lastOrder = None
+        self.lastOrder, self.lastData = None, None
         self.lowest = self.highest = 50
         self.cryptoBalance = self.fiatBalance = 0
         self.buyOrSellPosition = None # "buy" / "sell"

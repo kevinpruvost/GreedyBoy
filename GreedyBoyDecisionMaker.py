@@ -147,6 +147,7 @@ class GreedyBoyDecisionMaker:
     def addData(self, epoch, price):
         self.lastData = epoch
         self.dataMachine.append(epoch, price, False)
+#        if self.dataMachine.intervalClosed():
         self.makeDecision()
         #print(self.dataMachine.iloc[:5].to_csv(index=False))
 
@@ -172,6 +173,19 @@ class GreedyBoyDecisionMaker:
 
         if curBolVal > self.highest: self.highest = curBolVal
         elif curBolVal < self.lowest: self.lowest = curBolVal
+
+        if self.lastOrder and self.lastOrder['Date'] + self.dataMachine.interval * 60 < self.lastData:
+            lastPrice = self.dataMachine.lastPrice()
+            if self.lastOrder['Order'] == "buy":
+                if lastPrice < self.lastOrder['Price']:
+                    print(time.strftime('%d/%m/%Y %H:%M:%S', time.gmtime(self.dataMachine.bollingerGaps.iloc[-1]['Date'])))
+                    print("Current bollinger value :", curBolVal)
+                    return self.AddOrderMax("sell")
+            elif self.lastOrder['Order'] == "sell":
+                if lastPrice > self.lastOrder['Price']:
+                    print(time.strftime('%d/%m/%Y %H:%M:%S', time.gmtime(self.dataMachine.bollingerGaps.iloc[-1]['Date'])))
+                    print("Current bollinger value :", curBolVal)
+                    return self.AddOrderMax("buy")
 
         if self.buyOrSellPosition == "buy":
             if self.lowest < 0 and \

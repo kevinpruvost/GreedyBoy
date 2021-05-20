@@ -12,6 +12,8 @@ __maintainer__  = "Kevin Pruvost"
 __email__       = "pruvostkevin0@gmail.com"
 __status__      = "Test"
 
+import tempfile
+
 import pandas as pd
 
 from PerformanceTimer import time_function
@@ -162,7 +164,8 @@ def main():
     priceData, reportData = dataMachine.getData()
     mergedData = pd.concat(priceData)
 
-    dataMachine = GBDataMachine.fromDataframe(mergedData, 15, 30)
+    dataMachine = GBDataMachine.fromFilename(tempfile.tempdir + "/dataXDG1621209600.0.csv", 5, 30)
+    dataMachine.appendFilename(tempfile.tempdir + "/dataXDG1621296000.0.csv")
     if 'Date' in reportData: decisionMachine = GBDecisionMachine.fromDataframe(reportData)
 
     pricesData, bollinerData = dataMachine.convertForGraphicViews()
@@ -170,6 +173,7 @@ def main():
 
     graphicView = GraphViewer(pricesData, bollinerData)
     if 'Date' in reportData: graphicView.setReportData(reportData)
+    print(pricesData)
     graphicView.start()
 
 if __name__ == '__main__':

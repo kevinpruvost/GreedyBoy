@@ -15,6 +15,7 @@ __status__      = "Test"
 import pandas.core.generic as gen
 import copy
 import pandas as pd
+import time
 
 class GBDataMachine:
     @classmethod
@@ -56,6 +57,7 @@ class GBDataMachine:
         """
         self.interval = interval
         self.movingAverageSize = movingAverageSize
+        self.intervalJustClosed = False
         self.roundTemp = {
             'Date': 0,
             'Open': 0,
@@ -65,7 +67,9 @@ class GBDataMachine:
             'MA': 0,
             'Std': 0,
             'LBand': 0,
-            'HBand': 0
+            'HBand': 0,
+            'EMA20': 0,
+            'EMA50': 0
         }
         self.bGapRoundTemp = {
             'Date': 0,
@@ -74,7 +78,7 @@ class GBDataMachine:
         self.newRound = copy.deepcopy(self.roundTemp)
         self.newGapRound = copy.deepcopy(self.bGapRoundTemp)
         self.bollingerGaps = pd.DataFrame()
-        if data:
+        if data is not None:
             if 'Low' not in data:
                 self.ordered = pd.DataFrame()
                 self.parseToInterval(data)
@@ -93,6 +97,7 @@ class GBDataMachine:
         if self.newRound['Date'] != 0 and epochTime >= self.newRound['Date'] + 60 * self.interval:
             if len(self.ordered) == 0 or self.ordered.at[len(self.ordered) - 1, 'Date'] != self.newRound['Date']:
                 self.ordered = self.ordered.append(self.newRound, ignore_index=True)
+                self.intervalJustClosed = True
             self.newRound = copy.deepcopy(self.roundTemp)
         self.newRound['Close'] = price
         if self.newRound['Date'] == 0:
@@ -116,6 +121,10 @@ class GBDataMachine:
             'HBand': 0
         }, ignore_index=True)
 
+    def appendFilename(self, fileName):
+        csvData = pd.read_csv(fileName, parse_dates=True)
+        return self.appendDataframe(csvData)
+
     def appendDataframe(self, dataFrame: pd.DataFrame):
         for i, row in dataFrame.iterrows():
             self.__append(row['epoch'], row['price'])
@@ -138,12 +147,15 @@ class GBDataMachine:
         """Updates the GBDataMachine and computes bollinger bands, moving averages, ..."""
         if self.ordered.at[len(self.ordered) - 1, 'Date'] != self.newRound['Date']:
             self.ordered = self.ordered.append(self.newRound, ignore_index=True)
+            self.intervalJustClosed = True
         else:
             self.ordered.at[len(self.ordered) - 1, 'High'] = self.newRound['High']
             self.ordered.at[len(self.ordered) - 1, 'Low'] = self.newRound['Low']
             self.ordered.at[len(self.ordered) - 1, 'Close'] = self.newRound['Close']
             self.ordered.at[len(self.ordered) - 1, 'Open'] = self.newRound['Open']
         self.ordered['MA'] = self.ordered['Close'].rolling(window=self.movingAverageSize).mean()
+        self.ordered['EMA20'] = self.ordered['Close'].ewm(span=20).mean()
+        self.ordered['EMA50'] = self.ordered['Close'].ewm(span=50).mean()
         self.ordered['Std'] = self.ordered['Close'].rolling(window=self.movingAverageSize).std()
         self.ordered['HBand'] = self.ordered['MA'] + (self.ordered['Std'] * 2)
         self.ordered['LBand'] = self.ordered['MA'] - (self.ordered['Std'] * 2)
@@ -152,6 +164,7 @@ class GBDataMachine:
         self.bollingerGaps['Value'] = round(
             (self.ordered['Close'] - self.ordered['LBand']) / (self.ordered['HBand'] - self.ordered['LBand']) * 100
         , 2)
+        last = self.ordered.iloc[-1]
         if shouldPrint:
             print(self.ordered.iloc[[-1]])
 
@@ -178,3 +191,8 @@ class GBDataMachine:
 
     def lastPrice(self):
         return self.ordered.iloc[-1]["Close"] if len(self.ordered.index) != 0 else None
+
+    def intervalClosed(self):
+        ret = self.intervalJustClosed
+        self.intervalJustClosed = False
+        return ret

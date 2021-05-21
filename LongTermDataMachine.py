@@ -134,14 +134,15 @@ class LongTermDataMachine:
 
     def update(self, shouldPrint: bool = False):
         """Updates the GBDataMachine and computes bollinger bands, moving averages, ..."""
-        if len(self.ordered.index) == 0 or self.ordered.at[len(self.ordered) - 1, 'Date'] != self.newRound['Date']:
-            self.ordered = self.ordered.append(self.newRound, ignore_index=True)
-            self.intervalJustClosed = True
-        else:
-            self.ordered.at[len(self.ordered) - 1, 'High'] = self.newRound['High']
-            self.ordered.at[len(self.ordered) - 1, 'Low'] = self.newRound['Low']
-            self.ordered.at[len(self.ordered) - 1, 'Close'] = self.newRound['Close']
-            self.ordered.at[len(self.ordered) - 1, 'Open'] = self.newRound['Open']
+        if self.newRound['Date'] != 0:
+            if len(self.ordered.index) == 0 or self.ordered.at[len(self.ordered) - 1, 'Date'] != self.newRound['Date']:
+                self.ordered = self.ordered.append(self.newRound, ignore_index=True)
+                self.intervalJustClosed = True
+            else:
+                self.ordered.at[len(self.ordered) - 1, 'High'] = self.newRound['High']
+                self.ordered.at[len(self.ordered) - 1, 'Low'] = self.newRound['Low']
+                self.ordered.at[len(self.ordered) - 1, 'Close'] = self.newRound['Close']
+                self.ordered.at[len(self.ordered) - 1, 'Open'] = self.newRound['Open']
 
         def sum(i, wSize):
             s = 0
@@ -153,14 +154,15 @@ class LongTermDataMachine:
                 return np.round(sum(i, wSize) / wSize, decimals=10)
             return np.round((self.ordered.iloc[i - 1]['SMMA' + str(wSize + 1)] * wSize + self.ordered.iloc[i]['Close']) / (wSize + 1), decimals=10)
 
-        size = len(self.ordered.index)
-        if size < 5: return
-        newSm = smma(size - 1, 5 - 1)
-        self.ordered.loc[self.ordered.index[-1], 'SMMA5'] = newSm
+        windowSize = 5
+        for i in range(0, self.ordered.shape[0] - (windowSize - 1)):
+            newSm = smma(i + (windowSize - 1), windowSize - 1)
+            self.ordered.loc[self.ordered.index[i + (windowSize - 1)], 'SMMA5'] = newSm
 
-        if size < 40: return
-        newSm = smma(size - 1, 40 - 1)
-        self.ordered.loc[self.ordered.index[-1], 'SMMA40'] = newSm
+        windowSize = 40
+        for i in range(0, self.ordered.shape[0] - (windowSize - 1)):
+            newSm = smma(i + (windowSize - 1), windowSize - 1)
+            self.ordered.loc[self.ordered.index[i + (windowSize - 1)], 'SMMA40'] = newSm
         last = self.ordered.iloc[-1]
 
     def convertForGraphicViews(self):
@@ -194,8 +196,9 @@ class LongTermDataMachine:
 
 def main():
     dataMachine = LongTermDataMachine()
-    for i in range(0, 365 * 5):
-        dataMachine.append(i * 1440 * 60, i * 15)
+    for i in range(0, 50):
+        dataMachine.appendFormated(i * 1440 * 60, i * 15, i * 15, i * 15, i * 15)
+    dataMachine.update()
     print(dataMachine.ordered.tail(50))
 
 if __name__ == '__main__':

@@ -87,7 +87,7 @@ def main():
 
     print("Beginning tests...")
     for i, testTime in enumerate(testTimes):
-        #if testTime < testTimes[-5]: continue
+        if testTime < testTimes[-5]: continue
         if i == 0 or i + 1 == len(testTimes): continue
         if testTimes[i - 1] != testTime - 86400: continue
         print("Test " + time.strftime('%d/%m/%Y', time.gmtime(testTime)) + ": ")

@@ -33,7 +33,7 @@ class GreedyBoyDecisionMaker:
                 self.orderFile = open(self.ordersDataTempPath, "w")
                 self.orderFile.write(githubFileContent)
                 self.orderFile.close()
-                self.dataMachine = GBDataMachine.fromFilename(self.ordersDataTempPath, interval=5)
+                self.dataMachine = GBDataMachine.fromFilename(self.ordersDataTempPath, interval=15)
         except:
             self.orderFile = open(self.ordersDataTempPath, "w")
             self.orderFile.write("")
@@ -58,7 +58,7 @@ class GreedyBoyDecisionMaker:
 
     def start(self):
         self.__readLastOrders()
-        self.dataMachine = GBDataMachine(interval=5)
+        self.dataMachine = GBDataMachine(interval=15)
 
         ###################################
         # Getting data from the day before
@@ -212,14 +212,14 @@ class GreedyBoyDecisionMaker:
                 last = self.dataMachine.ordered.iloc[-1]
                 closePrice = last['Close']
                 if closePrice >= self.scalping['Min'] * self.scalping['MaxPercentage'] or\
-                    closePrice <= self.scalping['SellPrice'] / self.scalping['MaxPercentage']:
+                    closePrice <= self.scalping['SellPrice'] / ((self.scalping['MaxPercentage'] - 1) * 1.2 + 1):
                     print(time.strftime('%d/%m/%Y %H:%M:%S', time.gmtime(self.dataMachine.bollingerGaps.iloc[-1]['Date'])))
                     print("Close: {0:6.5f}, EMA20: {1:6.5f}, EMA50: {2:6.5f}, Percentage : {3:6.3f}".format(
                         closePrice, last['EMA20'], last['EMA50'], (self.scalping['SellPrice'] / closePrice - 1) * 100 - 0.2))
                     self.AddOrderMax("buy")
                     self.scalping = None
-                elif closePrice < self.scalping['Min']:
-                    self.scalping['Min'] = closePrice
+#                elif closePrice < self.scalping['Min']:
+ #                   self.scalping['Min'] = closePrice
             elif self.dataMachine.intervalClosed():
                 last = self.dataMachine.ordered.iloc[-2]
                 ema20, ema50 = last['EMA20'], last['EMA50']
@@ -227,18 +227,42 @@ class GreedyBoyDecisionMaker:
                 if last['Open'] < closePrice \
                     and last['Low'] <= ema20 and last['Open'] <= ema20 \
                     and last['High'] >= ema20 and last['High'] < ema50 \
-                    and ema50 / closePrice >= 1.012:
+                    and ema50 / closePrice >= 1.008:
                     print(time.strftime('%d/%m/%Y %H:%M:%S', time.gmtime(self.dataMachine.bollingerGaps.iloc[-1]['Date'])))
                     print("Close: {0:6.5f}, EMA20: {1:6.5f}, EMA50: {2:6.5f}, Percentage : {3:6.3f}".format(closePrice, ema20, ema50, (ema50 / closePrice - 1) * 100))
                     self.AddOrderMax("sell")
                     self.scalping = {
                         'MaxPercentage': ema50 / closePrice,
-                        'SellPrice': closePrice,
+                        'SellPrice': max(closePrice, ema20),
                         'Min': closePrice
                     }
 
+        ####################################
+        ## EMA Crossover
+        def emaCrossover():
+            if not self.buyOrSellPosition: return
+
+            if not self.dataMachine.intervalClosed():
+                return
+
+            last = self.dataMachine.ordered.iloc[-2]
+            closePrice, ema5, ema40 = last['Close'], last['EMA5'], last['EMA40']
+            print(time.strftime('%d/%m/%Y %H:%M:%S', time.gmtime(self.dataMachine.bollingerGaps.iloc[-1]['Date'])) +
+                  " || Close: {0:6.5f}, EMA5: {1:6.5f}, EMA40: {2:6.5f}".format(closePrice, ema5, ema40))
+            if self.buyOrSellPosition == "buy":
+                if ema5 > ema40 and ema5 / ema40 >= 1.000:
+                    #print(time.strftime('%d/%m/%Y %H:%M:%S', time.gmtime(self.dataMachine.bollingerGaps.iloc[-1]['Date'])) +
+                    #      " || Close: {0:6.5f}, EMA5: {1:6.5f}, EMA40: {2:6.5f}".format(closePrice, ema5, ema40))
+                    self.AddOrderMax("buy")
+            elif self.buyOrSellPosition == "sell":
+                if ema5 < ema40 and ema40 / ema5 >= 1.000:
+                    #print(time.strftime('%d/%m/%Y %H:%M:%S', time.gmtime(self.dataMachine.bollingerGaps.iloc[-1]['Date'])) +
+                    #      " || Close: {0:6.5f}, EMA5: {1:6.5f}, EMA40: {2:6.5f}".format(closePrice, ema5, ema40))
+                    self.AddOrderMax("sell")
+
         #return bollingerStrategy()
-        return scalpingStrategy()
+        #return scalpingStrategy()
+        return emaCrossover()
 
     def __init__(self, apiKey, apiPrivateKey, githubToken, repoName, dataBranchName, initial, todayDataFilename,
                  ordersTempPath, ordersGithubPath, krakenToken = None, bollingerTolerance: float = 20, testTime: float = None):

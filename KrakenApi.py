@@ -126,6 +126,19 @@ class KrakenApi:
         respJson = resp.json()
         return respJson['result']['trades'] if len(respJson['error']) == 0 else None
 
+    def GetPairs(self, finishesWith: str = None):
+        resp = self.kraken_post_request('/0/public/AssetPairs', {
+            "nonce": str(int(1000 * time.time() + 5000))
+        })
+        respJson = resp.json()
+        result = respJson['result'] if len(respJson['error']) == 0 else None
+        if finishesWith is not None and result is not None:
+            lst = []
+            for name in result:
+                if name.endswith(finishesWith): lst += [name]
+            return lst
+        return result
+
     def __init__(self, apiKey, apiPrivateKey, token = None):
         """
         :param apiKey: Kraken API key
@@ -153,4 +166,5 @@ if __name__ == '__main__':
                     "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")
     #print(api.GetPrices('XDG', 1, time.time() - 180))
     #print(api.CheckAccount())
-    print(api.GetCryptoAndFiatBalance("XDG"))
+    pairs = api.GetPairs("EUR")
+    print(pairs)

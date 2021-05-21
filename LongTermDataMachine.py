@@ -1,23 +1,25 @@
 #!/usr/bin/env python
 ##
-## GBDataMachine.py
+## LongTermDataMachine.py
 ##
 
 __author__      = "Kevin Pruvost"
 __copyright__   = "Copyright 2021, GreedyBoy"
-__credits__     = ["Kevin Pruvost", "Hugo Mathieu-Steinbach"]
+__credits__     = ["Kevin Pruvost"]
 __license__     = "Proprietary"
 __version__     = "1.0.0"
 __maintainer__  = "Kevin Pruvost"
 __email__       = "pruvostkevin0@gmail.com"
 __status__      = "Test"
 
+import math
+
 import pandas.core.generic as gen
 import copy
 import pandas as pd
-import time
+import numpy as np
 
-class GBDataMachine:
+class LongTermDataMachine:
     @classmethod
     def fromFilename(cls, fileName: str, interval: int = 15, movingAverageSize: int = 30):
         """Constructor starting from a filename.
@@ -45,18 +47,17 @@ class GBDataMachine:
         """
         return cls(data, interval, movingAverageSize)
 
-    def __init__(self, data: gen.NDFrame = None, interval: int = 15, movingAverageSize: int = 30):
+    def __init__(self, data: gen.NDFrame = None, interval: int = 1440):
         """Constructs GBDataMachine with the given data formatted like a csv [epochTime, price].
 
         :param data: Structure containing prices and dates.
         :type data: gen.NDFrame
-        :param interval: Time gap between each price (in min).
+        :param interval: Time gap between each price (in min) (default is 1440, 1 day).
         :type interval: int
         :param movingAverageSize: Number of data taken into account to calculate a moving average.
         :type movingAverageSize: int
         """
         self.interval = interval
-        self.movingAverageSize = movingAverageSize
         self.intervalJustClosed = False
         self.roundTemp = {
             'Date': 0,
@@ -64,22 +65,10 @@ class GBDataMachine:
             'High': 0,
             'Low': 0,
             'Close': 0,
-            'MA': 0,
-            'Std': 0,
-            'LBand': 0,
-            'HBand': 0,
-            'EMA20': 0,
-            'EMA50': 0,
-            'EMA5': 0,
-            'EMA40': 0
-        }
-        self.bGapRoundTemp = {
-            'Date': 0,
-            'Value': 0
+            'SMMA5': None,
+            'SMMA40': None
         }
         self.newRound = copy.deepcopy(self.roundTemp)
-        self.newGapRound = copy.deepcopy(self.bGapRoundTemp)
-        self.bollingerGaps = pd.DataFrame()
         if data is not None:
             if 'Low' not in data:
                 self.ordered = pd.DataFrame()
@@ -95,7 +84,7 @@ class GBDataMachine:
             self.__append(row['epoch'], row['price'])
         self.update()
 
-    def __append(self, epochTime: float, price: float):
+    def _append(self, epochTime: float, price: float):
         if self.newRound['Date'] != 0 and epochTime >= self.newRound['Date'] + 60 * self.interval:
             if len(self.ordered) == 0 or self.ordered.at[len(self.ordered) - 1, 'Date'] != self.newRound['Date']:
                 self.ordered = self.ordered.append(self.newRound, ignore_index=True)
@@ -117,10 +106,8 @@ class GBDataMachine:
             'High': float(high),
             'Low': float(low),
             'Close': float(close),
-            'MA': 0,
-            'Std': 0,
-            'LBand': 0,
-            'HBand': 0
+            'SMMA5': None,
+            'SMMA40': None
         }, ignore_index=True)
 
     def appendFilename(self, fileName):
@@ -142,12 +129,12 @@ class GBDataMachine:
         """
         epochTime = float(epochTime)
         price = float(price)
-        self.__append(epochTime, price)
+        self._append(epochTime, price)
         self.update(shouldPrint)
 
     def update(self, shouldPrint: bool = False):
         """Updates the GBDataMachine and computes bollinger bands, moving averages, ..."""
-        if self.ordered.at[len(self.ordered) - 1, 'Date'] != self.newRound['Date']:
+        if len(self.ordered.index) == 0 or self.ordered.at[len(self.ordered) - 1, 'Date'] != self.newRound['Date']:
             self.ordered = self.ordered.append(self.newRound, ignore_index=True)
             self.intervalJustClosed = True
         else:
@@ -155,22 +142,26 @@ class GBDataMachine:
             self.ordered.at[len(self.ordered) - 1, 'Low'] = self.newRound['Low']
             self.ordered.at[len(self.ordered) - 1, 'Close'] = self.newRound['Close']
             self.ordered.at[len(self.ordered) - 1, 'Open'] = self.newRound['Open']
-        self.ordered['MA'] = self.ordered['Close'].rolling(window=self.movingAverageSize).mean()
-        self.ordered['EMA20'] = self.ordered['Close'].ewm(span=20).mean()
-        self.ordered['EMA50'] = self.ordered['Close'].ewm(span=50).mean()
-        self.ordered['EMA40'] = self.ordered['Close'].ewm(span=40).mean()
-        self.ordered['EMA5'] = self.ordered['Close'].ewm(span=5).mean()
-        self.ordered['Std'] = self.ordered['Close'].rolling(window=self.movingAverageSize).std()
-        self.ordered['HBand'] = self.ordered['MA'] + (self.ordered['Std'] * 2)
-        self.ordered['LBand'] = self.ordered['MA'] - (self.ordered['Std'] * 2)
-        self.bollingerGaps = pd.DataFrame()
-        self.bollingerGaps['Date'] = self.ordered['Date']
-        self.bollingerGaps['Value'] = round(
-            (self.ordered['Close'] - self.ordered['LBand']) / (self.ordered['HBand'] - self.ordered['LBand']) * 100
-        , 2)
+
+        def sum(i, wSize):
+            s = 0
+            for j in range(0, wSize): s += self.ordered.iloc[i - j]['Close']
+            return s
+
+        def smma(i, wSize):
+            if i == wSize:
+                return np.round(sum(i, wSize) / wSize, decimals=10)
+            return np.round((self.ordered.iloc[i - 1]['SMMA' + str(wSize + 1)] * wSize + self.ordered.iloc[i]['Close']) / (wSize + 1), decimals=10)
+
+        size = len(self.ordered.index)
+        if size < 5: return
+        newSm = smma(size - 1, 5 - 1)
+        self.ordered.loc[self.ordered.index[-1], 'SMMA5'] = newSm
+
+        if size < 40: return
+        newSm = smma(size - 1, 40 - 1)
+        self.ordered.loc[self.ordered.index[-1], 'SMMA40'] = newSm
         last = self.ordered.iloc[-1]
-        if shouldPrint:
-            print(self.ordered.iloc[[-1]])
 
     def convertForGraphicViews(self):
         """Convert data and format it for :ref:`GraphViewer<GraphViewer>`.
@@ -200,3 +191,12 @@ class GBDataMachine:
         ret = self.intervalJustClosed
         self.intervalJustClosed = False
         return ret
+
+def main():
+    dataMachine = LongTermDataMachine()
+    for i in range(0, 365 * 5):
+        dataMachine.append(i * 1440 * 60, i * 15)
+    print(dataMachine.ordered.tail(50))
+
+if __name__ == '__main__':
+    main()

@@ -406,23 +406,17 @@
          <em class="sig-param">
           <span class="n">
            <span class="pre">
-            githubToken
+            token
            </span>
           </span>
-         </em>
-         ,
-         <em class="sig-param">
-          <span class="n">
+          <span class="o">
            <span class="pre">
-            repoName
+            =
            </span>
           </span>
-         </em>
-         ,
-         <em class="sig-param">
-          <span class="n">
+          <span class="default_value">
            <span class="pre">
-            dataBranchName
+            None
            </span>
           </span>
          </em>
@@ -437,6 +431,503 @@
          <p>
           Interacts with Kraken API.
          </p>
+         <dl class="py method">
+          <dt id="KrakenApi.KrakenApi.AddOrder">
+           <code class="sig-name descname">
+            <span class="pre">
+             AddOrder
+            </span>
+           </code>
+           <span class="sig-paren">
+            (
+           </span>
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              buyOrSell
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              orderType
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              amount
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              cryptocurrency
+             </span>
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              'XDG'
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              currency
+             </span>
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              'EUR'
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              test
+             </span>
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              True
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              price
+             </span>
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              1
+             </span>
+            </span>
+           </em>
+           <span class="sig-paren">
+            )
+           </span>
+           <a class="headerlink" href="#KrakenApi.KrakenApi.AddOrder" title="Permalink to this definition">
+            ¶
+           </a>
+          </dt>
+          <dd>
+           <dl class="field-list simple">
+            <dt class="field-odd">
+             Parameters
+            </dt>
+            <dd class="field-odd">
+             <ul class="simple">
+              <li>
+               <p>
+                <strong>
+                 buyOrSell
+                </strong>
+                (
+                <em>
+                 str
+                </em>
+                ) – “buy” or “sell”
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 orderType
+                </strong>
+                – can be one of these :
+               </p>
+              </li>
+             </ul>
+            </dd>
+           </dl>
+           <p>
+            “market”: Sells as soon as possible at the first available offers
+“limit”: Sells at a fixed price
+“stop-loss”:
+“take-profit”:
+“stop-loss-limit”:
+“take-profit-limit”:
+“settle-position”:
+:type orderType: str
+           </p>
+          </dd>
+         </dl>
+         <dl class="py method">
+          <dt id="KrakenApi.KrakenApi.CancelOrders">
+           <code class="sig-name descname">
+            <span class="pre">
+             CancelOrders
+            </span>
+           </code>
+           <span class="sig-paren">
+            (
+           </span>
+           <span class="sig-paren">
+            )
+           </span>
+           <a class="headerlink" href="#KrakenApi.KrakenApi.CancelOrders" title="Permalink to this definition">
+            ¶
+           </a>
+          </dt>
+          <dd>
+          </dd>
+         </dl>
+         <dl class="py method">
+          <dt id="KrakenApi.KrakenApi.CheckAccount">
+           <code class="sig-name descname">
+            <span class="pre">
+             CheckAccount
+            </span>
+           </code>
+           <span class="sig-paren">
+            (
+           </span>
+           <span class="sig-paren">
+            )
+           </span>
+           <a class="headerlink" href="#KrakenApi.KrakenApi.CheckAccount" title="Permalink to this definition">
+            ¶
+           </a>
+          </dt>
+          <dd>
+          </dd>
+         </dl>
+         <dl class="py method">
+          <dt id="KrakenApi.KrakenApi.GetCryptoAndFiatBalance">
+           <code class="sig-name descname">
+            <span class="pre">
+             GetCryptoAndFiatBalance
+            </span>
+           </code>
+           <span class="sig-paren">
+            (
+           </span>
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              currencyInitial
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              fiatInitial
+             </span>
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              'EUR'
+             </span>
+            </span>
+           </em>
+           <span class="sig-paren">
+            )
+           </span>
+           <a class="headerlink" href="#KrakenApi.KrakenApi.GetCryptoAndFiatBalance" title="Permalink to this definition">
+            ¶
+           </a>
+          </dt>
+          <dd>
+          </dd>
+         </dl>
+         <dl class="py method">
+          <dt id="KrakenApi.KrakenApi.GetLastTrades">
+           <code class="sig-name descname">
+            <span class="pre">
+             GetLastTrades
+            </span>
+           </code>
+           <span class="sig-paren">
+            (
+           </span>
+           <span class="sig-paren">
+            )
+           </span>
+           <a class="headerlink" href="#KrakenApi.KrakenApi.GetLastTrades" title="Permalink to this definition">
+            ¶
+           </a>
+          </dt>
+          <dd>
+          </dd>
+         </dl>
+         <dl class="py method">
+          <dt id="KrakenApi.KrakenApi.GetPairs">
+           <code class="sig-name descname">
+            <span class="pre">
+             GetPairs
+            </span>
+           </code>
+           <span class="sig-paren">
+            (
+           </span>
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              finishesWith
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="n">
+             <span class="pre">
+              Optional
+             </span>
+             <span class="p">
+              <span class="pre">
+               [
+              </span>
+             </span>
+             <span class="pre">
+              str
+             </span>
+             <span class="p">
+              <span class="pre">
+               ]
+              </span>
+             </span>
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              None
+             </span>
+            </span>
+           </em>
+           <span class="sig-paren">
+            )
+           </span>
+           <a class="headerlink" href="#KrakenApi.KrakenApi.GetPairs" title="Permalink to this definition">
+            ¶
+           </a>
+          </dt>
+          <dd>
+          </dd>
+         </dl>
+         <dl class="py method">
+          <dt id="KrakenApi.KrakenApi.GetPrices">
+           <code class="sig-name descname">
+            <span class="pre">
+             GetPrices
+            </span>
+           </code>
+           <span class="sig-paren">
+            (
+           </span>
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              crypto
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="n">
+             <span class="pre">
+              str
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              interval
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="n">
+             <span class="pre">
+              int
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              since
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="n">
+             <span class="pre">
+              int
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              fiat
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="n">
+             <span class="pre">
+              str
+             </span>
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              'EUR'
+             </span>
+            </span>
+           </em>
+           <span class="sig-paren">
+            )
+           </span>
+           <a class="headerlink" href="#KrakenApi.KrakenApi.GetPrices" title="Permalink to this definition">
+            ¶
+           </a>
+          </dt>
+          <dd>
+           <p>
+            Returns an array containing every price info, formatted like this :
+[time, open, high, low, close, vwap, volume, count]
+           </p>
+          </dd>
+         </dl>
+         <dl class="py method">
+          <dt id="KrakenApi.KrakenApi.GetPricesFullname">
+           <code class="sig-name descname">
+            <span class="pre">
+             GetPricesFullname
+            </span>
+           </code>
+           <span class="sig-paren">
+            (
+           </span>
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              cryptoFiat
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="n">
+             <span class="pre">
+              str
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              interval
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="n">
+             <span class="pre">
+              int
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              since
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="n">
+             <span class="pre">
+              int
+             </span>
+            </span>
+           </em>
+           <span class="sig-paren">
+            )
+           </span>
+           <a class="headerlink" href="#KrakenApi.KrakenApi.GetPricesFullname" title="Permalink to this definition">
+            ¶
+           </a>
+          </dt>
+          <dd>
+          </dd>
+         </dl>
          <dl class="py method">
           <dt id="KrakenApi.KrakenApi.getToken">
            <code class="sig-name descname">
@@ -469,10 +960,72 @@
            </p>
           </dd>
          </dl>
+         <dl class="py method">
+          <dt id="KrakenApi.KrakenApi.kraken_get_request">
+           <code class="sig-name descname">
+            <span class="pre">
+             kraken_get_request
+            </span>
+           </code>
+           <span class="sig-paren">
+            (
+           </span>
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              uri_path
+             </span>
+            </span>
+           </em>
+           <span class="sig-paren">
+            )
+           </span>
+           <a class="headerlink" href="#KrakenApi.KrakenApi.kraken_get_request" title="Permalink to this definition">
+            ¶
+           </a>
+          </dt>
+          <dd>
+          </dd>
+         </dl>
+         <dl class="py method">
+          <dt id="KrakenApi.KrakenApi.kraken_post_request">
+           <code class="sig-name descname">
+            <span class="pre">
+             kraken_post_request
+            </span>
+           </code>
+           <span class="sig-paren">
+            (
+           </span>
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              uri_path
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              data
+             </span>
+            </span>
+           </em>
+           <span class="sig-paren">
+            )
+           </span>
+           <a class="headerlink" href="#KrakenApi.KrakenApi.kraken_post_request" title="Permalink to this definition">
+            ¶
+           </a>
+          </dt>
+          <dd>
+          </dd>
+         </dl>
         </dd>
        </dl>
-       <dl class="py data">
-        <dt id="KrakenApi.currencyInitial">
+       <dl class="py function">
+        <dt id="KrakenApi.get_kraken_signature">
          <code class="sig-prename descclassname">
           <span class="pre">
            KrakenApi.
@@ -480,24 +1033,94 @@
          </code>
          <code class="sig-name descname">
           <span class="pre">
-           currencyInitial
+           get_kraken_signature
           </span>
          </code>
-         <em class="property">
-          <span class="pre">
-           =
-          </span>
-          <span class="pre">
-           'XDG'
+         <span class="sig-paren">
+          (
+         </span>
+         <em class="sig-param">
+          <span class="n">
+           <span class="pre">
+            urlpath
+           </span>
           </span>
          </em>
-         <a class="headerlink" href="#KrakenApi.currencyInitial" title="Permalink to this definition">
+         ,
+         <em class="sig-param">
+          <span class="n">
+           <span class="pre">
+            data
+           </span>
+          </span>
+         </em>
+         ,
+         <em class="sig-param">
+          <span class="n">
+           <span class="pre">
+            secret
+           </span>
+          </span>
+         </em>
+         <span class="sig-paren">
+          )
+         </span>
+         <a class="headerlink" href="#KrakenApi.get_kraken_signature" title="Permalink to this definition">
+          ¶
+         </a>
+        </dt>
+        <dd>
+        </dd>
+       </dl>
+       <dl class="py function">
+        <dt id="KrakenApi.get_kraken_token">
+         <code class="sig-prename descclassname">
+          <span class="pre">
+           KrakenApi.
+          </span>
+         </code>
+         <code class="sig-name descname">
+          <span class="pre">
+           get_kraken_token
+          </span>
+         </code>
+         <span class="sig-paren">
+          (
+         </span>
+         <em class="sig-param">
+          <span class="n">
+           <span class="pre">
+            apiKey
+           </span>
+          </span>
+         </em>
+         ,
+         <em class="sig-param">
+          <span class="n">
+           <span class="pre">
+            apiPrivateKey
+           </span>
+          </span>
+         </em>
+         <span class="sig-paren">
+          )
+         </span>
+         <a class="headerlink" href="#KrakenApi.get_kraken_token" title="Permalink to this definition">
           ¶
          </a>
         </dt>
         <dd>
          <p>
-          Contains currency code of the cryptocurrency to interact with.
+          Gets the token from Kraken.
+         </p>
+         <p>
+          Check for
+          <a class="reference internal" href="../configuration.html#configuration">
+           <span class="std std-ref">
+            configuration
+           </span>
+          </a>
+          to see how it works.
          </p>
         </dd>
        </dl>

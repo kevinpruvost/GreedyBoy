@@ -7,8 +7,7 @@
 GreedyBoy
 =========
 
-.. image:: _static/screenshot.png
-    :alt: GreedyBoy Screenshot
+.. image:: _static/graphViewer.png
 
 GreedyBoy is an automated trading bot specialized in cryptocurrencies trading.
 
@@ -35,23 +34,6 @@ ETH             Ethereum    `ETH <https://coinmarketcap.com/fr/currencies/ethere
 XRP             Ripple      `XRP <https://coinmarketcap.com/fr/currencies/ripple/>`_
 DOGE            Dogecoin    `DOGE <https://coinmarketcap.com/fr/currencies/dogecoin/>`_
 ==============  =========  =============
-
-Implementation
---------------
-
-If you don't want to follow the text tutorial here's, first, the video tutorial.
-
-.. raw:: html
-
-    <div style="text-align: center; margin-bottom: 2em;">
-    <iframe width="100%" height="500" src="https://www.youtube-nocookie.com/embed/GlOQnsVOa2o?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    </div>
-
-`AWS Lambda <https://aws.amazon.com/fr/lambda/>`_
-+++++++++++++++++++++++++++++++++++++++++++++++++
-
-`Kraken <www.kraken.com>`_
-++++++++++++++++++++++++++
 
 Setup
 -----

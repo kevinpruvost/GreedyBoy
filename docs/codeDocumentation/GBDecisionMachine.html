@@ -395,10 +395,10 @@
        </h3>
        <table>
         <colgroup>
-         <col style="width: 35%"/>
+         <col style="width: 32%"/>
+         <col style="width: 12%"/>
          <col style="width: 13%"/>
-         <col style="width: 15%"/>
-         <col style="width: 38%"/>
+         <col style="width: 43%"/>
         </colgroup>
         <thead>
          <tr class="row-odd">
@@ -419,7 +419,7 @@
           </th>
           <th class="head">
            <p>
-            <abbr title="B/S">
+            <abbr title="buy/sell">
              Order
             </abbr>
            </p>
@@ -445,8 +445,8 @@
           </td>
           <td>
            <p>
-            <abbr title="Buy">
-             B
+            <abbr>
+             buy
             </abbr>
            </p>
           </td>
@@ -469,8 +469,8 @@
           </td>
           <td>
            <p>
-            <abbr title="Sell">
-             S
+            <abbr>
+             sell
             </abbr>
            </p>
           </td>
@@ -485,7 +485,7 @@
        </h3>
        <div class="highlight-default notranslate">
         <div class="highlight">
-         <pre><span></span><span class="n">date</span><span class="p">,</span><span class="n">price</span><span class="p">,</span><span class="n">amount</span><span class="p">,</span><span class="n">order</span>
+         <pre><span></span><span class="n">Date</span><span class="p">,</span><span class="n">Price</span><span class="p">,</span><span class="n">Amount</span><span class="p">,</span><span class="n">Order</span>
 <span class="mf">1619222453.181015</span><span class="p">,</span><span class="mf">0.523</span><span class="p">,</span><span class="mi">13000</span><span class="p">,</span><span class="n">B</span>
 <span class="mf">1619226521.475621</span><span class="p">,</span><span class="mf">0.553</span><span class="p">,</span><span class="mi">13000</span><span class="p">,</span><span class="n">S</span>
 </pre>
@@ -589,6 +589,42 @@
              </span>
             </span>
            </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              amount
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="n">
+             <span class="pre">
+              float
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              order
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="n">
+             <span class="pre">
+              str
+             </span>
+            </span>
+           </em>
            <span class="sig-paren">
             )
            </span>
@@ -668,7 +704,7 @@
             </dt>
             <dd class="field-odd">
              <p>
-              (DataFrame containing data for Plot 1, Same for Plot 2)
+              (DataFrame containing decision data)
              </p>
             </dd>
             <dt class="field-even">
@@ -676,7 +712,7 @@
             </dt>
             <dd class="field-even">
              <p>
-              (pandas.DataFrame, pandas.DataFrame)
+              (pandas.DataFrame)
              </p>
             </dd>
            </dl>
@@ -862,74 +898,6 @@
            </dl>
           </dd>
          </dl>
-         <dl class="py method">
-          <dt id="GBDecisionMachine.GBDecisionMachine.parseToInterval">
-           <code class="sig-name descname">
-            <span class="pre">
-             parseToInterval
-            </span>
-           </code>
-           <span class="sig-paren">
-            (
-           </span>
-           <span class="sig-paren">
-            )
-           </span>
-           <a class="headerlink" href="#GBDecisionMachine.GBDecisionMachine.parseToInterval" title="Permalink to this definition">
-            ¶
-           </a>
-          </dt>
-          <dd>
-          </dd>
-         </dl>
-         <dl class="py method">
-          <dt id="GBDecisionMachine.GBDecisionMachine.update">
-           <code class="sig-name descname">
-            <span class="pre">
-             update
-            </span>
-           </code>
-           <span class="sig-paren">
-            (
-           </span>
-           <span class="sig-paren">
-            )
-           </span>
-           <a class="headerlink" href="#GBDecisionMachine.GBDecisionMachine.update" title="Permalink to this definition">
-            ¶
-           </a>
-          </dt>
-          <dd>
-           <p>
-            Updates the GBDataMachine and computes bollinger bands, moving averages, …
-           </p>
-          </dd>
-         </dl>
-        </dd>
-       </dl>
-       <dl class="py function">
-        <dt id="GBDecisionMachine.main">
-         <code class="sig-prename descclassname">
-          <span class="pre">
-           GBDecisionMachine.
-          </span>
-         </code>
-         <code class="sig-name descname">
-          <span class="pre">
-           main
-          </span>
-         </code>
-         <span class="sig-paren">
-          (
-         </span>
-         <span class="sig-paren">
-          )
-         </span>
-         <a class="headerlink" href="#GBDecisionMachine.main" title="Permalink to this definition">
-          ¶
-         </a>
-        </dt>
-        <dd>
         </dd>
        </dl>
       </article>

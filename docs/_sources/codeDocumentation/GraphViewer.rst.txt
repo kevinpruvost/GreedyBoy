@@ -22,13 +22,10 @@ These informations will be displayed:
 
     * Volatility (lines)
 
-Video Demonstration
--------------------
-.. raw:: html
+Demonstration
+-------------
 
-    <div style="text-align: center; margin-bottom: 2em;">
-    <iframe width="100%" height="500" src="https://www.youtube-nocookie.com/embed/GlOQnsVOa2o?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    </div>
+.. image:: ../_static/graphViewer.png
 
 Code
 ----

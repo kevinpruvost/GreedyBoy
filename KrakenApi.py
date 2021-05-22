@@ -2,7 +2,7 @@
 ##
 ## KrakenApi.py
 ##
-
+import pandas as pd
 import websocket as websocket
 import urllib.request as req
 import urllib
@@ -68,10 +68,18 @@ class KrakenApi:
         """
         return get_kraken_token(self.apiKey, self.apiPrivateKey)
 
+    def GetPricesFullname(self, cryptoFiat: str, interval: int, since: int):
+        fiat = "USD" if "USD" in cryptoFiat else "EUR"
+        return self.GetPrices(cryptoFiat.replace(fiat, ''), interval, since, fiat)
+
     def GetPrices(self, crypto: str, interval: int, since: int, fiat: str = "EUR"):
+        """Returns an array containing every price info, formatted like this :
+        [time, open, high, low, close, vwap, volume, count]
+        """
         resp = self.kraken_get_request('/0/public/OHLC?pair={0}&interval={1}&since={2}'.format(crypto + fiat, interval, since - 1))
         respJson = resp.json()
-        return respJson['result'][crypto + fiat] if len(respJson['error']) == 0 else None
+        if len(respJson['error']) != 0: return None
+        return respJson['result'][crypto + fiat]
 
     def CancelOrders(self):
         resp = self.kraken_post_request('/0/private/CancelAll', {

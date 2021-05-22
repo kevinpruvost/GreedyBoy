@@ -1,13 +1,7 @@
 Code Documentation |:blue_book:|
 ********************************
 
-GreedyBoy is split into several parts:
-
-- GUI
-- Backtesting
-- API requests
-- Data parsing
-- Data analysis
+GreedyBoy is split into several parts such as GUI, Backtesting, API requests, Data parsing and Data analysis.
 
 .. toctree::
    :maxdepth: 2

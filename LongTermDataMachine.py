@@ -116,7 +116,12 @@ class LongTermDataMachine:
 
     def appendDataframe(self, dataFrame: pd.DataFrame):
         for i, row in dataFrame.iterrows():
-            self.__append(row['epoch'], row['price'])
+            self._append(row['epoch'], row['price'])
+        self.update()
+
+    def appendFormatedDataframe(self, dataFrame: pd.DataFrame):
+        for i, row in dataFrame.iterrows():
+            self.appendFormated(row['Date'], row['Open'], row['High'], row['Low'], row['Close'])
         self.update()
 
     def append(self, epochTime: float, price: float, shouldPrint: bool = False):
@@ -154,15 +159,14 @@ class LongTermDataMachine:
                 return np.round(sum(i, wSize) / wSize, decimals=10)
             return np.round((self.ordered.iloc[i - 1]['SMMA' + str(wSize + 1)] * wSize + self.ordered.iloc[i]['Close']) / (wSize + 1), decimals=10)
 
-        windowSize = 5
-        for i in range(0, self.ordered.shape[0] - (windowSize - 1)):
-            newSm = smma(i + (windowSize - 1), windowSize - 1)
-            self.ordered.loc[self.ordered.index[i + (windowSize - 1)], 'SMMA5'] = newSm
+        size = len(self.ordered.index)
+        if size < 5: return
+        newSm = smma(size - 1, 5 - 1)
+        self.ordered.loc[self.ordered.index[-1], 'SMMA5'] = newSm
 
-        windowSize = 40
-        for i in range(0, self.ordered.shape[0] - (windowSize - 1)):
-            newSm = smma(i + (windowSize - 1), windowSize - 1)
-            self.ordered.loc[self.ordered.index[i + (windowSize - 1)], 'SMMA40'] = newSm
+        if size < 40: return
+        newSm = smma(size - 1, 40 - 1)
+        self.ordered.loc[self.ordered.index[-1], 'SMMA40'] = newSm
         last = self.ordered.iloc[-1]
 
     def convertForGraphicViews(self):
@@ -178,7 +182,7 @@ class LongTermDataMachine:
         return data1, data2
 
     def memoryUsage(self):
-        return self.ordered.memory_usage(deep=True).sum() + self.bollingerGaps.memory_usage(deep=True).sum()
+        return self.ordered.memory_usage(deep=True).sum()
 
     def printPrices(self):
         print(self.ordered.to_csv(index=False))
@@ -194,10 +198,16 @@ class LongTermDataMachine:
         self.intervalJustClosed = False
         return ret
 
+import KrakenApi
+
 def main():
     dataMachine = LongTermDataMachine()
-    for i in range(0, 50):
-        dataMachine.appendFormated(i * 1440 * 60, i * 15, i * 15, i * 15, i * 15)
+    api = KrakenApi.KrakenApi("jN1hIQ7abFkjmn/ffco27/E2PC7/OfLatbX87vG5wa6vDlZP0GQTsoDa",
+                    "Stha4yXDkHon3dnBBW8+nl7G+YVZvWC88OlltVKh5FhKuYJ0Z5sTgO9qe6a7bZKXfrapKMLgkNbJYuffnzvgtw==",
+                    "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")
+    prices = api.GetPrices("XDG", 1440, 1546214400)
+    for priceBar in prices:
+        dataMachine.appendFormated(priceBar[0], priceBar[1], priceBar[2], priceBar[3], priceBar[4])
     dataMachine.update()
     print(dataMachine.ordered.tail(50))
 

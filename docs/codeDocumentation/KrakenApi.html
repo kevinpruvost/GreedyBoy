@@ -567,22 +567,16 @@
                 <strong>
                  orderType
                 </strong>
-                – can be one of these :
+                (
+                <em>
+                 str
+                </em>
+                ) – can be one of these : “market”, “limit”, “stop-loss”, “take-profit”, “stop-loss-limit”, “take-profit-limit”, “settle-position”
                </p>
               </li>
              </ul>
             </dd>
            </dl>
-           <p>
-            “market”: Sells as soon as possible at the first available offers
-“limit”: Sells at a fixed price
-“stop-loss”:
-“take-profit”:
-“stop-loss-limit”:
-“take-profit-limit”:
-“settle-position”:
-:type orderType: str
-           </p>
           </dd>
          </dl>
          <dl class="py method">
@@ -603,6 +597,9 @@
            </a>
           </dt>
           <dd>
+           <p>
+            Just cancels every orders
+           </p>
           </dd>
          </dl>
          <dl class="py method">
@@ -623,6 +620,9 @@
            </a>
           </dt>
           <dd>
+           <p>
+            Checks the account balances
+           </p>
           </dd>
          </dl>
          <dl class="py method">
@@ -641,12 +641,32 @@
               currencyInitial
              </span>
             </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="n">
+             <span class="pre">
+              str
+             </span>
+            </span>
            </em>
            ,
            <em class="sig-param">
             <span class="n">
              <span class="pre">
               fiatInitial
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="n">
+             <span class="pre">
+              str
              </span>
             </span>
             <span class="o">
@@ -668,6 +688,41 @@
            </a>
           </dt>
           <dd>
+           <p>
+            Gets a specific currency &amp; fiat balance
+           </p>
+           <dl class="field-list simple">
+            <dt class="field-odd">
+             Parameters
+            </dt>
+            <dd class="field-odd">
+             <ul class="simple">
+              <li>
+               <p>
+                <strong>
+                 currencyInitial
+                </strong>
+                (
+                <em>
+                 str
+                </em>
+                ) – initials of the cryptocurrency
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 fiatInitial
+                </strong>
+                – initials of the fiat currency
+               </p>
+              </li>
+             </ul>
+            </dd>
+           </dl>
+           <p>
+            :type fiatInitial:str
+           </p>
           </dd>
          </dl>
          <dl class="py method">
@@ -688,6 +743,9 @@
            </a>
           </dt>
           <dd>
+           <p>
+            Gets the last trades made on your account
+           </p>
           </dd>
          </dl>
          <dl class="py method">
@@ -748,6 +806,26 @@
            </a>
           </dt>
           <dd>
+           <p>
+            Gets a list containing every exchange pairs (XDGEUR or XBTUSD for instance)
+           </p>
+           <dl class="field-list simple">
+            <dt class="field-odd">
+             Parameters
+            </dt>
+            <dd class="field-odd">
+             <p>
+              <strong>
+               finishesWith
+              </strong>
+              (
+              <em>
+               str
+              </em>
+              ) – to specify if you only want EUR exchange pairs for instance (so you need to put “EUR”)
+             </p>
+            </dd>
+           </dl>
           </dd>
          </dl>
          <dl class="py method">
@@ -853,6 +931,63 @@
             Returns an array containing every price info, formatted like this :
 [time, open, high, low, close, vwap, volume, count]
            </p>
+           <dl class="field-list simple">
+            <dt class="field-odd">
+             Parameters
+            </dt>
+            <dd class="field-odd">
+             <ul class="simple">
+              <li>
+               <p>
+                <strong>
+                 crypto
+                </strong>
+                (
+                <em>
+                 str
+                </em>
+                ) – name of the crypto (XDG for instance)
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 fiat
+                </strong>
+                (
+                <em>
+                 str
+                </em>
+                ) – name of the fiat exchange currency (EUR for instance)
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 interval
+                </strong>
+                (
+                <em>
+                 int
+                </em>
+                ) – interval (in min)
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 since
+                </strong>
+                (
+                <em>
+                 int
+                </em>
+                ) – epoch time in seconds
+               </p>
+              </li>
+             </ul>
+            </dd>
+           </dl>
           </dd>
          </dl>
          <dl class="py method">
@@ -926,6 +1061,54 @@
            </a>
           </dt>
           <dd>
+           <p>
+            GetPrices but with cryptoFiat parameter instead of crypto &amp; fiat separated
+           </p>
+           <dl class="field-list simple">
+            <dt class="field-odd">
+             Parameters
+            </dt>
+            <dd class="field-odd">
+             <ul class="simple">
+              <li>
+               <p>
+                <strong>
+                 cryptoFiat
+                </strong>
+                (
+                <em>
+                 str
+                </em>
+                ) – name of the pair
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 interval
+                </strong>
+                (
+                <em>
+                 int
+                </em>
+                ) – interval (in min)
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 since
+                </strong>
+                (
+                <em>
+                 int
+                </em>
+                ) – epoch time in seconds
+               </p>
+              </li>
+             </ul>
+            </dd>
+           </dl>
           </dd>
          </dl>
          <dl class="py method">

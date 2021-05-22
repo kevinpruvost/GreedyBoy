@@ -90,7 +90,12 @@ class GBDataMachine:
             self.ordered = pd.DataFrame()
         return
 
-    def parseToInterval(self, data):
+    def parseToInterval(self, data: pd.DataFrame):
+        """Parses the given dataframe to the data machine
+
+        :param data: dataframe containing the dates and prices
+        :type data: pandas.DataFrame
+        """
         for i, row in data.iterrows():
             self.__append(row['epoch'], row['price'])
         self.update()
@@ -111,6 +116,19 @@ class GBDataMachine:
             self.newRound['High'] = price
 
     def appendFormated(self, date: float, open: float, high: float, low: float, close: float):
+        """Appends an already formated row to the data machine
+
+        :param date: epoch time in seconds
+        :type date: float
+        :param open: open price
+        :type open: float
+        :param high: high price
+        :type high: float
+        :param low: low price
+        :type low: float
+        :param close: close price
+        :type close: float
+        """
         self.ordered = self.ordered.append({
             'Date': date,
             'Open': float(open),
@@ -123,11 +141,17 @@ class GBDataMachine:
             'HBand': 0
         }, ignore_index=True)
 
-    def appendFilename(self, fileName):
+    def appendFilename(self, fileName: str):
+        """Appends a file into the data machine.
+
+        :param fileName: name of the file
+        :type fileName: str
+        """
         csvData = pd.read_csv(fileName, parse_dates=True)
         return self.appendDataframe(csvData)
 
     def appendDataframe(self, dataFrame: pd.DataFrame):
+        """Same as parseToInterval but with a different name"""
         for i, row in dataFrame.iterrows():
             self.__append(row['epoch'], row['price'])
         self.update()
@@ -146,7 +170,11 @@ class GBDataMachine:
         self.update(shouldPrint)
 
     def update(self, shouldPrint: bool = False):
-        """Updates the GBDataMachine and computes bollinger bands, moving averages, ..."""
+        """Updates the GBDataMachine and computes bollinger bands, moving averages, ...
+
+        :param shouldPrint: specify if the updates operations should be displayed or not
+        :type shouldPrint: bool
+        """
         if self.ordered.at[len(self.ordered) - 1, 'Date'] != self.newRound['Date']:
             self.ordered = self.ordered.append(self.newRound, ignore_index=True)
             self.intervalJustClosed = True
@@ -185,18 +213,27 @@ class GBDataMachine:
         return data1, data2
 
     def memoryUsage(self):
+        """Returns memory usage
+
+        :returns: memory usage
+        :rtype: int
+        """
         return self.ordered.memory_usage(deep=True).sum() + self.bollingerGaps.memory_usage(deep=True).sum()
 
     def printPrices(self):
+        """Prints prices data"""
         print(self.ordered.to_csv(index=False))
 
     def currentBollingerValue(self):
+        """Prints the current/last bollinger value"""
         return self.bollingerGaps.iloc[[-1]].iloc[0]['Value']
 
     def lastPrice(self):
+        """Returns the last close price"""
         return self.ordered.iloc[-1]["Close"] if len(self.ordered.index) != 0 else None
 
     def intervalClosed(self):
+        """Returns if an iteration has just been closed"""
         ret = self.intervalJustClosed
         self.intervalJustClosed = False
         return ret

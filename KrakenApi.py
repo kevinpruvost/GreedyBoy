@@ -69,12 +69,30 @@ class KrakenApi:
         return get_kraken_token(self.apiKey, self.apiPrivateKey)
 
     def GetPricesFullname(self, cryptoFiat: str, interval: int, since: int):
+        """GetPrices but with cryptoFiat parameter instead of crypto & fiat separated
+
+        :param cryptoFiat: name of the pair
+        :type cryptoFiat: str
+        :param interval: interval (in min)
+        :type interval: int
+        :param since: epoch time in seconds
+        :type since: int
+        """
         fiat = "USD" if "USD" in cryptoFiat else "EUR"
         return self.GetPrices(cryptoFiat.replace(fiat, ''), interval, since, fiat)
 
     def GetPrices(self, crypto: str, interval: int, since: int, fiat: str = "EUR"):
         """Returns an array containing every price info, formatted like this :
         [time, open, high, low, close, vwap, volume, count]
+
+        :param crypto: name of the crypto (XDG for instance)
+        :type crypto: str
+        :param fiat: name of the fiat exchange currency (EUR for instance)
+        :type fiat: str
+        :param interval: interval (in min)
+        :type interval: int
+        :param since: epoch time in seconds
+        :type since: int
         """
         resp = self.kraken_get_request('/0/public/OHLC?pair={0}&interval={1}&since={2}'.format(crypto + fiat, interval, since - 1))
         respJson = resp.json()
@@ -82,6 +100,7 @@ class KrakenApi:
         return respJson['result'][crypto + fiat]
 
     def CancelOrders(self):
+        """Just cancels every orders"""
         resp = self.kraken_post_request('/0/private/CancelAll', {
             "nonce": str(int(1000 * time.time()))
         })
@@ -91,14 +110,7 @@ class KrakenApi:
         """
         :param buyOrSell: "buy" or "sell"
         :type buyOrSell: str
-        :param orderType: can be one of these :
-        "market": Sells as soon as possible at the first available offers
-        "limit": Sells at a fixed price
-        "stop-loss":
-        "take-profit":
-        "stop-loss-limit":
-        "take-profit-limit":
-        "settle-position":
+        :param orderType: can be one of these : "market", "limit", "stop-loss", "take-profit", "stop-loss-limit", "take-profit-limit", "settle-position"
         :type orderType: str
         """
         buildRequest = {
@@ -117,17 +129,26 @@ class KrakenApi:
         return None if len(respJson['error']) != 0 else respJson
 
     def CheckAccount(self):
+        """Checks the account balances"""
         resp = self.kraken_post_request('/0/private/Balance', {
             "nonce": str(int(1000 * time.time() + 5000))
         })
         respJson = resp.json()
         return respJson['result'] if len(respJson['error']) == 0 else None
 
-    def GetCryptoAndFiatBalance(self, currencyInitial, fiatInitial = "EUR"):
+    def GetCryptoAndFiatBalance(self, currencyInitial: str, fiatInitial: str = "EUR"):
+        """Gets a specific currency & fiat balance
+
+        :param currencyInitial: initials of the cryptocurrency
+        :type currencyInitial: str
+        :param fiatInitial: initials of the fiat currency
+        :type fiatInitial:str
+        """
         resp = self.CheckAccount()
         return float(resp["X" + currencyInitial]), float(resp["Z" + fiatInitial]) if resp else None
 
     def GetLastTrades(self):
+        """Gets the last trades made on your account"""
         resp = self.kraken_post_request('/0/private/TradesHistory', {
             "nonce": str(int(1000 * time.time() + 5000))
         })
@@ -135,6 +156,11 @@ class KrakenApi:
         return respJson['result']['trades'] if len(respJson['error']) == 0 else None
 
     def GetPairs(self, finishesWith: str = None):
+        """Gets a list containing every exchange pairs (XDGEUR or XBTUSD for instance)
+
+        :param finishesWith: to specify if you only want EUR exchange pairs for instance (so you need to put "EUR")
+        :type finishesWith: str
+        """
         resp = self.kraken_post_request('/0/public/AssetPairs', {
             "nonce": str(int(1000 * time.time() + 5000))
         })

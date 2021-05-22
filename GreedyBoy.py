@@ -19,6 +19,7 @@ class GreedyBoy:
     ##
 
     def getToken(self):
+        """Gets the token delivered from Kraken."""
         api_nonce = bytes(str(int(time.time() * 1000)), "utf-8")
         api_request = urllib.request.Request("https://api.kraken.com/0/private/GetWebSocketsToken",
                                              b"nonce=%s" % api_nonce)
@@ -40,6 +41,7 @@ class GreedyBoy:
     ##
 
     def ws_thread(self, *args):
+        """Used by the _thread.start_new_thread function to run the code of ws_thread into another thread"""
         for arg in args:
             self.limitTime = arg if arg else self.limitTime
         # Kraken Token
@@ -115,6 +117,9 @@ class GreedyBoy:
     ##
 
     def close(self):
+        """Does everything needed on destruction, at the end of the execution.
+        Like writing and sending backtesting data to Github.
+        """
         timer = time.perf_counter()
 
         def sendToGithub(dataFile, dataPath, githubPath: str):

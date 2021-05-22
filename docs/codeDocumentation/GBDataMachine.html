@@ -669,6 +669,9 @@
            </a>
           </dt>
           <dd>
+           <p>
+            Same as parseToInterval but with a different name
+           </p>
           </dd>
          </dl>
          <dl class="py method">
@@ -687,6 +690,16 @@
               fileName
              </span>
             </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="n">
+             <span class="pre">
+              str
+             </span>
+            </span>
            </em>
            <span class="sig-paren">
             )
@@ -696,6 +709,26 @@
            </a>
           </dt>
           <dd>
+           <p>
+            Appends a file into the data machine.
+           </p>
+           <dl class="field-list simple">
+            <dt class="field-odd">
+             Parameters
+            </dt>
+            <dd class="field-odd">
+             <p>
+              <strong>
+               fileName
+              </strong>
+              (
+              <em>
+               str
+              </em>
+              ) – name of the file
+             </p>
+            </dd>
+           </dl>
           </dd>
          </dl>
          <dl class="py method">
@@ -805,6 +838,78 @@
            </a>
           </dt>
           <dd>
+           <p>
+            Appends an already formated row to the data machine
+           </p>
+           <dl class="field-list simple">
+            <dt class="field-odd">
+             Parameters
+            </dt>
+            <dd class="field-odd">
+             <ul class="simple">
+              <li>
+               <p>
+                <strong>
+                 date
+                </strong>
+                (
+                <em>
+                 float
+                </em>
+                ) – epoch time in seconds
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 open
+                </strong>
+                (
+                <em>
+                 float
+                </em>
+                ) – open price
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 high
+                </strong>
+                (
+                <em>
+                 float
+                </em>
+                ) – high price
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 low
+                </strong>
+                (
+                <em>
+                 float
+                </em>
+                ) – low price
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 close
+                </strong>
+                (
+                <em>
+                 float
+                </em>
+                ) – close price
+               </p>
+              </li>
+             </ul>
+            </dd>
+           </dl>
           </dd>
          </dl>
          <dl class="py method">
@@ -872,6 +977,9 @@
            </a>
           </dt>
           <dd>
+           <p>
+            Prints the current/last bollinger value
+           </p>
           </dd>
          </dl>
          <dl class="py method">
@@ -1184,6 +1292,9 @@
            </a>
           </dt>
           <dd>
+           <p>
+            Returns if an iteration has just been closed
+           </p>
           </dd>
          </dl>
          <dl class="py method">
@@ -1204,6 +1315,9 @@
            </a>
           </dt>
           <dd>
+           <p>
+            Returns the last close price
+           </p>
           </dd>
          </dl>
          <dl class="py method">
@@ -1224,6 +1338,27 @@
            </a>
           </dt>
           <dd>
+           <p>
+            Returns memory usage
+           </p>
+           <dl class="field-list simple">
+            <dt class="field-odd">
+             Returns
+            </dt>
+            <dd class="field-odd">
+             <p>
+              memory usage
+             </p>
+            </dd>
+            <dt class="field-even">
+             Return type
+            </dt>
+            <dd class="field-even">
+             <p>
+              int
+             </p>
+            </dd>
+           </dl>
           </dd>
          </dl>
          <dl class="py method">
@@ -1242,6 +1377,16 @@
               data
              </span>
             </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="n">
+             <span class="pre">
+              pandas.core.frame.DataFrame
+             </span>
+            </span>
            </em>
            <span class="sig-paren">
             )
@@ -1251,6 +1396,26 @@
            </a>
           </dt>
           <dd>
+           <p>
+            Parses the given dataframe to the data machine
+           </p>
+           <dl class="field-list simple">
+            <dt class="field-odd">
+             Parameters
+            </dt>
+            <dd class="field-odd">
+             <p>
+              <strong>
+               data
+              </strong>
+              (
+              <em>
+               pandas.DataFrame
+              </em>
+              ) – dataframe containing the dates and prices
+             </p>
+            </dd>
+           </dl>
           </dd>
          </dl>
          <dl class="py method">
@@ -1271,6 +1436,9 @@
            </a>
           </dt>
           <dd>
+           <p>
+            Prints prices data
+           </p>
           </dd>
          </dl>
          <dl class="py method">
@@ -1321,6 +1489,23 @@
            <p>
             Updates the GBDataMachine and computes bollinger bands, moving averages, …
            </p>
+           <dl class="field-list simple">
+            <dt class="field-odd">
+             Parameters
+            </dt>
+            <dd class="field-odd">
+             <p>
+              <strong>
+               shouldPrint
+              </strong>
+              (
+              <em>
+               bool
+              </em>
+              ) – specify if the updates operations should be displayed or not
+             </p>
+            </dd>
+           </dl>
           </dd>
          </dl>
         </dd>

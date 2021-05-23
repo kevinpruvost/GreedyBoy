@@ -1,8 +1,8 @@
 # GreedyBoy
 
 <p align="center">
-  <img src="https://github.com/kevinpruvost/GreedyBoy/blob/main/logo/eye.png"/><br/>
-  <img src="https://github.com/kevinpruvost/GreedyBoy/blob/main/logo/title.png"/><br/><br/>
+  <img src="https://github.com/kevinpruvost/GreedyBoy/blob/main/docsrc/_static/eye.png"/><br/>
+  <img src="https://github.com/kevinpruvost/GreedyBoy/tree/main/docsrc/_static/title.png"/><br/><br/>
 Automated Trading Bot coded in Python, hosted on AWS Lambda.
 </p>
 
